@@ -5,13 +5,41 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// Import the supabase client like this:
-// import { supabase } from "@/integrations/supabase/client";
+let supabaseInstance: ReturnType<typeof createClient<Database>> | null = null;
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: {
-    storage: localStorage,
-    persistSession: true,
-    autoRefreshToken: true,
+// Create a dummy client that returns null responses when Supabase is not configured
+class DummySupabaseClient {
+  functions = {
+    invoke: async () => ({ data: null, error: new Error('Supabase not configured') })
+  };
+  from = () => ({
+    insert: async () => ({ data: null, error: new Error('Supabase not configured') }),
+    select: () => ({
+      eq: () => ({
+        single: async () => ({ data: null, error: new Error('Supabase not configured') })
+      })
+    }),
+    update: () => ({
+      eq: async () => ({ data: null, error: new Error('Supabase not configured') })
+    })
+  });
+}
+
+// Initialize Supabase client only if credentials are provided
+if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
+  try {
+    supabaseInstance = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: {
+        storage: localStorage,
+        persistSession: true,
+        autoRefreshToken: true,
+      }
+    });
+  } catch (error) {
+    console.warn('Failed to initialize Supabase client:', error);
+    supabaseInstance = null;
   }
-});
+}
+
+// Export the client or a dummy if not configured
+export const supabase = supabaseInstance || (new DummySupabaseClient() as any);
