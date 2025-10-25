@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, MapPin, Phone, MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner";
+import AIChatbot from "@/components/AIChatbot";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ const Contact = () => {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showChatbot, setShowChatbot] = useState(false);
+  const [reportGenerated, setReportGenerated] = useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -49,22 +52,30 @@ const Contact = () => {
     e.preventDefault();
     
     if (validateForm()) {
-      // This will be connected to the AI chatbot and backend
-      toast.success("Thank you! Our AI assistant will contact you shortly.");
-      console.log("Form submitted:", formData);
-      
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        message: "",
-        gdprConsent: false,
-      });
+      toast.success("Opening AI Assistant...");
+      setShowChatbot(true);
     } else {
       toast.error("Please fix the errors in the form");
     }
+  };
+
+  const handleChatbotClose = () => {
+    setShowChatbot(false);
+  };
+
+  const handleReportGenerated = () => {
+    setReportGenerated(true);
+    setFormData({
+      name: "",
+      email: "",
+      company: "",
+      phone: "",
+      message: "",
+      gdprConsent: false,
+    });
+    setTimeout(() => {
+      setShowChatbot(false);
+    }, 3000);
   };
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -76,6 +87,18 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen pt-20">
+      {showChatbot && (
+        <AIChatbot
+          prospectInfo={{
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            phone: formData.phone,
+          }}
+          onClose={handleChatbotClose}
+          onReportGenerated={handleReportGenerated}
+        />
+      )}
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-accent/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

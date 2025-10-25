@@ -5,10 +5,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import ChatButton from "./components/ChatButton";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Solutions from "./pages/Solutions";
 import Contact from "./pages/Contact";
+import AdminLogin from "./pages/AdminLogin";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,11 +31,20 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/solutions" element={<Solutions />} />
               <Route path="/contact" element={<Contact />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/admin-login" element={<AdminLogin />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <Admin />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />
+          <ChatButton />
         </div>
       </BrowserRouter>
     </TooltipProvider>

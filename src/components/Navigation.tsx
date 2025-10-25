@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import authService from "@/lib/authService";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const currentUser = authService.getCurrentUser();
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -16,11 +19,15 @@ const Navigation = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  const handleLogout = () => {
+    authService.logout();
+    navigate("/");
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-lg border-b border-border z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 gradient-primary rounded-lg flex items-center justify-center shadow-elegant">
               <span className="text-xl font-bold text-primary-foreground">OT</span>
@@ -28,7 +35,6 @@ const Navigation = () => {
             <span className="text-xl font-bold gradient-text">OKA Tech</span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -43,12 +49,37 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <Link to="/contact">
-              <Button variant="hero" size="sm">Get Started</Button>
-            </Link>
+            
+            {currentUser ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-muted-foreground">{currentUser.name}</span>
+                <Link to="/admin">
+                  <Button variant="outline" size="sm">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin
+                  </Button>
+                </Link>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/admin-login">
+                  <Button variant="outline" size="sm">Admin</Button>
+                </Link>
+                <Link to="/contact">
+                  <Button variant="hero" size="sm">Get Started</Button>
+                </Link>
+              </>
+            )}
           </div>
 
-          {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 rounded-lg hover:bg-accent transition-smooth"
@@ -57,7 +88,6 @@ const Navigation = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden py-4 space-y-3 border-t border-border">
             {navItems.map((item) => (
@@ -74,11 +104,41 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <Link to="/contact" onClick={() => setIsOpen(false)}>
-              <Button variant="hero" className="w-full" size="sm">
-                Get Started
-              </Button>
-            </Link>
+            
+            {currentUser ? (
+              <>
+                <div className="px-3 py-2 text-sm text-muted-foreground">{currentUser.name}</div>
+                <Link to="/admin" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" className="w-full" size="sm">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin
+                  </Button>
+                </Link>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  size="sm"
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/admin-login" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" className="w-full" size="sm">Admin</Button>
+                </Link>
+                <Link to="/contact" onClick={() => setIsOpen(false)}>
+                  <Button variant="hero" className="w-full" size="sm">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         )}
       </div>
