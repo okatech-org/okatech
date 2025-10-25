@@ -251,6 +251,34 @@ FORMAT RAPPORT:
     const lowerResponse = response.toLowerCase();
     return phoneKeywords.some(kw => lowerResponse.includes(kw));
   }
+
+  async sendMessage(userMessage: string, context: any): Promise<{ data: { response: string; shouldCollectContact: boolean; conversationId?: string; leadId?: string } | null; error: any }> {
+    try {
+      const conversationHistory: Message[] = [];
+      const response = await this.generateContextualResponse(
+        userMessage,
+        conversationHistory,
+        context.prospectInfo
+      );
+
+      const shouldCollectContact = this.shouldCollectContactInfo(response);
+
+      return {
+        data: {
+          response,
+          shouldCollectContact,
+          conversationId: context.conversationId,
+          leadId: context.prospectInfo.leadId
+        },
+        error: null
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
 }
 
 export const openAIService = new OpenAIService();
