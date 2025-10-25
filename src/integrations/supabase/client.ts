@@ -5,22 +5,38 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
+// Log environment status
+console.log('[Supabase Client] URL configured:', !!SUPABASE_URL);
+console.log('[Supabase Client] Key configured:', !!SUPABASE_PUBLISHABLE_KEY);
+
 let supabaseInstance: ReturnType<typeof createClient<Database>> | null = null;
 
 // Create a dummy client that returns null responses when Supabase is not configured
 class DummySupabaseClient {
   functions = {
-    invoke: async () => ({ data: null, error: new Error('Supabase not configured') })
+    invoke: async (functionName: string) => {
+      console.warn(`[Supabase Dummy] functions.invoke('${functionName}') called - Supabase not configured`);
+      return { data: null, error: new Error('Supabase not configured - please set environment variables') };
+    }
   };
-  from = () => ({
-    insert: async () => ({ data: null, error: new Error('Supabase not configured') }),
+  from = (table: string) => ({
+    insert: async (data: any) => {
+      console.warn(`[Supabase Dummy] from('${table}').insert() called - Supabase not configured`);
+      return { data: null, error: new Error('Supabase not configured') };
+    },
     select: () => ({
-      eq: () => ({
-        single: async () => ({ data: null, error: new Error('Supabase not configured') })
+      eq: (column: string, value: any) => ({
+        single: async () => {
+          console.warn(`[Supabase Dummy] select().eq('${column}', ${value}).single() called - Supabase not configured`);
+          return { data: null, error: new Error('Supabase not configured') };
+        }
       })
     }),
-    update: () => ({
-      eq: async () => ({ data: null, error: new Error('Supabase not configured') })
+    update: (data: any) => ({
+      eq: async (column: string, value: any) => {
+        console.warn(`[Supabase Dummy] update().eq('${column}', ${value}) called - Supabase not configured`);
+        return { data: null, error: new Error('Supabase not configured') };
+      }
     })
   });
 }
@@ -28,6 +44,7 @@ class DummySupabaseClient {
 // Initialize Supabase client only if credentials are provided
 if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
   try {
+    console.log('[Supabase Client] Initializing real client...');
     supabaseInstance = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: {
         storage: localStorage,
@@ -35,10 +52,13 @@ if (SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY) {
         autoRefreshToken: true,
       }
     });
+    console.log('[Supabase Client] Real client initialized successfully');
   } catch (error) {
-    console.warn('Failed to initialize Supabase client:', error);
+    console.warn('[Supabase Client] Failed to initialize real client:', error);
     supabaseInstance = null;
   }
+} else {
+  console.log('[Supabase Client] Supabase credentials not provided - using dummy client');
 }
 
 // Export the client or a dummy if not configured
