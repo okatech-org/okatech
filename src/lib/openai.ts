@@ -1,5 +1,3 @@
-import { config } from '@/config/api';
-
 interface Message {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -22,10 +20,10 @@ class OpenAIService {
   private model: string;
 
   constructor() {
-    this.apiKey = import.meta.env.VITE_OPENAI_API_KEY || config.openai.apiKey;
-    this.model = config.openai.model;
+    this.apiKey = import.meta.env.VITE_OPENAI_API_KEY || '';
+    this.model = import.meta.env.VITE_OPENAI_MODEL || 'gpt-4o-mini';
     if (!this.apiKey) {
-      console.warn('OpenAI API key not found');
+      console.warn('OpenAI API key not found. Please set VITE_OPENAI_API_KEY environment variable.');
     }
   }
 
