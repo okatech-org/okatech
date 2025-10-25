@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Bot, X, Send, Loader2, FileText, Download, Phone } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import leadStorage from "@/lib/leadStorage";
 import pdfGenerator from "@/lib/pdfGenerator";
 import { openAIService } from "@/lib/openai";
@@ -71,14 +72,17 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
     setIsLoading(true);
 
     try {
-      const { data, error } = await openAIService.sendMessage(userMessage, {
-        conversationId,
-        prospectInfo: {
-          leadId,
-          name: prospectInfo.name,
-          email: prospectInfo.email,
-          company: prospectInfo.company,
-          phone: collectedPhone || prospectInfo.phone,
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
+          conversationId,
+          userMessage,
+          prospectInfo: {
+            leadId,
+            name: prospectInfo.name,
+            email: prospectInfo.email,
+            company: prospectInfo.company,
+            phone: collectedPhone || prospectInfo.phone,
+          }
         }
       });
 
@@ -123,7 +127,9 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
     setIsLoading(true);
     
     try {
-      const { data, error } = await openAIService.generateReport(conversationId);
+      const { data, error } = await supabase.functions.invoke('generate-report', {
+        body: { conversationId }
+      });
 
       if (error) throw error;
 
