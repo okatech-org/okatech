@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Bot, X, Send, Loader2, FileText, Download, Phone } from "lucide-react";
 import { toast } from "sonner";
-import openAIService from "@/lib/openai";
+import { supabase } from "@/integrations/supabase/client";
 import leadStorage from "@/lib/leadStorage";
 import pdfGenerator from "@/lib/pdfGenerator";
 
@@ -38,6 +38,8 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
   const [shouldCollectContact, setShouldCollectContact] = useState(false);
   const [collectedPhone, setCollectedPhone] = useState(prospectInfo.phone || "");
   const [reportGenerated, setReportGenerated] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [leadId, setLeadId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -69,26 +71,40 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
     setIsLoading(true);
 
     try {
-      const result = await openAIService.analyzeAndRespond(
-        userMessage,
-        messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-        prospectInfo,
-        messages.length
-      );
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
+          conversationId,
+          userMessage,
+          prospectInfo: {
+            leadId,
+            name: prospectInfo.name,
+            email: prospectInfo.email,
+            company: prospectInfo.company,
+            phone: collectedPhone || prospectInfo.phone,
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      // Mettre à jour les IDs si c'est la première fois
+      if (data.conversationId && !conversationId) {
+        setConversationId(data.conversationId);
+      }
+      if (data.leadId && !leadId) {
+        setLeadId(data.leadId);
+      }
 
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: result.response,
+        content: data.response,
         timestamp: new Date(),
       }]);
 
-      setShouldCollectContact(result.shouldCollectContact);
+      setShouldCollectContact(data.shouldCollectContact);
 
       // Si on doit collecter et qu'on a le téléphone, générer le rapport
-      if (result.shouldCollectContact && collectedPhone) {
+      if (data.shouldCollectContact && collectedPhone) {
         setTimeout(() => {
           generateReport();
         }, 1000);
@@ -102,22 +118,32 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
   };
 
   const generateReport = async () => {
+    if (!conversationId) {
+      toast.error("Aucune conversation à analyser");
+      return;
+    }
+
     setIsLoading(true);
     
     try {
-      const report = await openAIService.generateReport(messages, prospectInfo);
-      const fitScore = Math.floor(Math.random() * 30) + 70;
+      const { data, error } = await supabase.functions.invoke('generate-report', {
+        body: { conversationId }
+      });
+
+      if (error) throw error;
+
+      const fitScore = data.compatibilityScore || Math.floor(Math.random() * 30) + 70;
       
       const lead = leadStorage.saveLead({
-        name: prospectInfo.name,
-        email: prospectInfo.email,
-        company: prospectInfo.company,
-        phone: collectedPhone,
+        name: data.prospectInfo.name,
+        email: data.prospectInfo.email,
+        company: data.prospectInfo.company,
+        phone: collectedPhone || data.prospectInfo.phone,
         conversation: messages.map(msg => ({
           role: msg.role as 'user' | 'assistant',
           content: msg.content,
         })),
-        report: report,
+        report: data.report,
         fitScore: fitScore,
         status: 'new',
       });
