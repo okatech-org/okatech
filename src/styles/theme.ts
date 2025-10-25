@@ -68,10 +68,10 @@ export const theme = {
 
   animations: {
     easing: {
-      smooth: [0.4, 0, 0.2, 1],
-      bounce: [0.68, -0.55, 0.265, 1.55],
-      elastic: [0.175, 0.885, 0.32, 1.275],
-      sharp: [0.4, 0, 0.6, 1],
+      smooth: 'easeOut' as const,
+      bounce: 'easeInOut' as const,
+      elastic: 'easeInOut' as const,
+      sharp: 'easeIn' as const,
     },
     duration: {
       fast: '200ms',
