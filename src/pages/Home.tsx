@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, Zap, Users, Workflow, Brain, Lock, Rocket } from 'lucide-react';
 import { useState } from 'react';
+import { useThemeStyles } from '@/hooks/useThemeStyles';
 
 const Home = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const themeStyles = useThemeStyles();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -25,7 +27,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{ background: theme.colors.primary.dark, minHeight: '100vh' }}>
+    <div style={{ background: themeStyles.backgrounds.primary, minHeight: '100vh' }}>
       {/* ===== HERO SECTION - INSPIRED DESIGN ===== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-20">
         {/* Animated background elements */}
@@ -39,203 +41,164 @@ const Home = () => {
           />
           {/* Orange/Yellow gradient - bottom right */}
           <div
-            className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full"
+            className="absolute -bottom-32 right-32 w-96 h-96 rounded-full"
             style={{
               background: `radial-gradient(circle, #FF8C4240, transparent 70%)`
             }}
           />
-          {/* Purple accent - top right */}
+          {/* Purple gradient - top right */}
           <div
-            className="absolute top-20 right-20 w-64 h-64 rounded-full"
+            className="absolute -top-20 -right-20 w-72 h-72 rounded-full"
             style={{
-              background: `radial-gradient(circle, ${theme.colors.primary.purple}20, transparent 70%)`
+              background: `radial-gradient(circle, ${theme.colors.primary.purple}30, transparent 70%)`
             }}
           />
         </div>
 
-        {/* Main content - Asymmetric layout */}
-        <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* Left side - Text content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto relative z-10 px-6">
+          {/* Left - Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="space-y-8"
           >
-            {/* Small badge */}
+            {/* Badge */}
             <motion.div
-              className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border"
               style={{
                 background: `${theme.colors.primary.electric}15`,
                 border: `1px solid ${theme.colors.primary.electric}40`
               }}
               whileHover={{ scale: 1.05 }}
             >
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ background: theme.colors.primary.electric }}
-              />
-              <span style={{ color: theme.colors.primary.electric }} className="text-sm font-semibold">
-                IA Transformation
-              </span>
+              <div className="w-2 h-2 rounded-full" style={{ background: theme.colors.primary.electric }} />
+              <span style={{ color: themeStyles.text.secondary, fontSize: '0.875rem' }}>IA Transformation</span>
             </motion.div>
 
-            {/* Main heading */}
-            <motion.h1
-              className="text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-              style={{ color: theme.colors.text.primary }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-            >
-              Nous comprenons votre activité
-              <span
-                className="block mt-3"
-                style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}, #FF8C42)`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
-                au-delà de vos pensées
-              </span>
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.p
-              className="text-lg md:text-xl mb-8 leading-relaxed"
-              style={{ color: theme.colors.text.secondary }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            >
-              OKA Tech réinvente votre entreprise avec l'IA. Automatisez l'administratif, libérez vos équipes, 
-              transformez votre activité.
-            </motion.p>
+            {/* Title with gradient */}
+            <div className="space-y-4">
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                Nous comprenons votre activité
+                <span
+                  className="block"
+                  style={{
+                    background: `linear-gradient(135deg, ${theme.colors.primary.electric}, #FF8C42)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  au-delà de vos pensées
+                </span>
+              </h1>
+              <p style={{ color: themeStyles.text.secondary, fontSize: '1.125rem', lineHeight: '1.6' }}>
+                OKA Tech réinvente votre entreprise avec l'IA. Solutions full-stack personnalisées qui libèrent votre équipe.
+              </p>
+            </div>
 
             {/* CTA Buttons */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-            >
-              <Button
-                className="px-8 py-3 text-base font-semibold rounded-xl"
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <motion.button
+                className="px-8 py-3 rounded-xl font-medium text-base text-white transition-all"
                 style={{
-                  background: theme.colors.primary.electric,
-                  color: theme.colors.primary.dark
+                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
+                  boxShadow: `0 0 20px ${theme.colors.primary.electric}50`
                 }}
-                onClick={() => document.getElementById('chatbot-section')?.scrollIntoView({ behavior: 'smooth' })}
+                whileHover={{
+                  boxShadow: `0 0 30px ${theme.colors.primary.electric}70`
+                }}
+                whileTap={{ scale: 0.95 }}
               >
                 Commençons Ensemble
-                <ChevronRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button
-                variant="outline"
-                className="px-8 py-3 text-base font-semibold rounded-xl"
+              </motion.button>
+              <motion.button
+                className="px-8 py-3 rounded-xl font-medium text-base transition-all border"
                 style={{
-                  borderColor: theme.colors.primary.electric,
-                  color: theme.colors.primary.electric
+                  color: theme.colors.primary.electric,
+                  border: `1px solid ${theme.colors.primary.electric}40`,
+                  background: 'transparent'
                 }}
+                whileHover={{
+                  background: `${theme.colors.primary.electric}15`
+                }}
+                whileTap={{ scale: 0.95 }}
               >
-                Planifier une Démo
-              </Button>
-            </motion.div>
+                En savoir plus
+              </motion.button>
+            </div>
 
-            {/* Stats row */}
-            <motion.div
-              className="flex gap-8 mt-12 pt-8 border-t"
-              style={{ borderColor: `${theme.colors.text.muted}20` }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 0.8 }}
-            >
-              <div>
-                <p className="text-2xl font-bold" style={{ color: theme.colors.primary.electric }}>6+</p>
-                <p className="text-sm" style={{ color: theme.colors.text.muted }}>Ans d'expertise</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold" style={{ color: '#FF8C42' }}>50+</p>
-                <p className="text-sm" style={{ color: theme.colors.text.muted }}>Projets réussis</p>
-              </div>
-              <div>
-                <p className="text-2xl font-bold" style={{ color: theme.colors.primary.purple }}>24/7</p>
-                <p className="text-sm" style={{ color: theme.colors.text.muted }}>Support disponible</p>
-              </div>
-            </motion.div>
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4 pt-8" style={{ borderTop: `1px solid ${themeStyles.borders.light}` }}>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                <div className="text-3xl font-bold" style={{ color: theme.colors.primary.electric }}>6+</div>
+                <div className="text-sm" style={{ color: themeStyles.text.muted }}>Ans d'expertise</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
+                <div className="text-3xl font-bold" style={{ color: '#FF8C42' }}>50+</div>
+                <div className="text-sm" style={{ color: themeStyles.text.muted }}>Projets réussis</div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+                <div className="text-3xl font-bold" style={{ color: theme.colors.primary.purple }}>24/7</div>
+                <div className="text-sm" style={{ color: themeStyles.text.muted }}>Support</div>
+              </motion.div>
+            </div>
           </motion.div>
 
-          {/* Right side - Visual showcase */}
+          {/* Right - Floating Elements */}
           <motion.div
-            className="relative h-96 lg:h-full min-h-96"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="relative h-full hidden lg:flex items-center justify-center"
           >
-            {/* Large gradient circle background */}
-            <div
-              className="absolute inset-0 rounded-3xl opacity-20"
-              style={{
-                background: `linear-gradient(135deg, ${theme.colors.primary.electric}20, #FF8C4220)`
-              }}
-            />
+            <div className="relative w-full h-full max-w-md">
+              {/* Gradient circle background */}
+              <div
+                className="absolute inset-0 rounded-full blur-3xl opacity-20"
+                style={{
+                  background: `radial-gradient(circle, ${theme.colors.primary.electric}, transparent)`
+                }}
+              />
 
-            {/* Floating cards/circles - inspired by the design */}
-            <motion.div
-              className="absolute top-0 right-0 w-32 h-32 rounded-2xl"
-              style={{
-                background: `linear-gradient(135deg, #FF8C42, #FFB84D)`,
-                boxShadow: '0 10px 40px rgba(255, 140, 66, 0.3)'
-              }}
-              animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            />
+              {/* Floating element 1 */}
+              <motion.div
+                className="absolute top-0 left-0 w-32 h-32 rounded-2xl"
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}20, ${theme.colors.primary.purple}20)`,
+                  border: `1px solid ${theme.colors.primary.electric}40`,
+                  boxShadow: `0 0 20px ${theme.colors.primary.electric}20`
+                }}
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+              />
 
-            <motion.div
-              className="absolute top-20 right-32 w-24 h-24 rounded-full"
-              style={{
-                background: theme.colors.primary.electric,
-                boxShadow: `0 8px 32px ${theme.colors.primary.electric}40`
-              }}
-              animate={{ y: [0, 20, 0] }}
-              transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-            />
+              {/* Floating element 2 */}
+              <motion.div
+                className="absolute top-20 right-0 w-40 h-40 rounded-full"
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary.purple}20, #FF8C4220)`,
+                  border: `1px solid ${theme.colors.primary.purple}40`,
+                  boxShadow: `0 0 30px ${theme.colors.primary.purple}20`
+                }}
+                animate={{ y: [0, 20, 0] }}
+                transition={{ duration: 5, repeat: Infinity }}
+              />
 
-            <motion.div
-              className="absolute bottom-32 left-0 w-40 h-40 rounded-3xl"
-              style={{
-                background: `linear-gradient(135deg, ${theme.colors.primary.purple}40, ${theme.colors.primary.electric}20)`,
-                boxShadow: `0 10px 40px ${theme.colors.primary.purple}20`
-              }}
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 6, repeat: Infinity, delay: 1 }}
-            />
-
-            <motion.div
-              className="absolute bottom-0 right-20 w-32 h-32 rounded-2xl"
-              style={{
-                background: `linear-gradient(135deg, #00D9FF40, #8B5CF640)`,
-                boxShadow: '0 10px 40px rgba(0, 217, 255, 0.2)'
-              }}
-              animate={{ rotate: [0, 5, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            />
-
-            {/* Center accent circle */}
-            <motion.div
-              className="absolute inset-1/2 w-2 h-2 rounded-full transform -translate-x-1/2 -translate-y-1/2"
-              style={{ background: theme.colors.primary.electric }}
-              animate={{ scale: [1, 1.5, 1] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
+              {/* Floating element 3 */}
+              <motion.div
+                className="absolute bottom-10 left-10 w-28 h-28 rounded-xl"
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary.lime}20, ${theme.colors.primary.electric}20)`,
+                  border: `1px solid ${theme.colors.primary.lime}40`,
+                  boxShadow: `0 0 25px ${theme.colors.primary.lime}15`
+                }}
+                animate={{ y: [0, 15, 0] }}
+                transition={{ duration: 6, repeat: Infinity }}
+              />
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* ===== VALUE PROPOSITION SECTION ===== */}
@@ -247,10 +210,10 @@ const Home = () => {
           variants={containerVariants}
           className="text-center mb-16"
         >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: themeStyles.text.primary }}>
             Pourquoi choisir OKA Tech ?
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.text.secondary }}>
+          <motion.p variants={itemVariants} className="text-xl" style={{ color: themeStyles.text.secondary }}>
             Trois piliers fondamentaux de notre approche
           </motion.p>
         </motion.div>
@@ -301,10 +264,10 @@ const Home = () => {
               >
                 <pillar.icon size={32} />
               </motion.div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
+              <h3 className="text-xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
                 {pillar.title}
               </h3>
-              <p style={{ color: theme.colors.text.secondary }}>
+              <p style={{ color: themeStyles.text.secondary }}>
                 {pillar.description}
               </p>
             </motion.div>
@@ -322,10 +285,10 @@ const Home = () => {
             variants={containerVariants}
             className="text-center mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: themeStyles.text.primary }}>
               Nos Solutions - En Action
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.text.secondary }}>
+            <motion.p variants={itemVariants} className="text-xl" style={{ color: themeStyles.text.secondary }}>
               De l'idée à l'automatisation
             </motion.p>
           </motion.div>
@@ -394,15 +357,15 @@ const Home = () => {
                 >
                   <solution.icon size={32} />
                 </div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: theme.colors.text.primary }}>
+                <h3 className="text-xl font-bold mb-3" style={{ color: themeStyles.text.primary }}>
                   {solution.title}
                 </h3>
-                <p className="mb-6" style={{ color: theme.colors.text.secondary }}>
+                <p className="mb-6" style={{ color: themeStyles.text.secondary }}>
                   {solution.description}
                 </p>
                 <ul className="mb-8 space-y-2">
                   {solution.features.map((feature, fidx) => (
-                    <li key={fidx} className="text-sm flex items-start gap-2" style={{ color: theme.colors.text.secondary }}>
+                    <li key={fidx} className="text-sm flex items-start gap-2" style={{ color: themeStyles.text.secondary }}>
                       <span style={{ color: theme.colors.primary.electric }}>✓</span>
                       {feature}
                     </li>
@@ -432,10 +395,10 @@ const Home = () => {
           viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
         >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
             Ce qui nous rend différents
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: theme.colors.text.secondary }}>
+          <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: themeStyles.text.secondary }}>
             L'IA n'est pas une mode, c'est une nécessité. Depuis 2019, OKA Tech anticipe et accompagne la transformation digitale.
           </motion.p>
 
@@ -481,10 +444,10 @@ const Home = () => {
                   <adv.icon size={24} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: theme.colors.text.primary }}>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: themeStyles.text.primary }}>
                     {adv.title}
                   </h3>
-                  <p style={{ color: theme.colors.text.secondary }}>
+                  <p style={{ color: themeStyles.text.secondary }}>
                     {adv.description}
                   </p>
                 </div>
@@ -509,10 +472,10 @@ const Home = () => {
           variants={containerVariants}
           className="max-w-4xl mx-auto text-center"
         >
-          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
+          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: themeStyles.text.primary }}>
             Agent IA en Action
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: theme.colors.text.secondary }}>
+          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: themeStyles.text.secondary }}>
             Découvrez comment notre agent IA peut qualifier vos prospects et générer des rapports intelligents. 
             Commencez une conversation.
           </motion.p>
@@ -527,7 +490,7 @@ const Home = () => {
               Lancer une Conversation <ChevronRight className="ml-2" />
             </Button>
           </motion.div>
-          <motion.p variants={itemVariants} className="text-sm mt-6" style={{ color: theme.colors.text.muted }}>
+          <motion.p variants={itemVariants} className="text-sm mt-6" style={{ color: themeStyles.text.muted }}>
             Aucune obligation. Aucun spam. Juste une conversation.
           </motion.p>
         </motion.div>
@@ -541,7 +504,7 @@ const Home = () => {
           viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
         >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
             Parlons de Votre Transformation
           </motion.h2>
 
@@ -553,26 +516,26 @@ const Home = () => {
               </h3>
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>ADRESSE</p>
-                  <p style={{ color: theme.colors.text.primary }} className="font-semibold">
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>ADRESSE</p>
+                  <p style={{ color: themeStyles.text.primary }} className="font-semibold">
                     50 Avenue des Champs Élysées<br />75008 Paris, France
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>EMAIL</p>
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>EMAIL</p>
                   <p style={{ color: theme.colors.primary.electric }} className="font-semibold">
                     contact@oka-tech.com
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>TÉLÉPHONE</p>
-                  <p style={{ color: theme.colors.text.primary }} className="font-semibold">
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>TÉLÉPHONE</p>
+                  <p style={{ color: themeStyles.text.primary }} className="font-semibold">
                     +33 (0) 1 XX XX XX XX
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>HEURES DE BUREAU</p>
-                  <p style={{ color: theme.colors.text.primary }} className="font-semibold">
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>HEURES DE BUREAU</p>
+                  <p style={{ color: themeStyles.text.primary }} className="font-semibold">
                     Lun-Ven: 9h-18h
                   </p>
                 </div>
@@ -592,7 +555,7 @@ const Home = () => {
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
                     borderColor: theme.colors.primary.electric + '40',
-                    color: theme.colors.text.primary,
+                    color: themeStyles.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -603,7 +566,7 @@ const Home = () => {
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
                     borderColor: theme.colors.primary.electric + '40',
-                    color: theme.colors.text.primary,
+                    color: themeStyles.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -614,7 +577,7 @@ const Home = () => {
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
                     borderColor: theme.colors.primary.electric + '40',
-                    color: theme.colors.text.primary,
+                    color: themeStyles.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -625,7 +588,7 @@ const Home = () => {
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
                     borderColor: theme.colors.primary.electric + '40',
-                    color: theme.colors.text.primary,
+                    color: themeStyles.text.primary,
                     borderWidth: '1px'
                   }}
                 />
