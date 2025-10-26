@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import authService from "@/lib/authService";
 import { useNavigate } from "react-router-dom";
+import { initializeDemoData } from "@/lib/demoData";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -44,8 +45,10 @@ const Admin = () => {
   }, []);
 
   const loadLeads = () => {
+    // Initialiser les données de démo si aucun lead existe
+    const demoLeads = initializeDemoData();
     const allLeads = leadStorage.getAllLeads();
-    setLeads(allLeads);
+    setLeads(allLeads.length > 0 ? allLeads : demoLeads);
   };
 
   const filteredLeads = leads.filter(lead => {
@@ -161,21 +164,44 @@ const Admin = () => {
 
           <nav className="space-y-2">
             {[
-              { icon: Activity, label: 'Overview', active: true },
-              { icon: Users, label: 'Leads Management', active: false },
-              { icon: Target, label: 'Analytics', active: false },
-              { icon: Settings, label: 'Settings', active: false },
+              { icon: Activity, label: 'Overview', active: true, count: null },
+              { icon: Users, label: 'Leads Management', active: false, count: stats.total },
+              { icon: Target, label: 'Analytics', active: false, count: null },
+              { icon: Settings, label: 'Settings', active: false, count: null },
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all"
+                className="flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-all hover:bg-opacity-10"
                 style={{
                   background: item.active ? '#00D9FF15' : 'transparent',
                   color: item.active ? '#00D9FF' : currentColors.textSecondary
                 }}
+                onMouseEnter={(e) => {
+                  if (!item.active) {
+                    e.currentTarget.style.background = currentColors.hoverBg;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!item.active) {
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
               >
-                <item.icon size={18} />
-                <span className="text-sm font-medium">{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <item.icon size={18} />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </div>
+                {item.count !== null && (
+                  <div 
+                    className="px-2 py-1 rounded-full text-xs font-bold"
+                    style={{ 
+                      background: '#00D9FF20',
+                      color: '#00D9FF'
+                    }}
+                  >
+                    {item.count}
+                  </div>
+                )}
               </div>
             ))}
           </nav>
@@ -425,8 +451,20 @@ const Admin = () => {
                   {filteredLeads.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="text-center py-16">
-                        <Users size={48} className="mx-auto mb-4 opacity-20" style={{ color: currentColors.textMuted }} />
-                        <p style={{ color: currentColors.textMuted }}>Aucun lead trouvé</p>
+                        <div className="flex flex-col items-center gap-4">
+                          <Users size={48} className="opacity-20" style={{ color: currentColors.textMuted }} />
+                          <div>
+                            <p className="font-medium mb-1" style={{ color: currentColors.textMuted }}>
+                              Aucun lead trouvé
+                            </p>
+                            <p className="text-xs" style={{ color: currentColors.textMuted }}>
+                              {searchTerm || filterStatus !== 'all' 
+                                ? 'Essayez de modifier vos filtres de recherche'
+                                : 'Les nouveaux leads apparaîtront ici automatiquement'
+                              }
+                            </p>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   ) : (
