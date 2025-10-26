@@ -224,7 +224,7 @@ export const AdminDropdown = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl rounded-2xl border overflow-hidden"
+              className="w-full max-w-2xl max-h-[90vh] rounded-2xl border overflow-hidden flex flex-col"
               style={{
                 background: currentColors.cardBg,
                 borderColor: currentColors.borderColor
@@ -232,18 +232,18 @@ export const AdminDropdown = ({
             >
               {/* Header Background */}
               <div 
-                className="h-24 bg-gradient-to-r"
+                className="h-20 flex-shrink-0 bg-gradient-to-r"
                 style={{
                   background: 'linear-gradient(135deg, rgba(0,217,255,0.2), rgba(139,92,221,0.2))'
                 }}
               />
 
-              {/* Profile Content */}
-              <div className="px-8 pb-8">
+              {/* Profile Content - Scrollable */}
+              <div className="flex-1 overflow-y-auto px-8 py-6">
                 {/* Avatar + Close Button */}
-                <div className="flex justify-between items-start -mt-12 mb-6 relative z-10">
+                <div className="flex justify-between items-start mb-6 relative z-10 -mt-12">
                   <div 
-                    className="w-24 h-24 rounded-xl flex items-center justify-center font-bold text-3xl border-4"
+                    className="w-20 h-20 rounded-xl flex items-center justify-center font-bold text-2xl border-4 flex-shrink-0"
                     style={{ 
                       background: 'linear-gradient(135deg, #00D9FF, #8B5CF6)',
                       color: '#FFFFFF',
@@ -254,7 +254,7 @@ export const AdminDropdown = ({
                   </div>
                   <button
                     onClick={() => setShowProfileModal(false)}
-                    className="rounded-lg transition-all"
+                    className="rounded-lg transition-all flex-shrink-0"
                     style={{
                       background: currentColors.hoverBg,
                       color: currentColors.textPrimary,
@@ -262,45 +262,45 @@ export const AdminDropdown = ({
                       marginTop: '4px'
                     }}
                   >
-                    <X size={24} />
+                    <X size={20} />
                   </button>
                 </div>
 
                 {/* Title + Subtitle */}
-                <div className="mb-8">
-                  <h2 className="text-3xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
                     Administrateur OKA Tech
                   </h2>
-                  <p className="text-base" style={{ color: currentColors.textMuted }}>
+                  <p className="text-sm" style={{ color: currentColors.textMuted }}>
                     Admin Dashboard Access
                   </p>
                 </div>
 
                 {/* Info Grid - 2 Columns */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="grid grid-cols-2 gap-3 mb-6">
                   {profileInfo.map((item, idx) => {
                     const Icon = item.icon;
                     return (
                       <div 
                         key={idx}
-                        className="p-4 rounded-lg border"
+                        className="p-3 rounded-lg border"
                         style={{
                           background: currentColors.bg,
                           borderColor: currentColors.borderColor
                         }}
                       >
-                        <div className="flex items-center gap-3 mb-2">
+                        <div className="flex items-center gap-2 mb-2">
                           <div 
-                            className="p-2 rounded-lg"
+                            className="p-2 rounded-lg flex-shrink-0"
                             style={{ background: '#00D9FF20' }}
                           >
-                            <Icon size={18} style={{ color: '#00D9FF' }} />
+                            <Icon size={16} style={{ color: '#00D9FF' }} />
                           </div>
                           <p className="text-xs font-semibold" style={{ color: currentColors.textMuted }}>
                             {item.label}
                           </p>
                         </div>
-                        <p className="text-sm font-medium pl-10" style={{ color: currentColors.textPrimary }}>
+                        <p className="text-xs font-medium pl-8" style={{ color: currentColors.textPrimary }}>
                           {item.value}
                         </p>
                       </div>
@@ -310,26 +310,26 @@ export const AdminDropdown = ({
 
                 {/* Statistics Section */}
                 <div 
-                  className="rounded-xl border p-6 mb-8"
+                  className="rounded-xl border p-4 mb-6"
                   style={{
                     background: isDarkMode ? 'rgba(0,217,255,0.08)' : 'rgba(0,217,255,0.15)',
                     borderColor: '#00D9FF40'
                   }}
                 >
-                  <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide" style={{ color: currentColors.textMuted }}>
+                  <h3 className="text-xs font-semibold mb-3 uppercase tracking-wide" style={{ color: currentColors.textMuted }}>
                     Statistiques
                   </h3>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-3 gap-3">
                     <div className="text-center">
-                      <p className="text-3xl font-bold mb-1" style={{ color: '#00D9FF' }}>
+                      <p className="text-2xl font-bold mb-1" style={{ color: '#00D9FF' }}>
                         15
                       </p>
                       <p className="text-xs" style={{ color: currentColors.textMuted }}>
-                        Leads Gérés
+                        Leads
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold mb-1" style={{ color: '#10B981' }}>
+                      <p className="text-2xl font-bold mb-1" style={{ color: '#10B981' }}>
                         42
                       </p>
                       <p className="text-xs" style={{ color: currentColors.textMuted }}>
@@ -337,7 +337,7 @@ export const AdminDropdown = ({
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold mb-1" style={{ color: '#8B5CF6' }}>
+                      <p className="text-2xl font-bold mb-1" style={{ color: '#8B5CF6' }}>
                         8
                       </p>
                       <p className="text-xs" style={{ color: currentColors.textMuted }}>
@@ -348,10 +348,10 @@ export const AdminDropdown = ({
                 </div>
 
                 {/* Quick Links */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-4">
                   <button
                     onClick={() => setShowProfileModal(false)}
-                    className="px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                    className="px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 text-sm"
                     style={{
                       background: '#00D9FF',
                       color: '#000000'
@@ -365,12 +365,12 @@ export const AdminDropdown = ({
                       (e.currentTarget as HTMLElement).style.boxShadow = 'none';
                     }}
                   >
-                    <Settings size={18} />
-                    Éditer Profil
+                    <Settings size={16} />
+                    Éditer
                   </button>
                   <button
                     onClick={() => setShowProfileModal(false)}
-                    className="px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 border"
+                    className="px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 border text-sm"
                     style={{
                       background: currentColors.bg,
                       color: currentColors.textPrimary,
@@ -389,14 +389,14 @@ export const AdminDropdown = ({
 
                 {/* Footer Info */}
                 <div 
-                  className="text-center py-4 rounded-lg text-xs"
+                  className="text-center py-3 rounded-lg text-xs"
                   style={{
                     background: isDarkMode ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
                     color: currentColors.textMuted
                   }}
                 >
                   <p className="mb-1">Version 1.0.0</p>
-                  <p>© 2025 OKA Tech - Admin System</p>
+                  <p>© 2025 OKA Tech</p>
                 </div>
               </div>
             </motion.div>
