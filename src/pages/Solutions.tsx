@@ -94,7 +94,7 @@ const Solutions = () => {
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.colors.secondary.cyan}15, transparent 70%)`
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}15, transparent 70%)`
           }}
         />
 
@@ -106,7 +106,7 @@ const Solutions = () => {
         >
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"
-            style={{ color: theme.colors.primary.light }}
+            style={{ color: theme.colors.text.primary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -114,7 +114,7 @@ const Solutions = () => {
             Nos Solutions IA
             <span
               className="block mt-3"
-              style={{ color: theme.colors.secondary.cyan }}
+              style={{ color: theme.colors.primary.electric }}
             >
               Transformez Votre Entreprise
             </span>
@@ -122,7 +122,7 @@ const Solutions = () => {
 
           <motion.p
             className="text-lg md:text-xl mb-8"
-            style={{ color: theme.colors.neutral.light }}
+            style={{ color: theme.colors.text.secondary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
@@ -158,34 +158,34 @@ const Solutions = () => {
                     <div
                       className="p-3 rounded-lg"
                       style={{
-                        background: theme.colors.secondary.cyan + '20',
-                        color: theme.colors.secondary.cyan
+                        background: theme.colors.primary.electric + '20',
+                        color: theme.colors.primary.electric
                       }}
                     >
                       <Icon size={32} />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bold" style={{ color: theme.colors.primary.light }}>
+                      <h2 className="text-3xl font-bold" style={{ color: theme.colors.text.primary }}>
                         {solution.title}
                       </h2>
-                      <p className="text-sm" style={{ color: theme.colors.secondary.cyan }}>
+                      <p className="text-sm" style={{ color: theme.colors.primary.electric }}>
                         Timeline: {solution.timeline}
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-lg mb-8" style={{ color: theme.colors.neutral.light }}>
+                  <p className="text-lg mb-8" style={{ color: theme.colors.text.secondary }}>
                     {solution.description}
                   </p>
 
                   <div className="mb-8">
-                    <h3 className="font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+                    <h3 className="font-bold mb-4" style={{ color: theme.colors.text.primary }}>
                       Fonctionnalités Clés
                     </h3>
                     <ul className="space-y-3">
                       {solution.features.map((feature, fidx) => (
-                        <li key={fidx} className="flex items-start gap-3" style={{ color: theme.colors.neutral.light }}>
-                          <CheckCircle size={20} style={{ color: theme.colors.secondary.cyan, flexShrink: 0 }} />
+                        <li key={fidx} className="flex items-start gap-3" style={{ color: theme.colors.text.secondary }}>
+                          <CheckCircle size={20} style={{ color: theme.colors.primary.electric, flexShrink: 0 }} />
                           <span>{feature}</span>
                         </li>
                       ))}
@@ -193,13 +193,13 @@ const Solutions = () => {
                   </div>
 
                   <div className="mb-8">
-                    <h3 className="font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+                    <h3 className="font-bold mb-4" style={{ color: theme.colors.text.primary }}>
                       Bénéfices
                     </h3>
                     <ul className="space-y-2">
                       {solution.benefits.map((benefit, bidx) => (
-                        <li key={bidx} className="flex items-center gap-2" style={{ color: theme.colors.secondary.cyan }}>
-                          <span className="w-2 h-2 rounded-full" style={{ background: theme.colors.secondary.cyan }} />
+                        <li key={bidx} className="flex items-center gap-2" style={{ color: theme.colors.primary.electric }}>
+                          <span className="w-2 h-2 rounded-full" style={{ background: theme.colors.primary.electric }} />
                           {benefit}
                         </li>
                       ))}
@@ -209,7 +209,7 @@ const Solutions = () => {
                   <Button
                     className="px-8 py-6 text-lg font-semibold rounded-lg"
                     style={{
-                      background: theme.colors.secondary.cyan,
+                      background: theme.colors.primary.electric,
                       color: theme.colors.primary.dark
                     }}
                   >
@@ -228,12 +228,12 @@ const Solutions = () => {
                   <div
                     className="p-8 rounded-lg"
                     style={{
-                      background: `linear-gradient(135deg, ${theme.colors.secondary.cyan}15, ${theme.colors.secondary.cyan}05)`,
-                      border: `1px solid ${theme.colors.secondary.cyan}40`
+                      background: `linear-gradient(135deg, ${theme.colors.primary.electric}15, ${theme.colors.primary.electric}05)`,
+                      border: `1px solid ${theme.colors.primary.electric}40`
                     }}
                   >
                     <div className="aspect-video rounded-lg flex items-center justify-center" style={{ background: 'rgba(0, 212, 212, 0.1)' }}>
-                      <Icon size={80} style={{ color: theme.colors.secondary.cyan + '40' }} />
+                      <Icon size={80} style={{ color: theme.colors.primary.electric + '40' }} />
                     </div>
                   </div>
                 </motion.div>
@@ -253,10 +253,10 @@ const Solutions = () => {
             variants={containerVariants}
             className="text-center mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
               Pourquoi nos Solutions?
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.neutral.light }}>
+            <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.text.secondary }}>
               Ce qui nous rend différents
             </motion.p>
           </motion.div>
@@ -291,23 +291,23 @@ const Solutions = () => {
                 className="p-8 rounded-lg backdrop-blur-sm border"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
-                  borderColor: theme.colors.secondary.cyan + '40',
+                  borderColor: theme.colors.primary.electric + '40',
                   borderWidth: '1px'
                 }}
               >
                 <div
                   className="mb-4 inline-block p-3 rounded-lg"
                   style={{
-                    background: theme.colors.secondary.cyan + '20',
-                    color: theme.colors.secondary.cyan
+                    background: theme.colors.primary.electric + '20',
+                    color: theme.colors.primary.electric
                   }}
                 >
                   <item.icon size={28} />
                 </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+                <h3 className="text-xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
                   {item.title}
                 </h3>
-                <p style={{ color: theme.colors.neutral.light }}>
+                <p style={{ color: theme.colors.text.secondary }}>
                   {item.description}
                 </p>
               </motion.div>
@@ -325,17 +325,17 @@ const Solutions = () => {
           variants={containerVariants}
           className="max-w-4xl mx-auto text-center"
         >
-          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
             Prêt à Transformer Votre Entreprise?
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: theme.colors.neutral.light }}>
+          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: theme.colors.text.secondary }}>
             Contactez nos experts pour discuter de la solution IA adaptée à vos besoins.
           </motion.p>
           <motion.div variants={itemVariants} className="flex gap-4 justify-center flex-wrap">
             <Button
               className="px-8 py-6 text-lg font-semibold rounded-lg"
               style={{
-                background: theme.colors.secondary.cyan,
+                background: theme.colors.primary.electric,
                 color: theme.colors.primary.dark
               }}
             >

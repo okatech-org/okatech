@@ -109,7 +109,7 @@ const Contact = () => {
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.colors.secondary.cyan}15, transparent 70%)`
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}15, transparent 70%)`
           }}
         />
 
@@ -121,7 +121,7 @@ const Contact = () => {
         >
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"
-            style={{ color: theme.colors.primary.light }}
+            style={{ color: theme.colors.text.primary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -129,7 +129,7 @@ const Contact = () => {
             Parlons de Votre Projet
             <span
               className="block mt-3"
-              style={{ color: theme.colors.secondary.cyan }}
+              style={{ color: theme.colors.primary.electric }}
             >
               Notre équipe est prête à vous aider
             </span>
@@ -137,7 +137,7 @@ const Contact = () => {
 
           <motion.p
             className="text-lg md:text-xl"
-            style={{ color: theme.colors.neutral.light }}
+            style={{ color: theme.colors.text.secondary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
@@ -160,7 +160,7 @@ const Contact = () => {
           {/* Contact Information */}
           <motion.div variants={itemVariants} className="lg:col-span-1 space-y-8">
             <div>
-              <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.primary.light }}>
+              <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.text.primary }}>
                 Coordonnées
               </h2>
               <div className="space-y-6">
@@ -187,17 +187,17 @@ const Contact = () => {
                       <div
                         className="p-3 rounded-lg"
                         style={{
-                          background: theme.colors.secondary.cyan + '20',
-                          color: theme.colors.secondary.cyan
+                          background: theme.colors.primary.electric + '20',
+                          color: theme.colors.primary.electric
                         }}
                       >
                         <Icon size={24} />
                       </div>
                       <div>
-                        <h3 className="font-semibold mb-1" style={{ color: theme.colors.primary.light }}>
+                        <h3 className="font-semibold mb-1" style={{ color: theme.colors.text.primary }}>
                           {item.title}
                         </h3>
-                        <p className="text-sm whitespace-pre-line" style={{ color: theme.colors.neutral.light }}>
+                        <p className="text-sm whitespace-pre-line" style={{ color: theme.colors.text.secondary }}>
                           {item.content}
                         </p>
                       </div>
@@ -211,17 +211,17 @@ const Contact = () => {
               className="p-6 rounded-lg border"
               style={{
                 background: 'rgba(0, 212, 212, 0.05)',
-                borderColor: theme.colors.secondary.cyan + '40',
+                borderColor: theme.colors.primary.electric + '40',
                 borderWidth: '1px'
               }}
             >
-              <div className="mb-4 p-3 rounded-lg" style={{ background: theme.colors.secondary.cyan + '20' }}>
-                <CheckCircle size={24} style={{ color: theme.colors.secondary.cyan }} />
+              <div className="mb-4 p-3 rounded-lg" style={{ background: theme.colors.primary.electric + '20' }}>
+                <CheckCircle size={24} style={{ color: theme.colors.primary.electric }} />
               </div>
-              <h3 className="font-semibold mb-2" style={{ color: theme.colors.primary.light }}>
+              <h3 className="font-semibold mb-2" style={{ color: theme.colors.text.primary }}>
                 Consultation IA Gratuite
               </h3>
-              <p className="text-sm" style={{ color: theme.colors.neutral.light }}>
+              <p className="text-sm" style={{ color: theme.colors.text.secondary }}>
                 Après soumission, notre assistant IA engagera une conversation pour comprendre profondément vos besoins et fournir une analyse complète.
               </p>
             </motion.div>
@@ -233,18 +233,18 @@ const Contact = () => {
             className="lg:col-span-2 p-8 rounded-lg backdrop-blur-sm border"
             style={{
               background: 'rgba(255, 255, 255, 0.05)',
-              borderColor: theme.colors.secondary.cyan + '40',
+              borderColor: theme.colors.primary.electric + '40',
               borderWidth: '1px'
             }}
           >
-            <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.primary.light }}>
+            <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.text.primary }}>
               Formulaire de Contact
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
-                    Nom Complet <span style={{ color: theme.colors.secondary.cyan }}>*</span>
+                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                    Nom Complet <span style={{ color: theme.colors.primary.electric }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -254,8 +254,8 @@ const Contact = () => {
                     className="w-full px-4 py-3 rounded-lg"
                     style={{
                       background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: errors.name ? '#ef4444' : theme.colors.secondary.cyan + '40',
-                      color: theme.colors.primary.light,
+                      borderColor: errors.name ? '#ef4444' : theme.colors.primary.electric + '40',
+                      color: theme.colors.text.primary,
                       borderWidth: '1px'
                     }}
                   />
@@ -265,8 +265,8 @@ const Contact = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
-                    Email <span style={{ color: theme.colors.secondary.cyan }}>*</span>
+                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                    Email <span style={{ color: theme.colors.primary.electric }}>*</span>
                   </label>
                   <input
                     type="email"
@@ -276,8 +276,8 @@ const Contact = () => {
                     className="w-full px-4 py-3 rounded-lg"
                     style={{
                       background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: errors.email ? '#ef4444' : theme.colors.secondary.cyan + '40',
-                      color: theme.colors.primary.light,
+                      borderColor: errors.email ? '#ef4444' : theme.colors.primary.electric + '40',
+                      color: theme.colors.text.primary,
                       borderWidth: '1px'
                     }}
                   />
@@ -289,8 +289,8 @@ const Contact = () => {
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
-                    Entreprise <span style={{ color: theme.colors.secondary.cyan }}>*</span>
+                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
+                    Entreprise <span style={{ color: theme.colors.primary.electric }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -300,8 +300,8 @@ const Contact = () => {
                     className="w-full px-4 py-3 rounded-lg"
                     style={{
                       background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: errors.company ? '#ef4444' : theme.colors.secondary.cyan + '40',
-                      color: theme.colors.primary.light,
+                      borderColor: errors.company ? '#ef4444' : theme.colors.primary.electric + '40',
+                      color: theme.colors.text.primary,
                       borderWidth: '1px'
                     }}
                   />
@@ -311,7 +311,7 @@ const Contact = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
                     Téléphone (Optionnel)
                   </label>
                   <input
@@ -322,8 +322,8 @@ const Contact = () => {
                     className="w-full px-4 py-3 rounded-lg"
                     style={{
                       background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: theme.colors.secondary.cyan + '40',
-                      color: theme.colors.primary.light,
+                      borderColor: theme.colors.primary.electric + '40',
+                      color: theme.colors.text.primary,
                       borderWidth: '1px'
                     }}
                   />
@@ -331,7 +331,7 @@ const Contact = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
                   Décrivez Votre Projet (Optionnel)
                 </label>
                 <textarea
@@ -342,8 +342,8 @@ const Contact = () => {
                   className="w-full px-4 py-3 rounded-lg resize-none"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
-                    borderColor: theme.colors.secondary.cyan + '40',
-                    color: theme.colors.primary.light,
+                    borderColor: theme.colors.primary.electric + '40',
+                    color: theme.colors.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -357,9 +357,9 @@ const Contact = () => {
                   onChange={(e) => handleChange("gdprConsent", e.target.checked)}
                   className="mt-1"
                 />
-                <label htmlFor="gdpr" className="text-sm cursor-pointer" style={{ color: theme.colors.neutral.light }}>
+                <label htmlFor="gdpr" className="text-sm cursor-pointer" style={{ color: theme.colors.text.secondary }}>
                   J'accepte le traitement de mes données personnelles conformément à la{" "}
-                  <a href="#" className="hover:underline" style={{ color: theme.colors.secondary.cyan }}>
+                  <a href="#" className="hover:underline" style={{ color: theme.colors.primary.electric }}>
                     Politique de Confidentialité
                   </a>
                   {" "}et consens à être contacté par OKA Tech.{" "}
@@ -374,14 +374,14 @@ const Contact = () => {
                 type="submit"
                 className="w-full py-6 text-lg font-semibold rounded-lg"
                 style={{
-                  background: theme.colors.secondary.cyan,
+                  background: theme.colors.primary.electric,
                   color: theme.colors.primary.dark
                 }}
               >
                 Soumettre et Commencer <Send className="ml-2" size={20} />
               </Button>
 
-              <p className="text-xs text-center" style={{ color: theme.colors.neutral.medium }}>
+              <p className="text-xs text-center" style={{ color: theme.colors.text.muted }}>
                 En soumettant ce formulaire, vous recevrez une analyse personnalisée générée par l'IA 
                 de vos besoins et les solutions recommandées.
               </p>
