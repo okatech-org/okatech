@@ -30,6 +30,9 @@ import { motion } from "framer-motion";
 import authService from "@/lib/authService";
 import { useNavigate } from "react-router-dom";
 import { initializeDemoData } from "@/lib/demoData";
+import LeadManagementAdvanced from "@/components/LeadManagementAdvanced";
+import AnalyticsDashboard from "@/components/AnalyticsDashboard";
+import SettingsPanel from "@/components/SettingsPanel";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -749,109 +752,40 @@ const Admin = () => {
 
           {/* LEADS MANAGEMENT TAB */}
           {activeTab === 'leads' && (
-            <div 
-              className="rounded-2xl border p-8"
-              style={{
-                background: currentColors.cardBg,
-                borderColor: currentColors.borderColor
-              }}
-            >
-              <h2 className="text-2xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
-                Gestion Avancée des Leads
-              </h2>
-              <p className="text-sm mb-6" style={{ color: currentColors.textMuted }}>
-                Cette section sera bientôt disponible avec :
-              </p>
-              <ul className="space-y-3">
-                {[
-                  '✓ Sélection multiple de leads',
-                  '✓ Actions en masse (Archiver, Supprimer)',
-                  '✓ Colonnes de priorité et tags',
-                  '✓ Import CSV de leads',
-                  '✓ Tri avancé par date, score, priorité'
-                ].map((item, idx) => (
-                  <li 
-                    key={idx} 
-                    className="flex items-center gap-3 text-lg"
-                    style={{ color: currentColors.textPrimary }}
-                  >
-                    <span style={{ color: '#10B981' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <LeadManagementAdvanced 
+              leads={leads} 
+              setLeads={setLeads} 
+              handleDeleteLead={handleDeleteLead} 
+              handleUpdateStatus={handleUpdateStatus} 
+              handleExportCSV={handleExportCSV} 
+              searchTerm={searchTerm} 
+              setSearchTerm={setSearchTerm} 
+              filterStatus={filterStatus} 
+              setFilterStatus={setFilterStatus} 
+              currentColors={currentColors} 
+              isDarkMode={isDarkMode} 
+            />
           )}
 
           {/* ANALYTICS TAB */}
           {activeTab === 'analytics' && (
-            <div 
-              className="rounded-2xl border p-8"
-              style={{
-                background: currentColors.cardBg,
-                borderColor: currentColors.borderColor
-              }}
-            >
-              <h2 className="text-2xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
-                Analytics & Statistiques
-              </h2>
-              <p className="text-sm mb-6" style={{ color: currentColors.textMuted }}>
-                Tableau de bord analytique complet avec :
-              </p>
-              <ul className="space-y-3">
-                {[
-                  '✓ Graphiques de conversion par période',
-                  '✓ KPI Dashboard (4 métriques principales)',
-                  '✓ Heatmap d\'activité par jour/heure',
-                  '✓ Distribution des leads par source',
-                  '✓ Tendances à 30, 90 jours',
-                  '✓ Filtres de période (semaine/mois/trimestre)'
-                ].map((item, idx) => (
-                  <li 
-                    key={idx} 
-                    className="flex items-center gap-3 text-lg"
-                    style={{ color: currentColors.textPrimary }}
-                  >
-                    <span style={{ color: '#00D9FF' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <AnalyticsDashboard 
+              leads={leads} 
+              currentColors={currentColors} 
+              isDarkMode={isDarkMode} 
+              selectedPeriod={selectedPeriod} 
+              setSelectedPeriod={setSelectedPeriod} 
+            />
           )}
 
           {/* SETTINGS TAB */}
           {activeTab === 'settings' && (
-            <div 
-              className="rounded-2xl border p-8"
-              style={{
-                background: currentColors.cardBg,
-                borderColor: currentColors.borderColor
-              }}
-            >
-              <h2 className="text-2xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
-                Paramètres & Configuration
-              </h2>
-              <p className="text-sm mb-6" style={{ color: currentColors.textMuted }}>
-                Interface de configuration avec :
-              </p>
-              <ul className="space-y-3">
-                {[
-                  '✓ Profil administrateur (email, nom)',
-                  '✓ Changement sécurisé du mot de passe',
-                  '✓ Préférences d\'affichage (langue, pagination)',
-                  '✓ Paramètres de notifications',
-                  '✓ Sélection des colonnes visibles',
-                  '✓ Historique complet des actions (audit log)'
-                ].map((item, idx) => (
-                  <li 
-                    key={idx} 
-                    className="flex items-center gap-3 text-lg"
-                    style={{ color: currentColors.textPrimary }}
-                  >
-                    <span style={{ color: '#8B5CF6' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <SettingsPanel 
+              isDarkMode={isDarkMode} 
+              setIsDarkMode={setIsDarkMode} 
+              handleLogout={handleLogout} 
+              currentColors={currentColors} 
+            />
           )}
         </div>
        </div>
