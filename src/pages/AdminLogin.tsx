@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Lock, Mail, AlertCircle, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import authService from "@/lib/authService";
 import { theme } from "@/styles/theme";
 import { motion } from "framer-motion";
+import { useThemeStyles } from "@/hooks/useThemeStyles";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
+  const themeStyles = useThemeStyles();
   const [email, setEmail] = useState("admin@okatech.fr");
   const [password, setPassword] = useState("Asted1982*");
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +42,7 @@ const AdminLogin = () => {
   return (
     <div
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
-      style={{ background: theme.colors.primary.dark }}
+      style={{ background: themeStyles.backgrounds.primary }}
     >
       {/* Animated background elements */}
       <div className="absolute inset-0 opacity-40">
@@ -150,7 +150,7 @@ const AdminLogin = () => {
           {/* Heading */}
           <motion.h1
             className="text-4xl lg:text-5xl font-bold mb-4 leading-tight"
-            style={{ color: theme.colors.text.primary }}
+            style={{ color: themeStyles.text.primary }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -172,7 +172,7 @@ const AdminLogin = () => {
           {/* Subtitle */}
           <motion.p
             className="text-lg mb-8"
-            style={{ color: theme.colors.text.secondary }}
+            style={{ color: themeStyles.text.secondary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -184,8 +184,9 @@ const AdminLogin = () => {
           <motion.div
             className="rounded-2xl border p-8"
             style={{
-              background: '#000000',
-              borderColor: `${theme.colors.primary.electric}20`
+              background: themeStyles.card.background,
+              borderColor: themeStyles.card.border,
+              boxShadow: themeStyles.shadows.soft
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -197,7 +198,7 @@ const AdminLogin = () => {
                 <motion.div
                   className="p-4 rounded-xl border flex items-start gap-3"
                   style={{
-                    background: '#2A0A0A',
+                    background: themeStyles.isDark ? '#2A0A0A' : '#FFE5E5',
                     borderColor: '#FF4365'
                   }}
                   initial={{ opacity: 0, y: -10 }}
@@ -217,7 +218,7 @@ const AdminLogin = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1, duration: 0.8 }}
               >
-                <label style={{ color: theme.colors.text.primary }} className="text-sm font-semibold block">
+                <label style={{ color: themeStyles.text.primary }} className="text-sm font-semibold block">
                   Email
                 </label>
                 <div className="relative">
@@ -234,9 +235,9 @@ const AdminLogin = () => {
                     disabled={isLoading}
                     className="w-full pl-12 pr-4 py-3 rounded-xl border transition-all"
                     style={{
-                      background: '#111111',
-                      borderColor: `${theme.colors.primary.electric}30`,
-                      color: theme.colors.text.primary
+                      background: themeStyles.backgrounds.secondary,
+                      borderColor: themeStyles.borders.medium,
+                      color: themeStyles.text.primary
                     }}
                   />
                 </div>
@@ -249,7 +250,7 @@ const AdminLogin = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.1, duration: 0.8 }}
               >
-                <label style={{ color: theme.colors.text.primary }} className="text-sm font-semibold block">
+                <label style={{ color: themeStyles.text.primary }} className="text-sm font-semibold block">
                   Mot de passe
                 </label>
                 <div className="relative">
@@ -266,9 +267,9 @@ const AdminLogin = () => {
                     disabled={isLoading}
                     className="w-full pl-12 pr-12 py-3 rounded-xl border transition-all"
                     style={{
-                      background: '#111111',
-                      borderColor: `${theme.colors.primary.electric}30`,
-                      color: theme.colors.text.primary
+                      background: themeStyles.backgrounds.secondary,
+                      borderColor: themeStyles.borders.medium,
+                      color: themeStyles.text.primary
                     }}
                   />
                   <button
@@ -286,12 +287,12 @@ const AdminLogin = () => {
               <motion.button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-white"
                 style={{
-                  background: theme.colors.primary.electric,
-                  color: theme.colors.primary.dark
+                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
+                  boxShadow: `0 0 20px ${theme.colors.primary.electric}50`
                 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, boxShadow: `0 0 30px ${theme.colors.primary.electric}70` }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -301,8 +302,8 @@ const AdminLogin = () => {
                   <>
                     <div className="w-4 h-4 border-2 border-transparent rounded-full animate-spin" 
                       style={{
-                        borderTopColor: theme.colors.primary.dark,
-                        borderRightColor: theme.colors.primary.dark
+                        borderTopColor: '#FFFFFF',
+                        borderRightColor: '#FFFFFF'
                       }} 
                     />
                     Connexion...
@@ -317,11 +318,11 @@ const AdminLogin = () => {
             </form>
 
             {/* Footer */}
-            <div className="mt-6 pt-6 border-t" style={{ borderColor: `${theme.colors.text.muted}20` }}>
-              <p className="text-xs text-center" style={{ color: theme.colors.text.muted }}>
+            <div className="mt-6 pt-6 border-t" style={{ borderColor: themeStyles.borders.light }}>
+              <p className="text-xs text-center" style={{ color: themeStyles.text.muted }}>
                 Cette page est réservée aux administrateurs OKA Tech
               </p>
-              <p className="text-xs text-center mt-2" style={{ color: theme.colors.text.muted }}>
+              <p className="text-xs text-center mt-2" style={{ color: themeStyles.text.muted }}>
                 Pour toute assistance: support@okatech.fr
               </p>
             </div>
