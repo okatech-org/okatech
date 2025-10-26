@@ -17,10 +17,10 @@ const Navigation = () => {
   const { language, setLanguage } = useLanguage();
 
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Solutions", path: "/solutions" },
-    { name: "Contact", path: "/contact" },
+    { name: t('nav.home'), path: "/" },
+    { name: t('nav.about'), path: "/about" },
+    { name: t('nav.solutions'), path: "/solutions" },
+    { name: t('nav.contact'), path: "/contact" },
   ];
 
   const languages = [
@@ -238,7 +238,7 @@ const Navigation = () => {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Shield size={16} />
-                    Admin
+                    {t('nav.admin')}
                   </motion.button>
                 </Link>
                 <motion.button
@@ -255,7 +255,7 @@ const Navigation = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <LogOut size={16} />
-                  Logout
+                  {t('nav.logout')}
                 </motion.button>
               </>
             ) : (
@@ -273,7 +273,7 @@ const Navigation = () => {
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Admin
+                    {t('nav.admin')}
                   </motion.button>
                 </Link>
                 <Link to="/contact">
@@ -288,7 +288,7 @@ const Navigation = () => {
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Get Started
+                    {t('nav.getStarted')}
                   </motion.button>
                 </Link>
               </>
@@ -433,7 +433,7 @@ const Navigation = () => {
                       }}
                     >
                       <Shield size={16} />
-                      Admin
+                      {t('nav.admin')}
                     </button>
                   </Link>
                   <button
@@ -448,7 +448,7 @@ const Navigation = () => {
                     }}
                   >
                     <LogOut size={16} />
-                    Logout
+                    {t('nav.logout')}
                   </button>
                 </>
               ) : (
@@ -461,7 +461,7 @@ const Navigation = () => {
                         border: `1px solid ${theme.colors.primary.electric}40`
                       }}
                     >
-                      Admin
+                      {t('nav.admin')}
                     </button>
                   </Link>
                   <Link to="/contact" onClick={() => setIsOpen(false)}>
@@ -471,7 +471,7 @@ const Navigation = () => {
                         background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`
                       }}
                     >
-                      Get Started
+                      {t('nav.getStarted')}
                     </button>
                   </Link>
                 </>
