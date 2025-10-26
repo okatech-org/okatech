@@ -1,55 +1,14 @@
-import { Card } from "@/components/ui/card";
-import { Code2, Database, Users, Lightbulb, Target, TrendingUp } from "lucide-react";
-import { theme } from "@/styles/theme";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { theme } from '@/styles/theme';
+import { motion } from 'framer-motion';
+import { Code2, Database, Users, Lightbulb, Target, TrendingUp, CheckCircle } from "lucide-react";
 
 const About = () => {
-  const specializations = [
-    {
-      icon: Code2,
-      title: "Développement Logiciel",
-      description: "Solutions logicielles sur-mesure avec technologies modernes et meilleures pratiques",
-    },
-    {
-      icon: Lightbulb,
-      title: "Intégration IA",
-      description: "Intégration fluide des capacités IA dans vos processus métiers",
-    },
-    {
-      icon: Users,
-      title: "Gestion de Projet",
-      description: "Accompagnement d'experts de la conception au déploiement et au-delà",
-    },
-    {
-      icon: Database,
-      title: "Automatisation Business",
-      description: "Industrialisez vos opérations avec des automatisations intelligentes",
-    },
-  ];
-
-  const values = [
-    {
-      title: "Innovation d'abord",
-      description: "Nous restons à la pointe de l'IA pour délivrer des solutions de rupture",
-    },
-    {
-      title: "Succès Client",
-      description: "Votre réussite est la nôtre. Objectif: résultats mesurables",
-    },
-    {
-      title: "Excellence Technique",
-      description: "Qualité de code, architecture robuste, sécurité et performance",
-    },
-    {
-      title: "Communication Transparente",
-      description: "Échanges clairs et honnêtes à chaque étape du projet",
-    },
-  ];
-
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
   };
 
   const itemVariants = {
@@ -57,241 +16,347 @@ const About = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: theme.animations.easing.smooth },
-    },
+      transition: { duration: 0.6, ease: theme.animations.easing.smooth }
+    }
   };
 
+  const specializations = [
+    {
+      icon: Code2,
+      title: "Software Development",
+      description: "Custom software solutions built with modern technologies and best practices",
+    },
+    {
+      icon: Lightbulb,
+      title: "AI Integration",
+      description: "Seamless integration of AI capabilities into existing business processes",
+    },
+    {
+      icon: Users,
+      title: "Project Management",
+      description: "Expert guidance from conception to deployment and beyond",
+    },
+    {
+      icon: Database,
+      title: "Business Automation",
+      description: "Streamline operations with intelligent automation solutions",
+    },
+  ];
+
+  const values = [
+    {
+      title: "Innovation First",
+      description: "We stay at the forefront of AI technology to deliver cutting-edge solutions",
+    },
+    {
+      title: "Client Success",
+      description: "Your success is our success. We're committed to measurable results",
+    },
+    {
+      title: "Technical Excellence",
+      description: "We maintain the highest standards in code quality and system architecture",
+    },
+    {
+      title: "Transparent Communication",
+      description: "Clear, honest communication throughout every stage of your project",
+    },
+  ];
+
   return (
-    <div style={{ background: theme.colors.primary.dark, minHeight: "100vh" }} className="pt-20">
-      {/* Hero Section */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+    <div style={{ background: theme.colors.primary.dark, minHeight: '100vh' }}>
+      {/* HERO SECTION */}
+      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}15, transparent 70%)`,
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}15, transparent 70%)`
           }}
         />
+
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          className="relative z-10 max-w-4xl mx-auto text-center px-6"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          <motion.div variants={itemVariants} className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold" style={{ color: theme.colors.text.primary }}>
-              À propos <span style={{ color: theme.colors.primary.electric }}>d'OKA Tech</span>
-            </h1>
-            <p className="text-xl leading-relaxed" style={{ color: theme.colors.text.secondary }}>
-              Fondée sur la conviction que l'IA doit être accessible et utile, OKA Tech
-              délivre depuis plus de 6 ans des solutions IA transformantes pour les entreprises.
-            </p>
-          </motion.div>
+          <motion.h1
+            className="text-5xl md:text-6xl font-bold mb-6"
+            style={{ color: theme.colors.text.primary }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1 }}
+          >
+            À Propos d'OKA Tech
+            <span
+              className="block mt-3"
+              style={{ color: theme.colors.primary.electric }}
+            >
+              6+ Ans d'Excellence IA
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className="text-lg md:text-xl"
+            style={{ color: theme.colors.text.secondary }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+          >
+            Fondée sur la conviction que l'IA doit être accessible et pratique pour chaque entreprise, 
+            OKA Tech livre des solutions IA transformatrices depuis plus de 6 ans.
+          </motion.p>
         </motion.div>
       </section>
 
-      {/* Company Story */}
-      <section className="py-16" style={{ background: "rgba(255,255,255,0.03)" }}>
+      {/* OUR STORY SECTION */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
         >
           <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Story Content */}
             <motion.div variants={itemVariants} className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: theme.colors.text.primary }}>Notre Histoire</h2>
-              <div className="space-y-4 leading-relaxed" style={{ color: theme.colors.text.secondary }}>
-                <p>
-                  Depuis Paris, nous aidons les organisations à exploiter l'intelligence artificielle pour
-                  résoudre des défis complexes et saisir de nouvelles opportunités.
+              <h2 className="text-4xl font-bold" style={{ color: theme.colors.text.primary }}>
+                Notre Histoire
+              </h2>
+              <div className="space-y-4" style={{ color: theme.colors.text.secondary }}>
+                <p className="leading-relaxed">
+                  Depuis notre établissement à Paris, OKA Tech est à l'avant-garde de la révolution IA, 
+                  aidant les entreprises à exploiter la puissance de l'intelligence artificielle pour résoudre 
+                  des défis complexes et déverrouiller de nouvelles opportunités.
                 </p>
-                <p>
-                  Partie d'une passion pour l'IA accessible, notre démarche s'est muée en partenariats de confiance
-                  avec startups et ETI/Grands Groupes.
+                <p className="leading-relaxed">
+                  Ce qui a commencé comme une passion pour rendre l'IA accessible est devenu un partenariat 
+                  de confiance avec des organisations dans diverses industries, des startups aux grandes entreprises.
                 </p>
-                <p>
-                  Notre équipe conjugue expertise en machine learning, NLP et développement full‑stack avec une
-                  compréhension métier concrète.
+                <p className="leading-relaxed">
+                  Notre équipe combine une expertise technique approfondie en machine learning, traitement du langage naturel 
+                  et développement full-stack avec une véritable compréhension des besoins et défis métier.
                 </p>
               </div>
             </motion.div>
-            <motion.div variants={itemVariants} className="grid grid-cols-2 gap-6">
-              <Card className="p-6">
-                <Target className="w-10 h-10 mb-4" style={{ color: theme.colors.primary.electric }} />
-                <h3 className="font-semibold mb-2" style={{ color: theme.colors.text.primary }}>Mission</h3>
-                <p className="text-sm" style={{ color: theme.colors.text.secondary }}>
-                  Apporter des solutions IA qui livrent des résultats réels et mesurables
-                </p>
-              </Card>
-              <Card className="p-6">
-                <TrendingUp className="w-10 h-10 mb-4" style={{ color: theme.colors.primary.electric }} />
-                <h3 className="font-semibold mb-2" style={{ color: theme.colors.text.primary }}>Vision</h3>
-                <p className="text-sm" style={{ color: theme.colors.text.secondary }}>
-                  Un futur où chaque entreprise s'appuie sur l'IA pour atteindre son plein potentiel
-                </p>
-              </Card>
+
+            {/* Mission & Vision Cards */}
+            <motion.div
+              variants={containerVariants}
+              className="grid grid-cols-1 gap-6"
+            >
+              {[
+                {
+                  icon: Target,
+                  title: "Mission",
+                  description: "Autonomiser les entreprises avec des solutions IA qui livrent des résultats réels et mesurables"
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Vision",
+                  description: "Un avenir où chaque entreprise exploite l'IA pour atteindre son plein potentiel"
+                }
+              ].map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <motion.div
+                    key={idx}
+                    variants={itemVariants}
+                    className="p-6 rounded-lg backdrop-blur-sm border"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      borderColor: theme.colors.primary.electric + '40',
+                      borderWidth: '1px'
+                    }}
+                  >
+                    <div
+                      className="mb-4 p-3 rounded-lg inline-block"
+                      style={{
+                        background: theme.colors.primary.electric + '20',
+                        color: theme.colors.primary.electric
+                      }}
+                    >
+                      <Icon size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2" style={{ color: theme.colors.text.primary }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ color: theme.colors.text.secondary }}>
+                      {item.description}
+                    </p>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </div>
         </motion.div>
       </section>
 
-      {/* Specializations */}
-      <section className="py-16 md:py-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        >
-          <motion.div variants={itemVariants} className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
-              Nos <span style={{ color: theme.colors.primary.electric }}>Spécialisations</span>
-            </h2>
-            <p className="text-lg" style={{ color: theme.colors.text.secondary }}>
-              Quatre piliers au cœur de nos implémentations IA
-            </p>
+      {/* SPECIALIZATIONS SECTION */}
+      <section className="py-20 px-6" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-4xl md:text-5xl font-bold mb-6"
+              style={{ color: theme.colors.text.primary }}
+            >
+              Nos Domaines de Spécialisation
+            </motion.h2>
+            <motion.p
+              variants={itemVariants}
+              className="text-lg"
+              style={{ color: theme.colors.text.secondary }}
+            >
+              Quatre domaines fondamentaux qui forment la base de l'implémentation IA réussie
+            </motion.p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {specializations.map((spec, index) => {
               const Icon = spec.icon;
               return (
-                <motion.div key={index} variants={itemVariants}>
-                  <Card className="p-6 text-center border">
-                    <div
-                      className="w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-6"
-                      style={{
-                        background: theme.colors.primary.electric + "20",
-                        color: theme.colors.primary.electric,
-                      }}
-                    >
-                      <Icon className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-3" style={{ color: theme.colors.text.primary }}>
-                      {spec.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: theme.colors.text.secondary }}>
-                      {spec.description}
-                    </p>
-                  </Card>
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="p-6 rounded-lg backdrop-blur-sm border text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: theme.colors.primary.electric + '40',
+                    borderWidth: '1px'
+                  }}
+                >
+                  <div
+                    className="w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-6 shadow-lg"
+                    style={{
+                      background: theme.colors.primary.electric + '20',
+                      color: theme.colors.primary.electric
+                    }}
+                  >
+                    <Icon size={32} />
+                  </div>
+                  <h3 className="text-lg font-bold mb-3" style={{ color: theme.colors.text.primary }}>
+                    {spec.title}
+                  </h3>
+                  <p className="text-sm" style={{ color: theme.colors.text.secondary }}>
+                    {spec.description}
+                  </p>
                 </motion.div>
               );
             })}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Core Values */}
-      <section className="py-16 md:py-24" style={{ background: "rgba(255,255,255,0.03)" }}>
+      {/* CORE VALUES SECTION */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          className="text-center mb-16"
         >
-          <motion.div variants={itemVariants} className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
-              Nos <span style={{ color: theme.colors.primary.electric }}>Valeurs Fondamentales</span>
-            </h2>
-            <p className="text-lg" style={{ color: theme.colors.text.secondary }}>
-              Les principes qui guident chacune de nos actions
-            </p>
-          </motion.div>
+          <motion.h2
+            variants={itemVariants}
+            className="text-4xl md:text-5xl font-bold mb-6"
+            style={{ color: theme.colors.text.primary }}
+          >
+            Nos Valeurs Fondamentales
+          </motion.h2>
+          <motion.p
+            variants={itemVariants}
+            className="text-lg"
+            style={{ color: theme.colors.text.secondary }}
+          >
+            Les principes qui guident tout ce que nous faisons
+          </motion.p>
+        </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <motion.div key={index} variants={itemVariants}>
-                <Card className="p-8 border">
-                  <h3 className="text-xl font-semibold mb-3" style={{ color: theme.colors.primary.electric }}>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="grid md:grid-cols-2 gap-6"
+        >
+          {values.map((value, index) => (
+            <motion.div
+              key={index}
+              variants={itemVariants}
+              className="p-8 rounded-lg backdrop-blur-sm border"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderColor: theme.colors.primary.electric + '40',
+                borderWidth: '1px'
+              }}
+            >
+              <div className="flex items-start gap-4">
+                <CheckCircle size={24} style={{ color: theme.colors.primary.electric, flexShrink: 0 }} className="mt-1" />
+                <div>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: theme.colors.text.primary }}>
                     {value.title}
                   </h3>
                   <p style={{ color: theme.colors.text.secondary }}>
                     {value.description}
                   </p>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Company Details */}
-      <section className="py-16">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-        >
-          <motion.div variants={itemVariants}>
-            <Card className="p-8 border">
-              <h2 className="text-2xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>Informations Légales</h2>
-              <div className="grid md:grid-cols-2 gap-8 text-sm">
-                <div className="space-y-3">
-                  <div>
-                    <span style={{ color: theme.colors.text.secondary }}>Raison sociale :</span>
-                    <p className="font-medium" style={{ color: theme.colors.text.primary }}>OKA Tech SAS</p>
-                  </div>
-                  <div>
-                    <span style={{ color: theme.colors.text.secondary }}>SIREN :</span>
-                    <p className="font-medium" style={{ color: theme.colors.text.primary }}>988 507 356</p>
-                  </div>
-                  <div>
-                    <span style={{ color: theme.colors.text.secondary }}>Forme juridique :</span>
-                    <p className="font-medium" style={{ color: theme.colors.text.primary }}>SAS (Société par Actions Simplifiée)</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div>
-                    <span style={{ color: theme.colors.text.secondary }}>Capital :</span>
-                    <p className="font-medium" style={{ color: theme.colors.text.primary }}>€1,000</p>
-                  </div>
-                  <div>
-                    <span style={{ color: theme.colors.text.secondary }}>Adresse :</span>
-                    <p className="font-medium" style={{ color: theme.colors.text.primary }}>50 Avenue des Champs Élysées, 75008 Paris</p>
-                  </div>
-                  <div>
-                    <span style={{ color: theme.colors.text.secondary }}>Secteur :</span>
-                    <p className="font-medium" style={{ color: theme.colors.text.primary }}>Développement logiciel & Solutions IA</p>
-                  </div>
                 </div>
               </div>
-            </Card>
-          </motion.div>
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-          className="max-w-4xl mx-auto text-center px-4"
-        >
-          <motion.h3 variants={itemVariants} className="text-3xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
-            Discutons de votre transformation IA
-          </motion.h3>
-          <motion.p variants={itemVariants} className="mb-8" style={{ color: theme.colors.text.secondary }}>
-            Planifions une session pour évaluer vos besoins et définir un plan d'action concret.
-          </motion.p>
-          <motion.div variants={itemVariants}>
-            <a href="/contact">
-              <Button
-                className="px-8 py-6 text-lg font-semibold rounded-lg"
-                style={{ background: theme.colors.primary.electric, color: theme.colors.primary.dark }}
-              >
-                Contacter l'équipe
-              </Button>
-            </a>
+      {/* COMPANY INFO SECTION */}
+      <section className="py-20 px-6" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={itemVariants}
+            className="p-8 rounded-lg backdrop-blur-sm border"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderColor: theme.colors.primary.electric + '40',
+              borderWidth: '1px'
+            }}
+          >
+            <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.text.primary }}>
+              Informations sur l'Entreprise
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8 text-sm">
+              {[
+                { label: "Nom Légal", value: "OKA Tech SAS" },
+                { label: "SIREN", value: "988 507 356" },
+                { label: "Forme Juridique", value: "SAS (Société par Actions Simplifiée)" },
+                { label: "Capital", value: "€1,000" },
+                { label: "Adresse", value: "50 Avenue des Champs Élysées, 75008 Paris" },
+                { label: "Secteur", value: "Développement Logiciel & Solutions IA" },
+              ].map((info, idx) => (
+                <div key={idx}>
+                  <p className="text-xs mb-1" style={{ color: theme.colors.text.muted }}>
+                    {info.label.toUpperCase()}
+                  </p>
+                  <p className="font-semibold" style={{ color: theme.colors.text.primary }}>
+                    {info.value}
+                  </p>
+                </div>
+              ))}
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
     </div>
   );
