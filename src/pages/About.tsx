@@ -1,8 +1,11 @@
 import { theme } from '@/styles/theme';
 import { motion } from 'framer-motion';
 import { Code2, Database, Users, Lightbulb, Target, TrendingUp, CheckCircle } from "lucide-react";
+import { useThemeStyles } from '@/hooks/useThemeStyles';
 
 const About = () => {
+  const themeStyles = useThemeStyles();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -63,7 +66,7 @@ const About = () => {
   ];
 
   return (
-    <div style={{ background: theme.colors.primary.dark, minHeight: '100vh' }}>
+    <div style={{ background: themeStyles.backgrounds.primary, minHeight: '100vh' }}>
       {/* HERO SECTION */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
         <div
@@ -81,7 +84,7 @@ const About = () => {
         >
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"
-            style={{ color: theme.colors.text.primary }}
+            style={{ color: themeStyles.text.primary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -97,7 +100,7 @@ const About = () => {
 
           <motion.p
             className="text-lg md:text-xl"
-            style={{ color: theme.colors.text.secondary }}
+            style={{ color: themeStyles.text.secondary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
@@ -119,10 +122,10 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Story Content */}
             <motion.div variants={itemVariants} className="space-y-6">
-              <h2 className="text-4xl font-bold" style={{ color: theme.colors.text.primary }}>
+              <h2 className="text-4xl font-bold" style={{ color: themeStyles.text.primary }}>
                 Notre Histoire
               </h2>
-              <div className="space-y-4" style={{ color: theme.colors.text.secondary }}>
+              <div className="space-y-4" style={{ color: themeStyles.text.secondary }}>
                 <p className="leading-relaxed">
                   Depuis notre établissement à Paris, OKA Tech est à l'avant-garde de la révolution IA, 
                   aidant les entreprises à exploiter la puissance de l'intelligence artificielle pour résoudre 
@@ -148,214 +151,149 @@ const About = () => {
                 {
                   icon: Target,
                   title: "Mission",
-                  description: "Autonomiser les entreprises avec des solutions IA qui livrent des résultats réels et mesurables"
+                  description: "Transformer les entreprises grâce à des solutions IA innovantes et accessibles"
                 },
                 {
                   icon: TrendingUp,
                   title: "Vision",
-                  description: "Un avenir où chaque entreprise exploite l'IA pour atteindre son plein potentiel"
+                  description: "Être le partenaire privilégié de la transformation numérique et IA"
                 }
-              ].map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    variants={itemVariants}
-                    className="p-6 rounded-lg backdrop-blur-sm border"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      borderColor: theme.colors.primary.electric + '40',
-                      borderWidth: '1px'
-                    }}
-                  >
-                    <div
-                      className="mb-4 p-3 rounded-lg inline-block"
-                      style={{
-                        background: theme.colors.primary.electric + '20',
-                        color: theme.colors.primary.electric
-                      }}
-                    >
-                      <Icon size={24} />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2" style={{ color: theme.colors.text.primary }}>
-                      {item.title}
-                    </h3>
-                    <p style={{ color: theme.colors.text.secondary }}>
-                      {item.description}
-                    </p>
-                  </motion.div>
-                );
-              })}
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={itemVariants}
+                  className="p-6 rounded-xl border"
+                  style={{
+                    background: themeStyles.card.background,
+                    borderColor: themeStyles.card.border,
+                    boxShadow: themeStyles.shadows.soft
+                  }}
+                >
+                  <item.icon size={32} style={{ color: theme.colors.primary.electric, marginBottom: '12px' }} />
+                  <h3 className="text-xl font-bold mb-2" style={{ color: themeStyles.text.primary }}>
+                    {item.title}
+                  </h3>
+                  <p style={{ color: themeStyles.text.secondary }}>
+                    {item.description}
+                  </p>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
         </motion.div>
       </section>
 
-      {/* SPECIALIZATIONS SECTION */}
-      <section className="py-20 px-6" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+      {/* SPECIALIZATIONS */}
+      <section className="py-20 px-6" style={{ background: themeStyles.backgrounds.secondary }}>
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={containerVariants}
-            className="text-center mb-16"
+          <motion.h2 
+            className="text-4xl font-bold text-center mb-16"
+            style={{ color: themeStyles.text.primary }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
           >
-            <motion.h2
-              variants={itemVariants}
-              className="text-4xl md:text-5xl font-bold mb-6"
-              style={{ color: theme.colors.text.primary }}
-            >
-              Nos Domaines de Spécialisation
-            </motion.h2>
-            <motion.p
-              variants={itemVariants}
-              className="text-lg"
-              style={{ color: theme.colors.text.secondary }}
-            >
-              Quatre domaines fondamentaux qui forment la base de l'implémentation IA réussie
-            </motion.p>
-          </motion.div>
+            Nos Spécialisations
+          </motion.h2>
 
           <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
             variants={containerVariants}
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
-            {specializations.map((spec, index) => {
-              const Icon = spec.icon;
-              return (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="p-6 rounded-lg backdrop-blur-sm border text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    borderColor: theme.colors.primary.electric + '40',
-                    borderWidth: '1px'
-                  }}
-                >
-                  <div
-                    className="w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-6 shadow-lg"
-                    style={{
-                      background: theme.colors.primary.electric + '20',
-                      color: theme.colors.primary.electric
-                    }}
-                  >
-                    <Icon size={32} />
-                  </div>
-                  <h3 className="text-lg font-bold mb-3" style={{ color: theme.colors.text.primary }}>
-                    {spec.title}
-                  </h3>
-                  <p className="text-sm" style={{ color: theme.colors.text.secondary }}>
-                    {spec.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+            {specializations.map((spec, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="p-6 rounded-xl border"
+                style={{
+                  background: themeStyles.card.background,
+                  borderColor: themeStyles.card.border,
+                  boxShadow: themeStyles.shadows.soft
+                }}
+              >
+                <spec.icon size={32} style={{ color: theme.colors.primary.electric, marginBottom: '12px' }} />
+                <h3 className="text-lg font-bold mb-3" style={{ color: themeStyles.text.primary }}>
+                  {spec.title}
+                </h3>
+                <p style={{ color: themeStyles.text.secondary }} className="text-sm">
+                  {spec.description}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* CORE VALUES SECTION */}
+      {/* CORE VALUES */}
       <section className="py-20 px-6 max-w-7xl mx-auto">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={containerVariants}
-          className="text-center mb-16"
+        <motion.h2 
+          className="text-4xl font-bold text-center mb-16"
+          style={{ color: themeStyles.text.primary }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
         >
-          <motion.h2
-            variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold mb-6"
-            style={{ color: theme.colors.text.primary }}
-          >
-            Nos Valeurs Fondamentales
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-lg"
-            style={{ color: theme.colors.text.secondary }}
-          >
-            Les principes qui guident tout ce que nous faisons
-          </motion.p>
-        </motion.div>
+          Nos Valeurs Fondamentales
+        </motion.h2>
 
         <motion.div
+          className="grid md:grid-cols-2 gap-8"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
-          className="grid md:grid-cols-2 gap-6"
         >
-          {values.map((value, index) => (
+          {values.map((value, idx) => (
             <motion.div
-              key={index}
+              key={idx}
               variants={itemVariants}
-              className="p-8 rounded-lg backdrop-blur-sm border"
+              className="p-6 rounded-xl border flex gap-4"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                borderColor: theme.colors.primary.electric + '40',
-                borderWidth: '1px'
+                background: themeStyles.card.background,
+                borderColor: themeStyles.card.border,
+                boxShadow: themeStyles.shadows.soft
               }}
             >
-              <div className="flex items-start gap-4">
-                <CheckCircle size={24} style={{ color: theme.colors.primary.electric, flexShrink: 0 }} className="mt-1" />
-                <div>
-                  <h3 className="text-xl font-bold mb-3" style={{ color: theme.colors.text.primary }}>
-                    {value.title}
-                  </h3>
-                  <p style={{ color: theme.colors.text.secondary }}>
-                    {value.description}
-                  </p>
-                </div>
+              <CheckCircle size={24} style={{ color: theme.colors.primary.electric, flexShrink: 0 }} />
+              <div>
+                <h3 className="text-lg font-bold mb-2" style={{ color: themeStyles.text.primary }}>
+                  {value.title}
+                </h3>
+                <p style={{ color: themeStyles.text.secondary }}>
+                  {value.description}
+                </p>
               </div>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
-      {/* COMPANY INFO SECTION */}
-      <section className="py-20 px-6" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+      {/* TEAM SECTION */}
+      <section className="py-20 px-6" style={{ background: themeStyles.backgrounds.secondary }}>
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={itemVariants}
-            className="p-8 rounded-lg backdrop-blur-sm border"
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderColor: theme.colors.primary.electric + '40',
-              borderWidth: '1px'
-            }}
+          <motion.h2 
+            className="text-4xl font-bold text-center mb-16"
+            style={{ color: themeStyles.text.primary }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
           >
-            <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.text.primary }}>
-              Informations sur l'Entreprise
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8 text-sm">
-              {[
-                { label: "Nom Légal", value: "OKA Tech SAS" },
-                { label: "SIREN", value: "988 507 356" },
-                { label: "Forme Juridique", value: "SAS (Société par Actions Simplifiée)" },
-                { label: "Capital", value: "€1,000" },
-                { label: "Adresse", value: "50 Avenue des Champs Élysées, 75008 Paris" },
-                { label: "Secteur", value: "Développement Logiciel & Solutions IA" },
-              ].map((info, idx) => (
-                <div key={idx}>
-                  <p className="text-xs mb-1" style={{ color: theme.colors.text.muted }}>
-                    {info.label.toUpperCase()}
-                  </p>
-                  <p className="font-semibold" style={{ color: theme.colors.text.primary }}>
-                    {info.value}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+            Notre Équipe d'Experts
+          </motion.h2>
+
+          <motion.p
+            className="text-center max-w-2xl mx-auto mb-16 text-lg"
+            style={{ color: themeStyles.text.secondary }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Composée de développeurs, architectes IA, et consultants métier passionnés par 
+            l'innovation et l'excellence technique.
+          </motion.p>
         </div>
       </section>
     </div>

@@ -1,23 +1,19 @@
-import { useState } from "react";
 import { theme } from '@/styles/theme';
 import { motion } from 'framer-motion';
-import { Button } from "@/components/ui/button";
-import { Mail, MapPin, Phone, Send, CheckCircle } from "lucide-react";
-import AIChatbot from "@/components/AIChatbot";
-import { toast } from "sonner";
+import { Phone, Mail, MapPin } from "lucide-react";
+import { useState } from 'react';
+import { useThemeStyles } from '@/hooks/useThemeStyles';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    phone: "",
-    message: "",
-    gdprConsent: false,
-  });
+  const themeStyles = useThemeStyles();
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showChatbot, setShowChatbot] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -36,74 +32,8 @@ const Contact = () => {
     }
   };
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Le nom est requis";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "L'email est requis";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Veuillez entrer une adresse email valide";
-    }
-
-    if (!formData.company.trim()) {
-      newErrors.company = "Le nom de l'entreprise est requis";
-    }
-
-    if (!formData.gdprConsent) {
-      newErrors.gdprConsent = "Vous devez accepter la politique de confidentialité";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      toast.success("Lancement de l'assistant IA...");
-      setShowChatbot(true);
-    } else {
-      toast.error("Veuillez corriger les erreurs du formulaire");
-    }
-  };
-
-  const handleChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: "" }));
-    }
-  };
-
   return (
-    <div style={{ background: theme.colors.primary.dark, minHeight: '100vh' }}>
-      {showChatbot && (
-        <AIChatbot
-          prospectInfo={{
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            phone: formData.phone,
-          }}
-          onClose={() => setShowChatbot(false)}
-          onReportGenerated={() => {
-            setShowChatbot(false);
-            setFormData({
-              name: "",
-              email: "",
-              company: "",
-              phone: "",
-              message: "",
-              gdprConsent: false,
-            });
-          }}
-        />
-      )}
-
+    <div style={{ background: themeStyles.backgrounds.primary, minHeight: '100vh' }}>
       {/* HERO SECTION */}
       <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
         <div
@@ -121,7 +51,7 @@ const Contact = () => {
         >
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"
-            style={{ color: theme.colors.text.primary }}
+            style={{ color: themeStyles.text.primary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -131,263 +61,249 @@ const Contact = () => {
               className="block mt-3"
               style={{ color: theme.colors.primary.electric }}
             >
-              Notre équipe est prête à vous aider
+              Commençons Dès Aujourd'hui
             </span>
           </motion.h1>
 
           <motion.p
             className="text-lg md:text-xl"
-            style={{ color: theme.colors.text.secondary }}
+            style={{ color: themeStyles.text.secondary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
           >
-            Commencez votre parcours de transformation IA dès aujourd'hui. 
-            Notre assistant IA analysera vos besoins et vous fournira des recommandations personnalisées.
+            Nos experts sont prêts à discuter de votre transformation IA et vous proposer les solutions adaptées
           </motion.p>
         </motion.div>
       </section>
 
-      {/* CONTACT SECTION */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
+      {/* CONTACT INFO + FORM */}
+      <section className="py-20 px-6 max-w-6xl mx-auto">
         <motion.div
+          className="grid md:grid-cols-2 gap-12"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
-          className="grid lg:grid-cols-3 gap-12"
         >
-          {/* Contact Information */}
-          <motion.div variants={itemVariants} className="lg:col-span-1 space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.text.primary }}>
-                Coordonnées
-              </h2>
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: MapPin,
-                    title: "Adresse",
-                    content: "50 Avenue des Champs Élysées\n75008 Paris, France"
-                  },
-                  {
-                    icon: Mail,
-                    title: "Email",
-                    content: "contact@oka-tech.com"
-                  },
-                  {
-                    icon: Phone,
-                    title: "Téléphone",
-                    content: "+33 (0) 1 XX XX XX XX"
-                  }
-                ].map((item, idx) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={idx} className="flex items-start gap-4">
-                      <div
-                        className="p-3 rounded-lg"
-                        style={{
-                          background: theme.colors.primary.electric + '20',
-                          color: theme.colors.primary.electric
-                        }}
-                      >
-                        <Icon size={24} />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold mb-1" style={{ color: theme.colors.text.primary }}>
-                          {item.title}
-                        </h3>
-                        <p className="text-sm whitespace-pre-line" style={{ color: theme.colors.text.secondary }}>
-                          {item.content}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          {/* Contact Info */}
+          <motion.div variants={itemVariants} className="space-y-8">
+            <h2 className="text-3xl font-bold" style={{ color: themeStyles.text.primary }}>
+              Nos Coordonnées
+            </h2>
+
+            {[
+              {
+                icon: MapPin,
+                label: "Adresse",
+                value: "50 Avenue des Champs Élysées\n75008 Paris, France"
+              },
+              {
+                icon: Phone,
+                label: "Téléphone",
+                value: "+33 (0) 1 XX XX XX XX"
+              },
+              {
+                icon: Mail,
+                label: "Email",
+                value: "contact@oka-tech.com"
+              }
+            ].map((info, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="flex gap-4"
+              >
+                <info.icon
+                  size={24}
+                  style={{ color: theme.colors.primary.electric, flexShrink: 0 }}
+                />
+                <div>
+                  <p style={{ color: themeStyles.text.muted, fontSize: '0.875rem' }} className="uppercase mb-1">
+                    {info.label}
+                  </p>
+                  <p style={{ color: themeStyles.text.primary }} className="whitespace-pre-line">
+                    {info.value}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
 
             <motion.div
-              className="p-6 rounded-lg border"
+              variants={itemVariants}
+              className="mt-12 p-6 rounded-xl border"
               style={{
-                background: 'rgba(0, 212, 212, 0.05)',
-                borderColor: theme.colors.primary.electric + '40',
-                borderWidth: '1px'
+                background: themeStyles.card.background,
+                borderColor: themeStyles.card.border,
+                boxShadow: themeStyles.shadows.soft
               }}
             >
-              <div className="mb-4 p-3 rounded-lg" style={{ background: theme.colors.primary.electric + '20' }}>
-                <CheckCircle size={24} style={{ color: theme.colors.primary.electric }} />
-              </div>
-              <h3 className="font-semibold mb-2" style={{ color: theme.colors.text.primary }}>
-                Consultation IA Gratuite
+              <h3 className="font-bold mb-4" style={{ color: themeStyles.text.primary }}>
+                Heures d'Ouverture
               </h3>
-              <p className="text-sm" style={{ color: theme.colors.text.secondary }}>
-                Après soumission, notre assistant IA engagera une conversation pour comprendre profondément vos besoins et fournir une analyse complète.
-              </p>
+              <div className="space-y-2" style={{ color: themeStyles.text.secondary }}>
+                <p>Lundi - Vendredi: 09:00 - 18:00</p>
+                <p>Samedi - Dimanche: Fermé</p>
+              </div>
             </motion.div>
           </motion.div>
 
           {/* Contact Form */}
-          <motion.div
-            variants={itemVariants}
-            className="lg:col-span-2 p-8 rounded-lg backdrop-blur-sm border"
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderColor: theme.colors.primary.electric + '40',
-              borderWidth: '1px'
-            }}
-          >
-            <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.text.primary }}>
-              Formulaire de Contact
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                    Nom Complet <span style={{ color: theme.colors.primary.electric }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                    placeholder="Jean Dupont"
-                    className="w-full px-4 py-3 rounded-lg"
-                    style={{
-                      background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: errors.name ? '#ef4444' : theme.colors.primary.electric + '40',
-                      color: theme.colors.text.primary,
-                      borderWidth: '1px'
-                    }}
-                  />
-                  {errors.name && (
-                    <p className="text-sm" style={{ color: '#ef4444' }}>{errors.name}</p>
-                  )}
-                </div>
+          <motion.div variants={itemVariants}>
+            <motion.form
+              onSubmit={handleSubmit}
+              className="space-y-6 p-8 rounded-xl border"
+              style={{
+                background: themeStyles.card.background,
+                borderColor: themeStyles.card.border,
+                boxShadow: themeStyles.shadows.soft
+              }}
+            >
+              <h2 className="text-2xl font-bold" style={{ color: themeStyles.text.primary }}>
+                Envoyez-nous un Message
+              </h2>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                    Email <span style={{ color: theme.colors.primary.electric }}>*</span>
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="jean@example.com"
-                    className="w-full px-4 py-3 rounded-lg"
-                    style={{
-                      background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: errors.email ? '#ef4444' : theme.colors.primary.electric + '40',
-                      color: theme.colors.text.primary,
-                      borderWidth: '1px'
-                    }}
-                  />
-                  {errors.email && (
-                    <p className="text-sm" style={{ color: '#ef4444' }}>{errors.email}</p>
-                  )}
-                </div>
+              <div>
+                <label style={{ color: themeStyles.text.primary }} className="block text-sm font-medium mb-2">
+                  Nom
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border"
+                  style={{
+                    background: themeStyles.backgrounds.primary,
+                    color: themeStyles.text.primary,
+                    borderColor: themeStyles.borders.medium
+                  }}
+                  placeholder="Votre nom"
+                />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                    Entreprise <span style={{ color: theme.colors.primary.electric }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => handleChange("company", e.target.value)}
-                    placeholder="Votre entreprise"
-                    className="w-full px-4 py-3 rounded-lg"
-                    style={{
-                      background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: errors.company ? '#ef4444' : theme.colors.primary.electric + '40',
-                      color: theme.colors.text.primary,
-                      borderWidth: '1px'
-                    }}
-                  />
-                  {errors.company && (
-                    <p className="text-sm" style={{ color: '#ef4444' }}>{errors.company}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                    Téléphone (Optionnel)
-                  </label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                    placeholder="+33 1 23 45 67 89"
-                    className="w-full px-4 py-3 rounded-lg"
-                    style={{
-                      background: 'rgba(0, 212, 212, 0.1)',
-                      borderColor: theme.colors.primary.electric + '40',
-                      color: theme.colors.text.primary,
-                      borderWidth: '1px'
-                    }}
-                  />
-                </div>
+              <div>
+                <label style={{ color: themeStyles.text.primary }} className="block text-sm font-medium mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-2 rounded-lg border"
+                  style={{
+                    background: themeStyles.backgrounds.primary,
+                    color: themeStyles.text.primary,
+                    borderColor: themeStyles.borders.medium
+                  }}
+                  placeholder="votre@email.com"
+                />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium" style={{ color: theme.colors.text.primary }}>
-                  Décrivez Votre Projet (Optionnel)
+              <div>
+                <label style={{ color: themeStyles.text.primary }} className="block text-sm font-medium mb-2">
+                  Message
                 </label>
                 <textarea
+                  required
                   value={formData.message}
-                  onChange={(e) => handleChange("message", e.target.value)}
-                  placeholder="Parlez-nous de vos défis ou de ce que vous souhaitez réaliser avec l'IA..."
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-lg resize-none"
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  rows={6}
+                  className="w-full px-4 py-2 rounded-lg border resize-none"
                   style={{
-                    background: 'rgba(0, 212, 212, 0.1)',
-                    borderColor: theme.colors.primary.electric + '40',
-                    color: theme.colors.text.primary,
-                    borderWidth: '1px'
+                    background: themeStyles.backgrounds.primary,
+                    color: themeStyles.text.primary,
+                    borderColor: themeStyles.borders.medium
                   }}
+                  placeholder="Décrivez votre projet..."
                 />
               </div>
 
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  id="gdpr"
-                  checked={formData.gdprConsent}
-                  onChange={(e) => handleChange("gdprConsent", e.target.checked)}
-                  className="mt-1"
-                />
-                <label htmlFor="gdpr" className="text-sm cursor-pointer" style={{ color: theme.colors.text.secondary }}>
-                  J'accepte le traitement de mes données personnelles conformément à la{" "}
-                  <a href="#" className="hover:underline" style={{ color: theme.colors.primary.electric }}>
-                    Politique de Confidentialité
-                  </a>
-                  {" "}et consens à être contacté par OKA Tech.{" "}
-                  <span style={{ color: '#ef4444' }}>*</span>
-                </label>
-              </div>
-              {errors.gdprConsent && (
-                <p className="text-sm" style={{ color: '#ef4444' }}>{errors.gdprConsent}</p>
-              )}
-
-              <Button
+              <motion.button
                 type="submit"
-                className="w-full py-6 text-lg font-semibold rounded-lg"
+                className="w-full px-6 py-3 rounded-lg font-medium text-white"
                 style={{
-                  background: theme.colors.primary.electric,
-                  color: theme.colors.primary.dark
+                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
+                  boxShadow: `0 0 20px ${theme.colors.primary.electric}50`
                 }}
+                whileHover={{
+                  boxShadow: `0 0 30px ${theme.colors.primary.electric}70`
+                }}
+                whileTap={{ scale: 0.95 }}
               >
-                Soumettre et Commencer <Send className="ml-2" size={20} />
-              </Button>
+                Envoyer le Message
+              </motion.button>
 
-              <p className="text-xs text-center" style={{ color: theme.colors.text.muted }}>
-                En soumettant ce formulaire, vous recevrez une analyse personnalisée générée par l'IA 
-                de vos besoins et les solutions recommandées.
-              </p>
-            </form>
+              {submitted && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center"
+                  style={{ color: theme.colors.semantic.success }}
+                >
+                  ✓ Message envoyé avec succès!
+                </motion.p>
+              )}
+            </motion.form>
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* FAQ SECTION */}
+      <section className="py-20 px-6" style={{ background: themeStyles.backgrounds.secondary }}>
+        <div className="max-w-4xl mx-auto">
+          <motion.h2
+            className="text-4xl font-bold text-center mb-16"
+            style={{ color: themeStyles.text.primary }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Questions Fréquentes
+          </motion.h2>
+
+          <motion.div
+            className="space-y-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+          >
+            {[
+              {
+                q: "Quel est le délai de mise en œuvre?",
+                a: "Selon votre projet, entre 6 et 17 semaines pour une solution complète."
+              },
+              {
+                q: "Fournissez-vous du support après l'implémentation?",
+                a: "Oui, support 24/7 pendant 6 mois après le déploiement, puis selon votre contrat."
+              },
+              {
+                q: "Quel est le coût d'une solution IA?",
+                a: "Cela dépend de votre projet. Contactez-nous pour un devis personnalisé."
+              }
+            ].map((faq, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="p-6 rounded-xl border"
+                style={{
+                  background: themeStyles.card.background,
+                  borderColor: themeStyles.card.border,
+                  boxShadow: themeStyles.shadows.soft
+                }}
+              >
+                <h3 className="font-bold mb-3" style={{ color: themeStyles.text.primary }}>
+                  {faq.q}
+                </h3>
+                <p style={{ color: themeStyles.text.secondary }}>
+                  {faq.a}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </section>
     </div>
   );
