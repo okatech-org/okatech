@@ -274,16 +274,16 @@ const Contact = () => {
           >
             {[
               {
-                q: "Quel est le délai de mise en œuvre?",
-                a: "Selon votre projet, entre 6 et 17 semaines pour une solution complète."
+                q: t('contact.faqQ1'),
+                a: t('contact.faqA1')
               },
               {
-                q: "Fournissez-vous du support après l'implémentation?",
-                a: "Oui, support 24/7 pendant 6 mois après le déploiement, puis selon votre contrat."
+                q: t('contact.faqQ2'),
+                a: t('contact.faqA2')
               },
               {
-                q: "Quel est le coût d'une solution IA?",
-                a: "Cela dépend de votre projet. Contactez-nous pour un devis personnalisé."
+                q: t('contact.faqQ3'),
+                a: t('contact.faqA3')
               }
             ].map((faq, idx) => (
               <motion.div

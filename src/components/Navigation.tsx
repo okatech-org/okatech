@@ -16,6 +16,46 @@ const Navigation = () => {
   const { isDark, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
 
+  const translations: Record<string, Record<string, string>> = {
+    fr: {
+      'nav.home': 'Accueil',
+      'nav.about': 'À propos',
+      'nav.solutions': 'Solutions',
+      'nav.contact': 'Contact',
+      'nav.admin': 'Admin',
+      'nav.logout': 'Déconnexion',
+      'nav.getStarted': 'Commencer',
+    },
+    en: {
+      'nav.home': 'Home',
+      'nav.about': 'About',
+      'nav.solutions': 'Solutions',
+      'nav.contact': 'Contact',
+      'nav.admin': 'Admin',
+      'nav.logout': 'Logout',
+      'nav.getStarted': 'Get Started',
+    },
+    es: {
+      'nav.home': 'Inicio',
+      'nav.about': 'Acerca de',
+      'nav.solutions': 'Soluciones',
+      'nav.contact': 'Contacto',
+      'nav.admin': 'Admin',
+      'nav.logout': 'Salir',
+      'nav.getStarted': 'Empezar',
+    },
+    ar: {
+      'nav.home': 'الرئيسية',
+      'nav.about': 'من نحن',
+      'nav.solutions': 'الحلول',
+      'nav.contact': 'اتصل بنا',
+      'nav.admin': 'المشرف',
+      'nav.logout': 'تسجيل الخروج',
+      'nav.getStarted': 'ابدأ الآن',
+    },
+  };
+  const t = (key: string) => (translations[language]?.[key] ?? translations.fr[key] ?? key);
+
   const navItems = [
     { name: t('nav.home'), path: "/" },
     { name: t('nav.about'), path: "/about" },
@@ -112,7 +152,7 @@ const Navigation = () => {
                   <motion.div
                     className="absolute bottom-1 left-0 h-0.5 bg-gradient-to-r opacity-0 group-hover:opacity-100"
                     style={{
-                      background: `linear-gradient(90deg, ${theme.colors.primary.electric}, transparent)`,
+                      background: `linear-gradient(90deg, ${theme.colors.primary.electric}, rgba(0,0,0,0))`,
                       width: "100%"
                     }}
                     initial={{ opacity: 0 }}
@@ -132,7 +172,7 @@ const Navigation = () => {
               whileTap={{ scale: 0.95 }}
               className="p-2 rounded-lg border transition-all"
               style={{
-                background: isDark ? '#0A0A0A' : '#F5F5F5',
+                backgroundColor: isDark ? '#0A0A0A' : '#F5F5F5',
                 color: theme.colors.primary.electric,
                 border: `1px solid ${theme.colors.primary.electric}40`,
                 boxShadow: `0 0 15px ${theme.colors.primary.electric}15`,
@@ -150,7 +190,7 @@ const Navigation = () => {
                 whileTap={{ scale: 0.95 }}
                 className="p-2 rounded-lg border transition-all"
                 style={{
-                  background: isDark ? '#0A0A0A' : '#F5F5F5',
+                  backgroundColor: isDark ? '#0A0A0A' : '#F5F5F5',
                   color: theme.colors.primary.electric,
                   border: `1px solid ${theme.colors.primary.electric}40`,
                   boxShadow: `0 0 15px ${theme.colors.primary.electric}15`,
@@ -169,7 +209,7 @@ const Navigation = () => {
                     transition={{ duration: 0.2 }}
                     className="absolute top-full right-0 mt-2 rounded-lg border overflow-hidden"
                     style={{
-                      background: isDark ? '#0A0A0A' : '#FFFFFF',
+                      backgroundColor: isDark ? '#0A0A0A' : '#FFFFFF',
                       border: `1px solid ${theme.colors.primary.electric}40`,
                       boxShadow: `0 8px 32px ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)'}`,
                       minWidth: '160px',
@@ -186,19 +226,15 @@ const Navigation = () => {
                           language === lang.code ? 'border-opacity-100' : 'border-opacity-0'
                         }`}
                         style={{
-                          color: language === lang.code ? theme.colors.primary.electric : isDark ? theme.colors.text.secondary : '#666666',
+                          color: language === lang.code ? theme.colors.primary.electric : (isDark ? theme.colors.text.secondary : '#666666'),
                           borderLeftColor: theme.colors.primary.electric,
-                          background:
+                          backgroundColor:
                             language === lang.code
-                              ? isDark
-                                ? `${theme.colors.primary.electric}15`
-                                : `${theme.colors.primary.electric}10`
-                              : 'transparent',
+                              ? (isDark ? `${theme.colors.primary.electric}15` : `${theme.colors.primary.electric}10`)
+                              : 'rgba(0,0,0,0)',
                         }}
                         whileHover={{
-                          background: isDark
-                            ? `${theme.colors.primary.electric}20`
-                            : `${theme.colors.primary.electric}15`,
+                          backgroundColor: isDark ? `${theme.colors.primary.electric}20` : `${theme.colors.primary.electric}15`,
                         }}
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -227,12 +263,12 @@ const Navigation = () => {
                   <motion.button
                     className="px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all"
                     style={{
-                      background: `${theme.colors.primary.electric}15`,
+                      backgroundColor: `${theme.colors.primary.electric}15`,
                       color: theme.colors.primary.electric,
                       border: `1px solid ${theme.colors.primary.electric}40`
                     }}
                     whileHover={{
-                      background: `${theme.colors.primary.electric}25`,
+                      backgroundColor: `${theme.colors.primary.electric}25`,
                       boxShadow: `0 0 20px ${theme.colors.primary.electric}40`
                     }}
                     whileTap={{ scale: 0.95 }}
@@ -249,7 +285,7 @@ const Navigation = () => {
                     border: `1px solid ${theme.colors.semantic.error}40`
                   }}
                   whileHover={{
-                    background: `${theme.colors.semantic.error}15`,
+                    backgroundColor: `${theme.colors.semantic.error}15`,
                     boxShadow: `0 0 20px ${theme.colors.semantic.error}40`
                   }}
                   whileTap={{ scale: 0.95 }}
@@ -268,7 +304,7 @@ const Navigation = () => {
                       border: `1px solid ${theme.colors.primary.electric}40`
                     }}
                     whileHover={{
-                      background: `${theme.colors.primary.electric}15`,
+                      backgroundColor: `${theme.colors.primary.electric}15`,
                       boxShadow: `0 0 20px ${theme.colors.primary.electric}40`
                     }}
                     whileTap={{ scale: 0.95 }}
@@ -301,9 +337,9 @@ const Navigation = () => {
             className="md:hidden p-2 rounded-lg transition-all"
             style={{
               color: isDark ? theme.colors.text.primary : '#1A1A1A',
-              background: isOpen ? `${theme.colors.primary.electric}20` : 'transparent'
+              backgroundColor: isOpen ? `${theme.colors.primary.electric}20` : 'rgba(0,0,0,0)'
             }}
-            whileHover={{ background: `${theme.colors.primary.electric}15` }}
+            whileHover={{ backgroundColor: `${theme.colors.primary.electric}15` }}
             whileTap={{ scale: 0.95 }}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -331,9 +367,9 @@ const Navigation = () => {
                     color: isActive(item.path)
                       ? theme.colors.primary.electric
                       : isDark ? theme.colors.text.secondary : '#666666',
-                    background: isActive(item.path)
+                    backgroundColor: isActive(item.path)
                       ? `${theme.colors.primary.electric}15`
-                      : 'transparent',
+                      : 'rgba(0,0,0,0)',
                     border: isActive(item.path)
                       ? `1px solid ${theme.colors.primary.electric}30`
                       : 'none'
@@ -352,7 +388,7 @@ const Navigation = () => {
                   whileHover={{ scale: 1.05 }}
                   className="flex-1 p-2 rounded-lg border transition-all flex items-center justify-center gap-2"
                   style={{
-                    background: isDark ? '#0A0A0A' : '#F5F5F5',
+                    backgroundColor: isDark ? '#0A0A0A' : '#F5F5F5',
                     color: theme.colors.primary.electric,
                     border: `1px solid ${theme.colors.primary.electric}40`,
                   }}
@@ -367,7 +403,7 @@ const Navigation = () => {
                     whileHover={{ scale: 1.05 }}
                     className="w-full p-2 rounded-lg border transition-all flex items-center justify-center gap-2"
                     style={{
-                      background: isDark ? '#0A0A0A' : '#F5F5F5',
+                      backgroundColor: isDark ? '#0A0A0A' : '#F5F5F5',
                       color: theme.colors.primary.electric,
                       border: `1px solid ${theme.colors.primary.electric}40`,
                     }}
@@ -384,7 +420,7 @@ const Navigation = () => {
                         exit={{ opacity: 0, y: -5 }}
                         className="absolute top-full left-0 right-0 mt-2 rounded-lg border overflow-hidden"
                         style={{
-                          background: isDark ? '#0A0A0A' : '#FFFFFF',
+                          backgroundColor: isDark ? '#0A0A0A' : '#FFFFFF',
                           border: `1px solid ${theme.colors.primary.electric}40`,
                         }}
                       >
@@ -397,13 +433,11 @@ const Navigation = () => {
                             }}
                             className="w-full px-3 py-2 flex items-center gap-2 text-sm transition-all"
                             style={{
-                              color: language === lang.code ? theme.colors.primary.electric : isDark ? theme.colors.text.secondary : '#666666',
-                              background:
+                              color: language === lang.code ? theme.colors.primary.electric : (isDark ? theme.colors.text.secondary : '#666666'),
+                              backgroundColor:
                                 language === lang.code
-                                  ? isDark
-                                    ? `${theme.colors.primary.electric}15`
-                                    : `${theme.colors.primary.electric}10`
-                                  : 'transparent',
+                                  ? (isDark ? `${theme.colors.primary.electric}15` : `${theme.colors.primary.electric}10`)
+                                  : 'rgba(0,0,0,0)',
                             }}
                           >
                             <span>{lang.flag}</span>
