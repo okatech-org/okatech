@@ -128,17 +128,13 @@ const About = () => {
               </h2>
               <div className="space-y-4" style={{ color: themeStyles.text.secondary }}>
                 <p className="leading-relaxed">
-                  Depuis notre établissement à Paris, OKA Tech est à l'avant-garde de la révolution IA, 
-                  aidant les entreprises à exploiter la puissance de l'intelligence artificielle pour résoudre 
-                  des défis complexes et déverrouiller de nouvelles opportunités.
+                  {t('about.storyP1')}
                 </p>
                 <p className="leading-relaxed">
-                  Ce qui a commencé comme une passion pour rendre l'IA accessible est devenu un partenariat 
-                  de confiance avec des organisations dans diverses industries, des startups aux grandes entreprises.
+                  {t('about.storyP2')}
                 </p>
                 <p className="leading-relaxed">
-                  Notre équipe combine une expertise technique approfondie en machine learning, traitement du langage naturel 
-                  et développement full-stack avec une véritable compréhension des besoins et défis métier.
+                  {t('about.storyP3')}
                 </p>
               </div>
             </motion.div>
@@ -152,12 +148,12 @@ const About = () => {
                 {
                   icon: Target,
                   title: t('about.mission'),
-                  description: "Transformer les entreprises grâce à des solutions IA innovantes et accessibles"
+                  description: t('about.missionDesc')
                 },
                 {
                   icon: TrendingUp,
                   title: t('about.vision'),
-                  description: "Être le partenaire privilégié de la transformation numérique et IA"
+                  description: t('about.visionDesc')
                 }
               ].map((item, idx) => (
                 <motion.div
@@ -292,8 +288,7 @@ const About = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Composée de développeurs, architectes IA, et consultants métier passionnés par 
-            l'innovation et l'excellence technique.
+            {t('about.teamDesc')}
           </motion.p>
         </div>
       </section>
