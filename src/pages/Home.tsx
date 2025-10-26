@@ -276,7 +276,7 @@ const Home = () => {
       </section>
 
       {/* ===== SOLUTIONS SECTION ===== */}
-      <section className="py-20 px-6" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+      <section className="py-20 px-6" style={{ background: themeStyles.backgrounds.secondary }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -341,11 +341,11 @@ const Home = () => {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="p-8 rounded-lg backdrop-blur-sm border transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+                className="p-8 rounded-xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  borderColor: theme.colors.primary.electric + '40',
-                  borderWidth: '1px'
+                  background: themeStyles.card.background,
+                  borderColor: themeStyles.card.border,
+                  boxShadow: themeStyles.shadows.soft
                 }}
               >
                 <div
@@ -371,16 +371,21 @@ const Home = () => {
                     </li>
                   ))}
                 </ul>
-                <Button
-                  variant="outline"
-                  className="w-full text-sm rounded-lg"
+                <motion.button
+                  className="w-full text-sm font-medium py-2 px-4 rounded-lg border transition-all"
                   style={{
                     borderColor: theme.colors.primary.electric,
-                    color: theme.colors.primary.electric
+                    color: theme.colors.primary.electric,
+                    background: `${theme.colors.primary.electric}10`
                   }}
+                  whileHover={{
+                    background: `${theme.colors.primary.electric}20`,
+                    boxShadow: `0 0 15px ${theme.colors.primary.electric}30`
+                  }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {solution.cta}
-                </Button>
+                </motion.button>
               </motion.div>
             ))}
           </motion.div>
