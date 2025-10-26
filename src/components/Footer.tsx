@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useThemeStyles } from "@/hooks/useThemeStyles";
+import logoOkatech from "@/assets/logo-okatech.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -87,14 +88,17 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="space-y-4">
             <Link to="/" className="flex items-center space-x-2 group">
               <motion.div
-                className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white"
+                className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden"
                 style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
                   boxShadow: `0 0 20px ${theme.colors.primary.electric}40`,
                 }}
                 whileHover={{ scale: 1.1 }}
               >
-                OT
+                <img 
+                  src={logoOkatech} 
+                  alt="OKA Tech Logo" 
+                  className="w-full h-full object-contain"
+                />
               </motion.div>
               <span
                 className="text-lg font-bold"

@@ -6,6 +6,7 @@ import { theme } from "@/styles/theme";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import authService from "@/lib/authService";
+import logoOkatech from "@/assets/logo-okatech.png";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,15 +101,18 @@ const Navigation = () => {
               className="flex items-center space-x-2 group"
             >
               <motion.div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white relative"
+                className="w-10 h-10 rounded-lg flex items-center justify-center relative overflow-hidden"
                 style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
                   boxShadow: `0 0 20px ${theme.colors.primary.electric}40`
                 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                OT
+                <img 
+                  src={logoOkatech} 
+                  alt="OKA Tech Logo" 
+                  className="w-full h-full object-contain"
+                />
               </motion.div>
               <span 
                 className="text-xl font-bold hidden sm:inline-block"
