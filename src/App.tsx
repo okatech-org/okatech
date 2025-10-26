@@ -8,7 +8,6 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import ChatButton from "./components/ChatButton";
-import ThemeLanguageSelector from "./components/ThemeLanguageSelector";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -55,7 +54,6 @@ const App = () => (
                   </main>
                   <Footer />
                   <ChatButton />
-                  <ThemeLanguageSelector />
                 </div>
               } />
             </Routes>

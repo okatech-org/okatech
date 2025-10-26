@@ -1,21 +1,33 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut, Shield } from "lucide-react";
+import { Menu, X, LogOut, Shield, Sun, Moon, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import authService from "@/lib/authService";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const currentUser = authService.getCurrentUser();
+  const { isDark, toggleTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
 
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Solutions", path: "/solutions" },
     { name: "Contact", path: "/contact" },
+  ];
+
+  const languages = [
+    { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'en', label: 'English', flag: '🇬🇧' },
+    { code: 'es', label: 'Español', flag: '🇪🇸' },
+    { code: 'ar', label: 'العربية', flag: '🇸🇦' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -29,7 +41,9 @@ const Navigation = () => {
     <nav 
       className="fixed top-0 w-full z-50 backdrop-blur-sm border-b"
       style={{
-        background: `linear-gradient(180deg, ${theme.colors.primary.dark} 0%, rgba(0,0,0,0.95) 100%)`,
+        background: isDark 
+          ? `linear-gradient(180deg, ${theme.colors.primary.dark} 0%, rgba(0,0,0,0.95) 100%)`
+          : 'linear-gradient(180deg, #FFFFFF 0%, #F9F9F9 100%)',
         borderColor: `${theme.colors.primary.electric}20`
       }}
     >
@@ -58,7 +72,7 @@ const Navigation = () => {
               </motion.div>
               <span 
                 className="text-xl font-bold hidden sm:inline-block"
-                style={{ color: theme.colors.text.primary }}
+                style={{ color: isDark ? theme.colors.text.primary : '#1A1A1A' }}
               >
                 OKA Tech
               </span>
@@ -80,7 +94,7 @@ const Navigation = () => {
                   style={{
                     color: isActive(item.path) 
                       ? theme.colors.primary.electric
-                      : theme.colors.text.secondary
+                      : isDark ? theme.colors.text.secondary : '#666666'
                   }}
                 >
                   {item.name}
@@ -109,14 +123,103 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Controls (Theme, Language, CTA) */}
+          <div className="hidden md:flex items-center space-x-3">
+            {/* Theme Toggle */}
+            <motion.button
+              onClick={toggleTheme}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-2 rounded-lg border transition-all"
+              style={{
+                background: isDark ? '#0A0A0A' : '#F5F5F5',
+                color: theme.colors.primary.electric,
+                border: `1px solid ${theme.colors.primary.electric}40`,
+                boxShadow: `0 0 15px ${theme.colors.primary.electric}15`,
+              }}
+              title={isDark ? 'Light mode' : 'Dark mode'}
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </motion.button>
+
+            {/* Language Selector */}
+            <div className="relative">
+              <motion.button
+                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-lg border transition-all"
+                style={{
+                  background: isDark ? '#0A0A0A' : '#F5F5F5',
+                  color: theme.colors.primary.electric,
+                  border: `1px solid ${theme.colors.primary.electric}40`,
+                  boxShadow: `0 0 15px ${theme.colors.primary.electric}15`,
+                }}
+                title="Select language"
+              >
+                <Globe size={18} />
+              </motion.button>
+
+              <AnimatePresence>
+                {showLanguageMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -5, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -5, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full right-0 mt-2 rounded-lg border overflow-hidden"
+                    style={{
+                      background: isDark ? '#0A0A0A' : '#FFFFFF',
+                      border: `1px solid ${theme.colors.primary.electric}40`,
+                      boxShadow: `0 8px 32px ${isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.1)'}`,
+                      minWidth: '160px',
+                    }}
+                  >
+                    {languages.map((lang, index) => (
+                      <motion.button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code as any);
+                          setShowLanguageMenu(false);
+                        }}
+                        className={`w-full px-3 py-2 flex items-center gap-2 transition-all text-sm border-l-2 ${
+                          language === lang.code ? 'border-opacity-100' : 'border-opacity-0'
+                        }`}
+                        style={{
+                          color: language === lang.code ? theme.colors.primary.electric : isDark ? theme.colors.text.secondary : '#666666',
+                          borderLeftColor: theme.colors.primary.electric,
+                          background:
+                            language === lang.code
+                              ? isDark
+                                ? `${theme.colors.primary.electric}15`
+                                : `${theme.colors.primary.electric}10`
+                              : 'transparent',
+                        }}
+                        whileHover={{
+                          background: isDark
+                            ? `${theme.colors.primary.electric}20`
+                            : `${theme.colors.primary.electric}15`,
+                        }}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
+                        <span>{lang.flag}</span>
+                        <span className="font-medium">{lang.label}</span>
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* CTA Buttons */}
             {currentUser ? (
               <>
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  style={{ color: theme.colors.text.secondary, fontSize: '0.875rem' }}
+                  style={{ color: isDark ? theme.colors.text.secondary : '#666666', fontSize: '0.875rem' }}
                 >
                   {currentUser.name}
                 </motion.span>
@@ -197,7 +300,7 @@ const Navigation = () => {
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 rounded-lg transition-all"
             style={{
-              color: theme.colors.text.primary,
+              color: isDark ? theme.colors.text.primary : '#1A1A1A',
               background: isOpen ? `${theme.colors.primary.electric}20` : 'transparent'
             }}
             whileHover={{ background: `${theme.colors.primary.electric}15` }}
@@ -227,7 +330,7 @@ const Navigation = () => {
                   style={{
                     color: isActive(item.path)
                       ? theme.colors.primary.electric
-                      : theme.colors.text.secondary,
+                      : isDark ? theme.colors.text.secondary : '#666666',
                     background: isActive(item.path)
                       ? `${theme.colors.primary.electric}15`
                       : 'transparent',
@@ -242,17 +345,88 @@ const Navigation = () => {
 
               <div className="h-px my-2" style={{ background: `${theme.colors.primary.electric}20` }} />
 
+              {/* Mobile Theme & Language */}
+              <div className="flex gap-2 px-4 py-2">
+                <motion.button
+                  onClick={toggleTheme}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-1 p-2 rounded-lg border transition-all flex items-center justify-center gap-2"
+                  style={{
+                    background: isDark ? '#0A0A0A' : '#F5F5F5',
+                    color: theme.colors.primary.electric,
+                    border: `1px solid ${theme.colors.primary.electric}40`,
+                  }}
+                >
+                  {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                  <span className="text-sm">{isDark ? 'Light' : 'Dark'}</span>
+                </motion.button>
+
+                <div className="flex-1 relative">
+                  <motion.button
+                    onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                    whileHover={{ scale: 1.05 }}
+                    className="w-full p-2 rounded-lg border transition-all flex items-center justify-center gap-2"
+                    style={{
+                      background: isDark ? '#0A0A0A' : '#F5F5F5',
+                      color: theme.colors.primary.electric,
+                      border: `1px solid ${theme.colors.primary.electric}40`,
+                    }}
+                  >
+                    <Globe size={16} />
+                    <span className="text-sm">{language.toUpperCase()}</span>
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {showLanguageMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        className="absolute top-full left-0 right-0 mt-2 rounded-lg border overflow-hidden"
+                        style={{
+                          background: isDark ? '#0A0A0A' : '#FFFFFF',
+                          border: `1px solid ${theme.colors.primary.electric}40`,
+                        }}
+                      >
+                        {languages.map((lang) => (
+                          <motion.button
+                            key={lang.code}
+                            onClick={() => {
+                              setLanguage(lang.code as any);
+                              setShowLanguageMenu(false);
+                            }}
+                            className="w-full px-3 py-2 flex items-center gap-2 text-sm transition-all"
+                            style={{
+                              color: language === lang.code ? theme.colors.primary.electric : isDark ? theme.colors.text.secondary : '#666666',
+                              background:
+                                language === lang.code
+                                  ? isDark
+                                    ? `${theme.colors.primary.electric}15`
+                                    : `${theme.colors.primary.electric}10`
+                                  : 'transparent',
+                            }}
+                          >
+                            <span>{lang.flag}</span>
+                            <span className="font-medium">{lang.label}</span>
+                          </motion.button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
               {currentUser ? (
                 <>
                   <div 
                     className="px-4 py-2 text-sm"
-                    style={{ color: theme.colors.text.secondary }}
+                    style={{ color: isDark ? theme.colors.text.secondary : '#666666' }}
                   >
                     {currentUser.name}
                   </div>
                   <Link to="/admin" onClick={() => setIsOpen(false)}>
                     <button
-                      className="w-full px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all"
+                      className="w-full px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all mx-4"
                       style={{
                         color: theme.colors.primary.electric,
                         border: `1px solid ${theme.colors.primary.electric}40`
@@ -267,7 +441,7 @@ const Navigation = () => {
                       handleLogout();
                       setIsOpen(false);
                     }}
-                    className="w-full px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all"
+                    className="w-full px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all mx-4"
                     style={{
                       color: theme.colors.semantic.error,
                       border: `1px solid ${theme.colors.semantic.error}40`
@@ -281,7 +455,7 @@ const Navigation = () => {
                 <>
                   <Link to="/admin-login" onClick={() => setIsOpen(false)}>
                     <button
-                      className="w-full px-4 py-2 rounded-lg font-medium transition-all"
+                      className="w-full px-4 py-2 rounded-lg font-medium transition-all mx-4"
                       style={{
                         color: theme.colors.primary.electric,
                         border: `1px solid ${theme.colors.primary.electric}40`
@@ -292,7 +466,7 @@ const Navigation = () => {
                   </Link>
                   <Link to="/contact" onClick={() => setIsOpen(false)}>
                     <button
-                      className="w-full px-6 py-2 rounded-lg font-medium text-white transition-all"
+                      className="w-full px-6 py-2 rounded-lg font-medium text-white transition-all mx-4"
                       style={{
                         background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`
                       }}
