@@ -767,14 +767,7 @@ const Admin = () => {
           {activeTab === 'leads' && (
             <LeadManagementAdvanced 
               leads={leads} 
-              setLeads={setLeads} 
-              handleDeleteLead={handleDeleteLead} 
-              handleUpdateStatus={handleUpdateStatus} 
-              handleExportCSV={handleExportCSV} 
-              searchTerm={searchTerm} 
-              setSearchTerm={setSearchTerm} 
-              filterStatus={filterStatus} 
-              setFilterStatus={setFilterStatus} 
+              onLeadsUpdate={(updatedLeads) => setLeads(updatedLeads)} 
               currentColors={currentColors} 
               isDarkMode={isDarkMode} 
             />
@@ -786,8 +779,6 @@ const Admin = () => {
               leads={leads} 
               currentColors={currentColors} 
               isDarkMode={isDarkMode} 
-              selectedPeriod={selectedPeriod} 
-              setSelectedPeriod={setSelectedPeriod} 
             />
           )}
 
@@ -795,8 +786,7 @@ const Admin = () => {
           {activeTab === 'settings' && (
             <SettingsPanel 
               isDarkMode={isDarkMode} 
-              setIsDarkMode={setIsDarkMode} 
-              handleLogout={handleLogout} 
+              onLogout={handleLogout} 
               currentColors={currentColors} 
             />
           )}

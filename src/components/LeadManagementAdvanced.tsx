@@ -12,15 +12,9 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { Lead as BaseLead } from "@/lib/leadStorage";
 
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  company: string;
-  fitScore: number;
-  status: string;
-  createdAt: string;
+interface Lead extends BaseLead {
   priority?: 'high' | 'medium' | 'low';
   archived?: boolean;
 }

@@ -6,6 +6,14 @@ import { useState } from 'react';
 import { useThemeStyles } from '@/hooks/useThemeStyles';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+// Import person images
+import person1 from '@/assets/person-1.jpg';
+import person2 from '@/assets/person-2.jpg';
+import person3 from '@/assets/person-3.jpg';
+import person4 from '@/assets/person-4.jpg';
+import person5 from '@/assets/person-5.jpg';
+import person6 from '@/assets/person-6.jpg';
+
 const Home = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const themeStyles = useThemeStyles();
@@ -33,31 +41,31 @@ const Home = () => {
       {/* ===== HERO SECTION - INSPIRED DESIGN ===== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-20">
         {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-40">
-          {/* Cyan gradient circle - top left */}
+        <div className="absolute inset-0 opacity-30">
+          {/* Green gradient circle - top left */}
           <div
-            className="absolute -top-40 -left-40 w-80 h-80 rounded-full"
+            className="absolute -top-40 -left-40 w-96 h-96 rounded-full blur-3xl"
             style={{
-              background: `radial-gradient(circle, ${theme.colors.primary.electric}40, transparent 70%)`
+              background: `radial-gradient(circle, #10B98140, transparent 70%)`
             }}
           />
-          {/* Orange/Yellow gradient - bottom right */}
+          {/* Orange gradient - top right */}
           <div
-            className="absolute -bottom-32 right-32 w-96 h-96 rounded-full"
+            className="absolute top-20 right-32 w-80 h-80 rounded-full blur-3xl"
             style={{
               background: `radial-gradient(circle, #FF8C4240, transparent 70%)`
             }}
           />
-          {/* Purple gradient - top right */}
+          {/* Yellow gradient - bottom right */}
           <div
-            className="absolute -top-20 -right-20 w-72 h-72 rounded-full"
-          style={{
-              background: `radial-gradient(circle, ${theme.colors.primary.purple}30, transparent 70%)`
+            className="absolute -bottom-32 -right-20 w-[500px] h-[500px] rounded-full blur-3xl"
+            style={{
+              background: `radial-gradient(circle, #F59E0B40, transparent 70%)`
             }}
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto relative z-10 px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto relative z-10 px-6">
           {/* Left - Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -81,6 +89,9 @@ const Home = () => {
             {/* Title with gradient */}
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                <span className="block" style={{ color: themeStyles.text.primary }}>
+                  Nous Aidons Les
+                </span>
                 <span
                   className="block"
                   style={{
@@ -90,114 +101,187 @@ const Home = () => {
                     backgroundClip: 'text'
                   }}
                 >
-                  {t('hero.title')}
-              </span>
+                  Entreprises À Se
+                </span>
+                <span
+                  className="block"
+                  style={{
+                    background: `linear-gradient(135deg, #FF8C42, ${theme.colors.primary.purple})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  Transformer.
+                </span>
               </h1>
               <p style={{ color: themeStyles.text.secondary, fontSize: '1.125rem', lineHeight: '1.6' }}>
-                {t('hero.subtitle')}
+                Nous avons les bons experts pour chaque projet, nous vous aiderons à vous connecter avec eux facilement et efficacement.
               </p>
             </div>
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <motion.button
-                className="px-8 py-3 rounded-xl font-medium text-base text-white transition-all"
+                className="px-8 py-4 rounded-xl font-semibold text-base transition-all flex items-center justify-center gap-2"
                 style={{
                   background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
+                  color: '#fff',
                   boxShadow: `0 0 20px ${theme.colors.primary.electric}50`
                 }}
                 whileHover={{
-                  boxShadow: `0 0 30px ${theme.colors.primary.electric}70`
+                  boxShadow: `0 0 30px ${theme.colors.primary.electric}70`,
+                  scale: 1.02
                 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.98 }}
               >
-                {t('hero.cta')}
+                Besoin d'Aide?
+                <ChevronRight size={20} />
               </motion.button>
-              <motion.button
-                className="px-8 py-3 rounded-xl font-medium text-base transition-all border"
-                style={{
-                  color: theme.colors.primary.electric,
-                  border: `1px solid ${theme.colors.primary.electric}40`,
-                  background: 'transparent'
-                }}
-                whileHover={{
-                  background: `${theme.colors.primary.electric}15`
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {t('nav.getStarted')}
-              </motion.button>
+              <motion.div className="relative">
+                <input
+                  type="text"
+                  placeholder="Rechercher..."
+                  className="w-full px-6 py-4 rounded-xl border text-base outline-none transition-all"
+                  style={{
+                    background: themeStyles.card.background,
+                    borderColor: themeStyles.borders.medium,
+                    color: themeStyles.text.primary
+                  }}
+                />
+              </motion.div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-8" style={{ borderTop: `1px solid ${themeStyles.borders.light}` }}>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-                <div className="text-3xl font-bold" style={{ color: theme.colors.primary.electric }}>6+</div>
-                <div className="text-sm" style={{ color: themeStyles.text.muted }}>{t('hero.expertise')}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                <div className="text-3xl font-bold" style={{ color: '#FF8C42' }}>50+</div>
-                <div className="text-sm" style={{ color: themeStyles.text.muted }}>{t('hero.projects')}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-                <div className="text-3xl font-bold" style={{ color: theme.colors.primary.purple }}>24/7</div>
-                <div className="text-sm" style={{ color: themeStyles.text.muted }}>{t('hero.support')}</div>
-              </motion.div>
+            {/* Small action buttons */}
+            <div className="flex items-center gap-6 pt-4">
+              <motion.button
+                className="flex items-center gap-2 text-sm font-medium transition-all"
+                style={{ color: themeStyles.text.secondary }}
+                whileHover={{ scale: 1.05, color: theme.colors.primary.electric }}
+              >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{ background: `${theme.colors.primary.electric}20` }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polygon points="10 8 16 12 10 16 10 8"/>
+                  </svg>
+                </div>
+                Commencer
+                <span className="text-xs">Démo Vidéo</span>
+              </motion.button>
             </div>
           </motion.div>
 
-          {/* Right - Floating Elements */}
+          {/* Right - Floating Person Images */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative h-full hidden lg:flex items-center justify-center"
+            className="relative h-[600px] hidden lg:block"
           >
-            <div className="relative w-full h-full max-w-md">
-              {/* Gradient circle background */}
-              <div
-                className="absolute inset-0 rounded-full blur-3xl opacity-20"
-                style={{
-                  background: `radial-gradient(circle, ${theme.colors.primary.electric}, transparent)`
-                }}
-              />
+            {/* Person 1 - Orange circle - top left */}
+            <motion.div
+              className="absolute top-0 left-0 w-48 h-48 rounded-full overflow-hidden"
+              style={{
+                border: `3px solid ${theme.colors.primary.electric}40`,
+                background: '#FF8C42',
+                boxShadow: `0 10px 40px rgba(255, 140, 66, 0.3)`
+              }}
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img src={person1} alt="Expert 1" className="w-full h-full object-cover" />
+            </motion.div>
 
-              {/* Floating element 1 */}
-              <motion.div
-                className="absolute top-0 left-0 w-32 h-32 rounded-2xl"
-                style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary.electric}20, ${theme.colors.primary.purple}20)`,
-                  border: `1px solid ${theme.colors.primary.electric}40`,
-                  boxShadow: `0 0 20px ${theme.colors.primary.electric}20`
-                }}
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
+            {/* Person 2 - Yellow/Pink circle - top right */}
+            <motion.div
+              className="absolute top-10 right-0 w-40 h-40 rounded-2xl overflow-hidden"
+              style={{
+                border: `3px solid #F59E0B40`,
+                background: '#FCD34D',
+                boxShadow: `0 10px 40px rgba(245, 158, 11, 0.3)`,
+                transform: 'rotate(5deg)'
+              }}
+              animate={{ y: [0, 15, 0], rotate: [5, -5, 5] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img src={person2} alt="Expert 2" className="w-full h-full object-cover" />
+            </motion.div>
 
-              {/* Floating element 2 */}
-              <motion.div
-                className="absolute top-20 right-0 w-40 h-40 rounded-full"
-                style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary.purple}20, #FF8C4220)`,
-                  border: `1px solid ${theme.colors.primary.purple}40`,
-                  boxShadow: `0 0 30px ${theme.colors.primary.purple}20`
-                }}
-                animate={{ y: [0, 20, 0] }}
-                transition={{ duration: 5, repeat: Infinity }}
-              />
+            {/* Person 3 - Green circle - middle left */}
+            <motion.div
+              className="absolute top-1/3 left-10 w-44 h-44 rounded-full overflow-hidden"
+              style={{
+                border: `3px solid #10B98140`,
+                background: '#10B981',
+                boxShadow: `0 10px 40px rgba(16, 185, 129, 0.3)`
+              }}
+              animate={{ y: [0, 20, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img src={person3} alt="Expert 3" className="w-full h-full object-cover" />
+            </motion.div>
 
-              {/* Floating element 3 */}
-              <motion.div
-                className="absolute bottom-10 left-10 w-28 h-28 rounded-xl"
-                style={{
-                  background: `linear-gradient(135deg, ${theme.colors.primary.lime}20, ${theme.colors.primary.electric}20)`,
-                  border: `1px solid ${theme.colors.primary.lime}40`,
-                  boxShadow: `0 0 25px ${theme.colors.primary.lime}15`
-                }}
-                animate={{ y: [0, 15, 0] }}
-                transition={{ duration: 6, repeat: Infinity }}
-              />
-          </div>
+            {/* Person 4 - Pink rounded square - middle right */}
+            <motion.div
+              className="absolute top-1/2 right-10 w-48 h-52 rounded-3xl overflow-hidden"
+              style={{
+                border: `3px solid ${theme.colors.primary.purple}40`,
+                background: '#EC4899',
+                boxShadow: `0 10px 40px rgba(236, 72, 153, 0.3)`,
+                transform: 'rotate(-3deg)'
+              }}
+              animate={{ y: [0, -15, 0], rotate: [-3, 3, -3] }}
+              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img src={person4} alt="Expert 4" className="w-full h-full object-cover" />
+            </motion.div>
+
+            {/* Person 5 - Yellow circle - bottom left */}
+            <motion.div
+              className="absolute bottom-20 left-20 w-52 h-52 rounded-full overflow-hidden"
+              style={{
+                border: `3px solid #F59E0B40`,
+                background: '#FCD34D',
+                boxShadow: `0 10px 40px rgba(252, 211, 77, 0.3)`
+              }}
+              animate={{ y: [0, 18, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img src={person5} alt="Expert 5" className="w-full h-full object-cover" />
+            </motion.div>
+
+            {/* Person 6 - Cyan rounded square - bottom right */}
+            <motion.div
+              className="absolute bottom-10 right-32 w-44 h-48 rounded-2xl overflow-hidden"
+              style={{
+                border: `3px solid ${theme.colors.primary.electric}40`,
+                background: theme.colors.primary.electric,
+                boxShadow: `0 10px 40px ${theme.colors.primary.electric}40`,
+                transform: 'rotate(8deg)'
+              }}
+              animate={{ y: [0, -18, 0], rotate: [8, -2, 8] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <img src={person6} alt="Expert 6" className="w-full h-full object-cover" />
+            </motion.div>
+
+            {/* Decorative shapes */}
+            <motion.div
+              className="absolute top-1/4 right-1/4 w-8 h-8"
+              style={{
+                border: `2px solid #FF8C42`,
+                transform: 'rotate(45deg)'
+              }}
+              animate={{ rotate: [45, 225, 45] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute bottom-1/3 left-1/3 w-4 h-4 rounded-full"
+              style={{ background: theme.colors.primary.electric }}
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
           </motion.div>
         </div>
       </section>
