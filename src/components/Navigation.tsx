@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import authService from "@/lib/authService";
+import { useAuth } from "@/hooks/useAuth";
+import { supabaseAuth } from "@/lib/supabaseAuth";
 import logoOkatech from "@/assets/logo-okatech.png";
 
 const Navigation = () => {
@@ -13,7 +14,7 @@ const Navigation = () => {
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const currentUser = authService.getCurrentUser();
+  const { user } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
 
@@ -73,8 +74,8 @@ const Navigation = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const handleLogout = () => {
-    authService.logout();
+  const handleLogout = async () => {
+    await supabaseAuth.signOut();
     navigate("/");
   };
 
@@ -254,14 +255,14 @@ const Navigation = () => {
             </div>
 
             {/* CTA Buttons */}
-            {currentUser ? (
+            {user ? (
               <>
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   style={{ color: isDark ? theme.colors.text.secondary : '#666666', fontSize: '0.875rem' }}
                 >
-                  {currentUser.name}
+                  {user.email}
                 </motion.span>
                 <Link to="/admin">
                   <motion.button
@@ -454,13 +455,13 @@ const Navigation = () => {
                 </div>
               </div>
 
-              {currentUser ? (
+              {user ? (
                 <>
                   <div 
                     className="px-4 py-2 text-sm"
                     style={{ color: isDark ? theme.colors.text.secondary : '#666666' }}
                   >
-                    {currentUser.name}
+                    {user.email}
                   </div>
                   <Link to="/admin" onClick={() => setIsOpen(false)}>
                     <button

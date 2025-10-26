@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, Mail, AlertCircle, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { Lock, Mail, AlertCircle, ArrowLeft, Eye, EyeOff, UserPlus } from "lucide-react";
 import { toast } from "sonner";
-import authService from "@/lib/authService";
+import { supabaseAuth } from "@/lib/supabaseAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { theme } from "@/styles/theme";
 import { motion } from "framer-motion";
 import { useThemeStyles } from "@/hooks/useThemeStyles";
@@ -12,11 +13,20 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const themeStyles = useThemeStyles();
   const { t } = useLanguage();
-  const [email, setEmail] = useState("admin@okatech.fr");
-  const [password, setPassword] = useState("Asted1982*");
+  const { user, isLoading: authLoading } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (user && !authLoading) {
+      navigate("/admin");
+    }
+  }, [user, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,18 +34,32 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     try {
-      const result = authService.login(email, password);
-
-      if (result) {
-        toast.success("Connexion réussie!");
-        navigate("/admin");
+      if (isSignUp) {
+        const { data, error } = await supabaseAuth.signUp(email, password);
+        
+        if (error) {
+          setError(error.message);
+          toast.error(error.message);
+        } else if (data.user) {
+          toast.success("Compte créé avec succès! Vous pouvez maintenant vous connecter.");
+          setIsSignUp(false);
+          setPassword("");
+        }
       } else {
-        setError("Email ou mot de passe incorrect");
-        toast.error("Erreur de connexion");
+        const { data, error } = await supabaseAuth.signIn(email, password);
+        
+        if (error) {
+          setError("Email ou mot de passe incorrect");
+          toast.error("Erreur de connexion");
+        } else if (data.session) {
+          toast.success("Connexion réussie!");
+          navigate("/admin");
+        }
       }
     } catch (err) {
       setError("Une erreur est survenue");
-      console.error("Login error:", err);
+      console.error("Auth error:", err);
+      toast.error("Une erreur est survenue");
     } finally {
       setIsLoading(false);
     }
@@ -288,7 +312,7 @@ const AdminLogin = () => {
               {/* Submit button */}
               <motion.button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || authLoading}
                 className="w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-white"
                 style={{
                   background: `linear-gradient(135deg, ${theme.colors.primary.electric}, ${theme.colors.primary.purple})`,
@@ -300,7 +324,7 @@ const AdminLogin = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
               >
-                {isLoading ? (
+                {isLoading || authLoading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-transparent rounded-full animate-spin" 
                       style={{
@@ -312,10 +336,29 @@ const AdminLogin = () => {
                   </>
                 ) : (
                   <>
-                    <Lock size={18} />
-                    {t('admin.signin')}
+                    {isSignUp ? <UserPlus size={18} /> : <Lock size={18} />}
+                    {isSignUp ? "Créer un compte" : t('admin.signin')}
                   </>
                 )}
+              </motion.button>
+
+              {/* Toggle Sign Up / Sign In */}
+              <motion.button
+                type="button"
+                onClick={() => {
+                  setIsSignUp(!isSignUp);
+                  setError("");
+                }}
+                className="w-full text-center text-sm transition-colors"
+                style={{ color: theme.colors.primary.electric }}
+                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.3, duration: 0.8 }}
+              >
+                {isSignUp 
+                  ? "Vous avez déjà un compte? Se connecter" 
+                  : "Pas encore de compte? Créer un compte"}
               </motion.button>
             </form>
 
