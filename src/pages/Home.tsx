@@ -51,7 +51,7 @@ const Home = () => {
           {/* Purple gradient - top right */}
           <div
             className="absolute -top-20 -right-20 w-72 h-72 rounded-full"
-            style={{
+          style={{
               background: `radial-gradient(circle, ${theme.colors.primary.purple}30, transparent 70%)`
             }}
           />
@@ -91,13 +91,13 @@ const Home = () => {
                   }}
                 >
                   {t('hero.title')}
-                </span>
+              </span>
               </h1>
               <p style={{ color: themeStyles.text.secondary, fontSize: '1.125rem', lineHeight: '1.6' }}>
                 {t('hero.subtitle')}
               </p>
             </div>
-
+            
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <motion.button
@@ -197,7 +197,7 @@ const Home = () => {
                 animate={{ y: [0, 15, 0] }}
                 transition={{ duration: 6, repeat: Infinity }}
               />
-            </div>
+          </div>
           </motion.div>
         </div>
       </section>
@@ -402,32 +402,32 @@ const Home = () => {
           variants={containerVariants}
         >
           <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
-            Ce qui nous rend différents
+            {t('advantages.title')}
           </motion.h2>
           <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: themeStyles.text.secondary }}>
-            L'IA n'est pas une mode, c'est une nécessité. Depuis 2019, OKA Tech anticipe et accompagne la transformation digitale.
+            {t('advantages.subtitle')}
           </motion.p>
 
           <motion.div variants={containerVariants} className="grid md:grid-cols-2 gap-8">
             {[
               {
-                title: 'Expertise Métier Multi-Domaines (6+ ans)',
-                description: 'Gestion de projet, développement logiciel, automatisation. Nous parlons votre langue.',
+                title: t('advantages.adv1Title'),
+                description: t('advantages.adv1Desc'),
                 icon: Brain
               },
               {
-                title: 'Architecture Scalable & Sécurisée',
-                description: 'Conformité RGPD garantie, infrastructure cloud moderne, monitoring 24/7.',
+                title: t('advantages.adv2Title'),
+                description: t('advantages.adv2Desc'),
                 icon: Lock
               },
               {
-                title: 'Approche Human-Centric',
-                description: 'L\'IA doit servir l\'humain. Formation et support inclus pour vos équipes.',
+                title: t('advantages.adv3Title'),
+                description: t('advantages.adv3Desc'),
                 icon: Users
               },
               {
-                title: 'Time-to-Market Rapide',
-                description: 'Timeline: 11-17 semaines pour une solution complète. Support 24/7 pendant 6 mois.',
+                title: t('advantages.adv4Title'),
+                description: t('advantages.adv4Desc'),
                 icon: Rocket
               }
             ].map((adv, idx) => (
@@ -448,7 +448,7 @@ const Home = () => {
                   }}
                 >
                   <adv.icon size={24} />
-                </div>
+                  </div>
                 <div>
                   <h3 className="text-lg font-bold mb-2" style={{ color: themeStyles.text.primary }}>
                     {adv.title}
@@ -456,7 +456,7 @@ const Home = () => {
                   <p style={{ color: themeStyles.text.secondary }}>
                     {adv.description}
                   </p>
-                </div>
+          </div>
               </motion.div>
             ))}
           </motion.div>
@@ -479,11 +479,10 @@ const Home = () => {
           className="max-w-4xl mx-auto text-center"
         >
           <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: themeStyles.text.primary }}>
-            Agent IA en Action
+            {t('chatbotCta.title')}
           </motion.h2>
           <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: themeStyles.text.secondary }}>
-            Découvrez comment notre agent IA peut qualifier vos prospects et générer des rapports intelligents. 
-            Commencez une conversation.
+            {t('chatbotCta.subtitle')}
           </motion.p>
           <motion.div variants={itemVariants} className="flex justify-center">
             <Button
@@ -493,11 +492,11 @@ const Home = () => {
                 color: theme.colors.primary.dark
               }}
             >
-              Lancer une Conversation <ChevronRight className="ml-2" />
+              {t('chatbotCta.cta')} <ChevronRight className="ml-2" />
             </Button>
           </motion.div>
           <motion.p variants={itemVariants} className="text-sm mt-6" style={{ color: themeStyles.text.muted }}>
-            Aucune obligation. Aucun spam. Juste une conversation.
+            {t('chatbotCta.disclaimer')}
           </motion.p>
         </motion.div>
       </section>
@@ -511,7 +510,7 @@ const Home = () => {
           variants={containerVariants}
         >
           <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
-            Parlons de Votre Transformation
+            {t('contactHome.title')}
           </motion.h2>
 
           <motion.div variants={containerVariants} className="grid md:grid-cols-2 gap-12 mt-12">
@@ -526,7 +525,7 @@ const Home = () => {
                   <p style={{ color: themeStyles.text.primary }} className="font-semibold">
                     50 Avenue des Champs Élysées<br />75008 Paris, France
                   </p>
-                </div>
+              </div>
                 <div>
                   <p className="text-sm" style={{ color: themeStyles.text.muted }}>EMAIL</p>
                   <p style={{ color: theme.colors.primary.electric }} className="font-semibold">
