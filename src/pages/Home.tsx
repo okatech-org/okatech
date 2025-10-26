@@ -212,10 +212,10 @@ const Home = () => {
           className="text-center mb-16"
         >
           <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: themeStyles.text.primary }}>
-            Pourquoi choisir OKA Tech ?
+            {t('whyChoose.title')}
           </motion.h2>
           <motion.p variants={itemVariants} className="text-xl" style={{ color: themeStyles.text.secondary }}>
-            Trois piliers fondamentaux de notre approche
+            {t('whyChoose.subtitle')}
           </motion.p>
         </motion.div>
 
@@ -229,18 +229,18 @@ const Home = () => {
           {[
             {
               icon: Brain,
-              title: 'Expertise au-delà du Code',
-              description: 'Nous comprenons vos métiers, vos processus, vos défis spécifiques. Plus de 6 ans d\'expérience en implémentation IA full-stack et ingénierie avancée des prompts.'
+              title: t('whyChoose.pillar1Title'),
+              description: t('whyChoose.pillar1Desc')
             },
             {
               icon: Users,
-              title: 'Libérez Votre Équipe',
-              description: 'Automatisez les tâches administratives répétitives. Laissez vos collaborateurs se concentrer sur le travail purement humain et augmentez la productivité.'
+              title: t('whyChoose.pillar2Title'),
+              description: t('whyChoose.pillar2Desc')
             },
             {
               icon: Workflow,
-              title: 'Transformation Adaptée',
-              description: 'Nous nous adaptons à l\'évolution de votre entreprise avec une scalabilité garantie et une architecture cloud native. Résilience et performance 99.9%.'
+              title: t('whyChoose.pillar3Title'),
+              description: t('whyChoose.pillar3Desc')
             }
           ].map((pillar, idx) => (
             <motion.div
@@ -287,10 +287,10 @@ const Home = () => {
             className="text-center mb-16"
           >
             <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: themeStyles.text.primary }}>
-              Nos Solutions - En Action
+              {t('solutions.title')}
             </motion.h2>
             <motion.p variants={itemVariants} className="text-xl" style={{ color: themeStyles.text.secondary }}>
-              De l'idée à l'automatisation
+              {t('solutions.subtitle')}
             </motion.p>
           </motion.div>
 
@@ -304,39 +304,39 @@ const Home = () => {
             {[
               {
                 icon: Zap,
-                title: 'Qualification Automatisée des Leads',
-                description: 'Notre agent IA capture, analyse et qualifie vos leads automatiquement',
+                title: t('solutionsHome.sol1Title'),
+                description: t('solutionsHome.sol1Desc'),
                 features: [
-                  'Conversation naturelle avec le prospect',
-                  'Extraction automatique des besoins',
-                  'Génération de rapports détaillés',
-                  'Notification instantanée'
+                  t('solutionsHome.sol1Feature1'),
+                  t('solutionsHome.sol1Feature2'),
+                  t('solutionsHome.sol1Feature3'),
+                  t('solutionsHome.sol1Feature4')
                 ],
-                cta: 'Voir le Démo'
+                cta: t('solutionsHome.sol1Cta')
               },
               {
                 icon: Workflow,
-                title: 'Orchestration IA - Processus Réinventés',
-                description: 'Automatisez les workflows complexes et libérez vos ressources',
+                title: t('solutionsHome.sol2Title'),
+                description: t('solutionsHome.sol2Desc'),
                 features: [
-                  'Analyse intelligente des documents',
-                  'Routage automatisé des tâches',
-                  'Réduction du temps de 80%',
-                  'Intégration multi-systèmes'
+                  t('solutionsHome.sol2Feature1'),
+                  t('solutionsHome.sol2Feature2'),
+                  t('solutionsHome.sol2Feature3'),
+                  t('solutionsHome.sol2Feature4')
                 ],
-                cta: 'En Savoir Plus'
+                cta: t('solutionsHome.sol2Cta')
               },
               {
                 icon: Rocket,
-                title: 'Analytics & Dashboard Intelligent',
-                description: 'Visualisez vos données et prenez des décisions basées sur l\'IA',
+                title: t('solutionsHome.sol3Title'),
+                description: t('solutionsHome.sol3Desc'),
                 features: [
-                  'Tableau de bord personnalisé',
-                  'Analyses prédictives',
-                  'Recommandations automatisées',
-                  'Insights temps réel'
+                  t('solutionsHome.sol3Feature1'),
+                  t('solutionsHome.sol3Feature2'),
+                  t('solutionsHome.sol3Feature3'),
+                  t('solutionsHome.sol3Feature4')
                 ],
-                cta: 'Découvrir'
+                cta: t('solutionsHome.sol3Cta')
               }
             ].map((solution, idx) => (
               <motion.div
