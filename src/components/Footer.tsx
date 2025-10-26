@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import { Mail, MapPin, Phone, Linkedin, Github, Twitter } from "lucide-react";
 import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useThemeStyles } from "@/hooks/useThemeStyles";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
+  const themeStyles = useThemeStyles();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -28,30 +32,30 @@ const Footer = () => {
 
   const footerSections = [
     {
-      title: "Produit",
+      title: t('footer.product'),
       links: [
-        { label: "Home", path: "/" },
-        { label: "About", path: "/about" },
-        { label: "Solutions", path: "/solutions" },
-        { label: "Contact", path: "/contact" },
+        { label: t('nav.home'), path: "/" },
+        { label: t('nav.about'), path: "/about" },
+        { label: t('nav.solutions'), path: "/solutions" },
+        { label: t('nav.contact'), path: "/contact" },
       ],
     },
     {
-      title: "Services",
+      title: t('footer.services'),
       links: [
-        { label: "AI Implementation" },
-        { label: "Custom Chatbots" },
-        { label: "Prompt Engineering" },
-        { label: "Business Automation" },
+        { label: t('footer.aiImplementation') },
+        { label: t('footer.chatbots') },
+        { label: t('footer.promptEngineering') },
+        { label: t('footer.automation') },
       ],
     },
     {
-      title: "Resources",
+      title: t('footer.resources'),
       links: [
-        { label: "Documentation" },
-        { label: "Blog" },
-        { label: "FAQ" },
-        { label: "Support" },
+        { label: t('footer.documentation') },
+        { label: t('footer.blog') },
+        { label: t('footer.faq') },
+        { label: t('footer.support') },
       ],
     },
   ];
@@ -101,10 +105,9 @@ const Footer = () => {
             </Link>
             <p
               className="text-sm leading-relaxed"
-              style={{ color: theme.colors.text.secondary }}
+              style={{ color: themeStyles.text.secondary }}
             >
-              Solutions IA full-stack pour transformer votre entreprise. Excellence
-              technologique et expertise métier.
+              {t('hero.subtitle')}
             </p>
             {/* Social Links */}
             <div className="flex items-center gap-3 pt-2">
@@ -186,9 +189,9 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="space-y-4">
             <h4
               className="font-semibold text-base"
-              style={{ color: theme.colors.text.primary }}
+              style={{ color: themeStyles.text.primary }}
             >
-              Contact
+              {t('footer.contact')}
             </h4>
             <div className="space-y-3">
               <a
@@ -206,15 +209,14 @@ const Footer = () => {
                 </motion.div>
                 <span
                   className="text-sm leading-relaxed transition-colors"
-                  style={{ color: theme.colors.text.secondary }}
+                  style={{ color: themeStyles.text.secondary }}
                 >
-                  50 Avenue des Champs Élysées<br />
-                  75008 Paris, France
+                  {t('footer.address')}
                 </span>
               </a>
 
               <a
-                href="mailto:info@oka-tech.fr"
+                href={`mailto:${t('footer.email_contact')}`}
                 className="flex items-center gap-3 group"
               >
                 <motion.div
@@ -226,9 +228,9 @@ const Footer = () => {
                 </motion.div>
                 <span
                   className="text-sm transition-colors"
-                  style={{ color: theme.colors.text.secondary }}
+                  style={{ color: themeStyles.text.secondary }}
                 >
-                  info@oka-tech.fr
+                  {t('footer.email_contact')}
                 </span>
               </a>
 
@@ -242,9 +244,9 @@ const Footer = () => {
                 </motion.div>
                 <span
                   className="text-sm"
-                  style={{ color: theme.colors.text.secondary }}
+                  style={{ color: themeStyles.text.secondary }}
                 >
-                  +33 (0) 1 XX XX XX XX
+                  {t('footer.phone_contact')}
                 </span>
               </div>
             </div>
@@ -272,21 +274,21 @@ const Footer = () => {
           viewport={{ once: true }}
           className="flex flex-col sm:flex-row justify-between items-center gap-6 text-sm"
         >
-          <p style={{ color: theme.colors.text.secondary }}>
-            © {currentYear} OKA Tech. All rights reserved. SIREN: 988 507 356
+          <p style={{ color: themeStyles.text.secondary }}>
+            {t('footer.copyright')} • SIREN: 988 507 356
           </p>
 
           <div className="flex items-center gap-6">
             <motion.a
               href="#"
               className="transition-all"
-              style={{ color: theme.colors.text.secondary }}
+              style={{ color: themeStyles.text.secondary }}
               whileHover={{
                 color: theme.colors.primary.electric,
                 scale: 1.05,
               }}
             >
-              Privacy Policy
+              {t('footer.privacyPolicy')}
             </motion.a>
             <div
               className="w-px h-4"
@@ -295,13 +297,13 @@ const Footer = () => {
             <motion.a
               href="#"
               className="transition-all"
-              style={{ color: theme.colors.text.secondary }}
+              style={{ color: themeStyles.text.secondary }}
               whileHover={{
                 color: theme.colors.primary.electric,
                 scale: 1.05,
               }}
             >
-              Terms of Service
+              {t('footer.termsOfService')}
             </motion.a>
           </div>
         </motion.div>
