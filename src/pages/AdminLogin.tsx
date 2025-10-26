@@ -50,17 +50,6 @@ const AdminLogin = () => {
             <p className="text-muted-foreground">Accès au tableau de bord</p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">Identifiants par défaut:</p>
-                <p>Email: admin@okatech.fr</p>
-                <p>Mot de passe: Asted1982*</p>
-              </div>
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
