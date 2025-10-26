@@ -28,42 +28,42 @@ const About = () => {
   const specializations = [
     {
       icon: Code2,
-      title: "Software Development",
-      description: "Custom software solutions built with modern technologies and best practices",
+      title: t('about.spec1Title'),
+      description: t('about.spec1Desc'),
     },
     {
       icon: Lightbulb,
-      title: "AI Integration",
-      description: "Seamless integration of AI capabilities into existing business processes",
+      title: t('about.spec2Title'),
+      description: t('about.spec2Desc'),
     },
     {
       icon: Users,
-      title: "Project Management",
-      description: "Expert guidance from conception to deployment and beyond",
+      title: t('about.spec3Title'),
+      description: t('about.spec3Desc'),
     },
     {
       icon: Database,
-      title: "Business Automation",
-      description: "Streamline operations with intelligent automation solutions",
+      title: t('about.spec4Title'),
+      description: t('about.spec4Desc'),
     },
   ];
 
   const values = [
     {
-      title: "Innovation First",
-      description: "We stay at the forefront of AI technology to deliver cutting-edge solutions",
+      title: t('about.value1Title'),
+      description: t('about.value1Desc'),
     },
     {
-      title: "Client Success",
-      description: "Your success is our success. We're committed to measurable results",
+      title: t('about.value2Title'),
+      description: t('about.value2Desc'),
     },
     {
-      title: "Technical Excellence",
-      description: "We maintain the highest standards in code quality and system architecture",
+      title: t('about.value3Title'),
+      description: t('about.value3Desc'),
     },
     {
-      title: "Transparent Communication",
-      description: "Clear, honest communication throughout every stage of your project",
+      title: t('about.value4Title'),
+      description: t('about.value4Desc'),
     },
   ];
 
