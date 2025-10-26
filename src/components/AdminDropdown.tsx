@@ -220,9 +220,9 @@ export const AdminDropdown = ({
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex items-center justify-center p-4"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -20 }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-2xl max-h-[90vh] rounded-2xl border overflow-hidden flex flex-col"
               style={{
