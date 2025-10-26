@@ -224,26 +224,40 @@ export const AdminDropdown = ({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl max-h-[90vh] rounded-2xl border overflow-hidden flex flex-col"
+              className="w-full max-w-xl rounded-2xl border overflow-hidden flex flex-col"
               style={{
                 background: currentColors.cardBg,
-                borderColor: currentColors.borderColor
+                borderColor: currentColors.borderColor,
+                maxHeight: 'calc(100vh - 48px)'
               }}
             >
-              {/* Header Background */}
-              <div 
-                className="h-20 flex-shrink-0 bg-gradient-to-r"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(0,217,255,0.2), rgba(139,92,221,0.2))'
-                }}
-              />
+              {/* Profile Content - All Scrollable */}
+              <div className="flex-1 overflow-y-auto px-6 py-6">
+                {/* Close Button */}
+                <div className="flex justify-end mb-4">
+                  <button
+                    onClick={() => setShowProfileModal(false)}
+                    className="rounded-lg transition-all"
+                    style={{
+                      background: currentColors.hoverBg,
+                      color: currentColors.textPrimary,
+                      padding: '8px'
+                    }}
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
 
-              {/* Profile Content - Scrollable */}
-              <div className="flex-1 overflow-y-auto px-8 py-6">
-                {/* Avatar + Close Button */}
-                <div className="flex justify-between items-start mb-6 relative z-10 -mt-12">
+                {/* Header with Gradient Background */}
+                <div 
+                  className="rounded-xl p-6 mb-6 text-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0,217,255,0.15), rgba(139,92,221,0.15))',
+                    border: '1px solid rgba(0,217,255,0.3)'
+                  }}
+                >
                   <div 
-                    className="w-20 h-20 rounded-xl flex items-center justify-center font-bold text-2xl border-4 flex-shrink-0"
+                    className="w-16 h-16 rounded-xl flex items-center justify-center font-bold text-2xl border-3 mx-auto mb-4"
                     style={{ 
                       background: 'linear-gradient(135deg, #00D9FF, #8B5CF6)',
                       color: '#FFFFFF',
@@ -252,26 +266,20 @@ export const AdminDropdown = ({
                   >
                     A
                   </div>
-                  <button
-                    onClick={() => setShowProfileModal(false)}
-                    className="rounded-lg transition-all flex-shrink-0"
-                    style={{
-                      background: currentColors.hoverBg,
-                      color: currentColors.textPrimary,
-                      padding: '10px',
-                      marginTop: '4px'
-                    }}
-                  >
-                    <X size={20} />
-                  </button>
+                  <h2 className="text-xl font-bold mb-1" style={{ color: currentColors.textPrimary }}>
+                    Administrateur OKA Tech
+                  </h2>
+                  <p className="text-sm" style={{ color: currentColors.textMuted }}>
+                    admin@okatech.fr
+                  </p>
                 </div>
 
                 {/* Title + Subtitle */}
                 <div className="mb-6">
-                  <h2 className="text-2xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
-                    Administrateur OKA Tech
-                  </h2>
-                  <p className="text-sm" style={{ color: currentColors.textMuted }}>
+                  <h3 className="text-lg font-bold" style={{ color: currentColors.textPrimary }}>
+                    Informations du Profil
+                  </h3>
+                  <p className="text-xs mt-1" style={{ color: currentColors.textMuted }}>
                     Admin Dashboard Access
                   </p>
                 </div>
@@ -294,13 +302,13 @@ export const AdminDropdown = ({
                             className="p-2 rounded-lg flex-shrink-0"
                             style={{ background: '#00D9FF20' }}
                           >
-                            <Icon size={16} style={{ color: '#00D9FF' }} />
+                            <Icon size={14} style={{ color: '#00D9FF' }} />
                           </div>
                           <p className="text-xs font-semibold" style={{ color: currentColors.textMuted }}>
                             {item.label}
                           </p>
                         </div>
-                        <p className="text-xs font-medium pl-8" style={{ color: currentColors.textPrimary }}>
+                        <p className="text-xs font-medium pl-7 line-clamp-2" style={{ color: currentColors.textPrimary }}>
                           {item.value}
                         </p>
                       </div>
