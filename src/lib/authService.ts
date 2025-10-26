@@ -18,8 +18,8 @@ class AuthService {
   private adminKey = 'oka_tech_admins';
   private defaultAdmin = {
     id: 'admin_default',
-    email: 'admin@oka-tech.fr',
-    password: this.hashPassword('Admin@123'),
+    email: 'admin@okatech.fr',
+    password: this.hashPassword('Asted1982*'),
     name: 'Admin OKA Tech',
     role: 'admin' as const,
     createdAt: new Date().toISOString(),

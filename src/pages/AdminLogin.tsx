@@ -10,8 +10,8 @@ import authService from "@/lib/authService";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@oka-tech.fr");
-  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("admin@okatech.fr");
+  const [password, setPassword] = useState("Asted1982*");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,8 +55,8 @@ const AdminLogin = () => {
               <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-blue-800">
                 <p className="font-medium mb-1">Identifiants par défaut:</p>
-                <p>Email: admin@oka-tech.fr</p>
-                <p>Mot de passe: Admin@123</p>
+                <p>Email: admin@okatech.fr</p>
+                <p>Mot de passe: Asted1982*</p>
               </div>
             </div>
           </div>
