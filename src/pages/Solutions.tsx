@@ -121,14 +121,16 @@ const Solutions = () => {
           {solutions.map((solution, idx) => (
             <motion.div
               key={idx}
-              className="relative overflow-hidden rounded-xl border group"
+              className="relative overflow-hidden rounded-xl border-2 group backdrop-blur-sm"
               style={{
                 borderColor: themeStyles.card.border,
                 boxShadow: themeStyles.shadows.soft
               }}
               whileHover={{ 
                 y: -8,
-                boxShadow: `0 20px 40px ${theme.colors.primary.electric}30`
+                scale: 1.02,
+                borderColor: theme.colors.primary.electric,
+                boxShadow: `0 20px 40px ${theme.colors.primary.electric}50`
               }}
               transition={{ duration: 0.3 }}
             >
@@ -144,6 +146,10 @@ const Solutions = () => {
                   style={{
                     background: `linear-gradient(180deg, ${themeStyles.card.background}99 0%, ${themeStyles.card.background}F0 100%)`
                   }}
+                />
+                {/* Animated colorful gradient overlay */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-purple-500/30 to-orange-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 />
               </div>
 

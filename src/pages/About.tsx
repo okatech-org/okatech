@@ -151,26 +151,28 @@ const About = () => {
                 variants={itemVariants}
               >
                 <motion.div
-                  className="rounded-xl overflow-hidden"
-                  whileHover={{ scale: 1.05 }}
+                  className="rounded-xl overflow-hidden relative group border-2 border-transparent"
+                  whileHover={{ scale: 1.05, borderColor: theme.colors.primary.electric }}
                   transition={{ duration: 0.3 }}
                 >
                   <img 
                     src={aboutTeam1} 
                     alt="Our Team"
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-purple-500/30 to-orange-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
                 <motion.div
-                  className="rounded-xl overflow-hidden"
-                  whileHover={{ scale: 1.05 }}
+                  className="rounded-xl overflow-hidden relative group border-2 border-transparent"
+                  whileHover={{ scale: 1.05, borderColor: theme.colors.primary.purple }}
                   transition={{ duration: 0.3 }}
                 >
                   <img 
                     src={aboutTeam2} 
                     alt="Team Collaboration"
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 via-cyan-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -347,8 +349,12 @@ const About = () => {
                 className="group"
               >
                 <motion.div
-                  className="relative overflow-hidden rounded-xl mb-4"
-                  whileHover={{ y: -8 }}
+                  className="relative overflow-hidden rounded-xl mb-4 border-2 border-transparent"
+                  whileHover={{ 
+                    y: -8,
+                    scale: 1.05,
+                    borderColor: theme.colors.primary.electric
+                  }}
                   transition={{ duration: 0.3 }}
                 >
                   <img 
@@ -362,15 +368,24 @@ const About = () => {
                       background: `linear-gradient(180deg, transparent 0%, ${theme.colors.primary.electric}40 100%)`
                     }}
                   />
+                  {/* Animated colorful gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-purple-500/30 to-orange-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Animated ring */}
+                  <div 
+                    className="absolute inset-0 rounded-xl border-2 scale-105 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                    style={{
+                      borderColor: theme.colors.primary.electric
+                    }}
+                  />
                 </motion.div>
                 <h3 
-                  className="text-lg font-bold text-center"
+                  className="text-lg font-bold text-center group-hover:text-[var(--primary)] transition-colors duration-300"
                   style={{ color: themeStyles.text.primary }}
                 >
                   {expert.name}
                 </h3>
                 <p 
-                  className="text-sm text-center"
+                  className="text-sm text-center group-hover:text-[var(--accent)] transition-colors duration-300"
                   style={{ color: themeStyles.text.secondary }}
                 >
                   {expert.role}
