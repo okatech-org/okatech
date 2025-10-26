@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import leadStorage from "@/lib/leadStorage";
 import pdfGenerator from "@/lib/pdfGenerator";
 import { openAIService } from "@/lib/openai";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useThemeStyles } from "@/hooks/useThemeStyles";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,10 +29,13 @@ interface AIChatbotProps {
 }
 
 const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps) => {
+  const { t } = useLanguage();
+  const themeStyles = useThemeStyles();
+  
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Bonjour! Je suis l'Assistant IA d'OKA Tech. Décrivez-moi le principal défi auquel votre entreprise fait face, et je vous proposerais des solutions adaptées.",
+      content: t('chatbot.initialMessage'),
       timestamp: new Date(),
     },
   ]);
@@ -56,7 +61,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
 
     // Vérifier les coordonnées si demandé
     if (shouldCollectContact && !collectedPhone) {
-      toast.error("Veuillez fournir votre numéro de téléphone");
+      toast.error(t('chatbot.phoneRequired'));
       return;
     }
 
@@ -111,7 +116,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
         }, 1000);
       }
     } catch (error) {
-      toast.error("Erreur lors de la communication avec l'IA");
+      toast.error(t('chatbot.error'));
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
@@ -120,7 +125,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
 
   const generateReport = async () => {
     if (!conversationId) {
-      toast.error("Aucune conversation à analyser");
+      toast.error(t('chatbot.error'));
       return;
     }
 
@@ -150,7 +155,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
       });
 
       console.log("Lead saved:", lead);
-      toast.success("Rapport généré! Téléchargement en cours...", { duration: 3000 });
+      toast.success(t('chatbot.reportGenerated'), { duration: 3000 });
       
       setTimeout(() => {
         pdfGenerator.generateReportPDF(lead);
@@ -160,7 +165,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
       onReportGenerated();
     } catch (error) {
       console.error("Error generating report:", error);
-      toast.error("Erreur lors de la génération du rapport");
+      toast.error(t('chatbot.error'));
     } finally {
       setIsLoading(false);
     }
@@ -172,8 +177,8 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
         <div className="flex items-center gap-3">
           <Bot className="w-6 h-6 text-primary-foreground" />
           <div>
-            <h3 className="font-semibold text-primary-foreground">Assistant IA OKA Tech</h3>
-            <p className="text-xs text-primary-foreground/80">Expert en solutions IA</p>
+            <h3 className="font-semibold text-primary-foreground">{t('chatbot.title')}</h3>
+            <p className="text-xs text-primary-foreground/80">{t('chatbot.subtitle')}</p>
           </div>
         </div>
         <Button variant="ghost" size="sm" onClick={onClose} className="text-primary-foreground hover:bg-primary-foreground/10">
@@ -213,7 +218,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
           <div className="flex items-start gap-3 mb-3">
             <Phone className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-blue-900">Veuillez laisser vos coordonnées</p>
+              <p className="text-sm font-medium text-blue-900">{t('chatbot.phoneRequired')}</p>
               <p className="text-xs text-blue-800 mt-1">
                 Un expert d'OKA Tech vous contactera rapidement
               </p>
@@ -223,7 +228,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
             type="tel"
             value={collectedPhone}
             onChange={(e) => setCollectedPhone(e.target.value)}
-            placeholder="+33 6 XX XX XX XX"
+            placeholder={t('chatbot.phonePlaceholder')}
             className="mb-2"
           />
         </div>
@@ -234,7 +239,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
           <div className="flex items-start gap-3">
             <FileText className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-green-900">Rapport généré avec succès!</p>
+              <p className="text-sm font-medium text-green-900">{t('chatbot.reportGenerated')}</p>
               <p className="text-xs text-green-800 mt-1">
                 Vous recevrez bientôt l'analyse complète par email
               </p>
@@ -251,8 +256,8 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
             onKeyPress={(e) => e.key === "Enter" && handleSend()}
             placeholder={
               reportGenerated 
-                ? "Rapport en cours de traitement..." 
-                : "Décrivez votre besoin..."
+                ? t('chatbot.generatingReport')
+                : t('chatbot.inputPlaceholder')
             }
             disabled={isLoading || reportGenerated}
             className="flex-1"
