@@ -184,7 +184,7 @@ const AdminLogin = () => {
           <motion.div
             className="rounded-2xl border p-8"
             style={{
-              background: '#0A0A0A',
+              background: '#000000',
               borderColor: `${theme.colors.primary.electric}20`
             }}
             initial={{ opacity: 0, y: 20 }}

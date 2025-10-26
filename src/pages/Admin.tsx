@@ -132,7 +132,27 @@ const Admin = () => {
     }
   };
 
-  const currentColors = isDarkMode ? colors.dark : colors.light;
+  const currentColors = isDarkMode
+    ? {
+        bg: '#000000',
+        cardBg: '#0A0A0A',
+        headerBg: '#111111',
+        hoverBg: '#1A1A1A',
+        borderColor: '#2A2A2A',
+        textPrimary: '#FFFFFF',
+        textSecondary: '#B0B0B0',
+        textMuted: '#666666',
+      }
+    : {
+        bg: '#FAFAFA',
+        cardBg: '#FFFFFF',
+        headerBg: '#FFFFFF',
+        hoverBg: '#F5F5F5',
+        borderColor: '#E0E0E0',
+        textPrimary: '#1A1A1A',
+        textSecondary: '#666666',
+        textMuted: '#999999',
+      };
 
   return (
     <div style={{ 

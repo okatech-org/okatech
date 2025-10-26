@@ -1,10 +1,10 @@
 export const theme = {
   colors: {
     primary: {
-      dark: '#0A0E27',
+      dark: '#000000',
       electric: '#00D9FF',
       purple: '#9D4EDD',
-      indigo: '#2A1B4D',
+      indigo: '#1A1A1A',
       lime: '#39FF14',
     },
     text: {
@@ -23,7 +23,7 @@ export const theme = {
   gradients: {
     primary: 'linear-gradient(135deg, #00D9FF 0%, #9D4EDD 100%)',
     neon: 'linear-gradient(90deg, #00D9FF 0%, #39FF14 50%, #9D4EDD 100%)',
-    dark: 'linear-gradient(180deg, rgba(0,217,255,0.1) 0%, rgba(157,78,221,0.05) 100%)',
+    dark: 'linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.95) 100%)',
     vibrant: 'linear-gradient(45deg, #00D9FF, #9D4EDD, #39FF14)',
   },
 
