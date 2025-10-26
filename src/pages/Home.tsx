@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, Zap, Users, Workflow, Brain, Lock, Rocket } from 'lucide-react';
 import { useState } from 'react';
 import { useThemeStyles } from '@/hooks/useThemeStyles';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Home = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const themeStyles = useThemeStyles();
+  const { t } = useLanguage();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -79,7 +81,6 @@ const Home = () => {
             {/* Title with gradient */}
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                Nous comprenons votre activité
                 <span
                   className="block"
                   style={{
@@ -89,11 +90,11 @@ const Home = () => {
                     backgroundClip: 'text'
                   }}
                 >
-                  au-delà de vos pensées
+                  {t('hero.title')}
                 </span>
               </h1>
               <p style={{ color: themeStyles.text.secondary, fontSize: '1.125rem', lineHeight: '1.6' }}>
-                OKA Tech réinvente votre entreprise avec l'IA. Solutions full-stack personnalisées qui libèrent votre équipe.
+                {t('hero.subtitle')}
               </p>
             </div>
 
@@ -110,7 +111,7 @@ const Home = () => {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Commençons Ensemble
+                {t('hero.cta')}
               </motion.button>
               <motion.button
                 className="px-8 py-3 rounded-xl font-medium text-base transition-all border"
@@ -124,7 +125,7 @@ const Home = () => {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                En savoir plus
+                {t('nav.getStarted')}
               </motion.button>
             </div>
 
@@ -132,15 +133,15 @@ const Home = () => {
             <div className="grid grid-cols-3 gap-4 pt-8" style={{ borderTop: `1px solid ${themeStyles.borders.light}` }}>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
                 <div className="text-3xl font-bold" style={{ color: theme.colors.primary.electric }}>6+</div>
-                <div className="text-sm" style={{ color: themeStyles.text.muted }}>Ans d'expertise</div>
+                <div className="text-sm" style={{ color: themeStyles.text.muted }}>{t('hero.expertise')}</div>
               </motion.div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                 <div className="text-3xl font-bold" style={{ color: '#FF8C42' }}>50+</div>
-                <div className="text-sm" style={{ color: themeStyles.text.muted }}>Projets réussis</div>
+                <div className="text-sm" style={{ color: themeStyles.text.muted }}>{t('hero.projects')}</div>
               </motion.div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
                 <div className="text-3xl font-bold" style={{ color: theme.colors.primary.purple }}>24/7</div>
-                <div className="text-sm" style={{ color: themeStyles.text.muted }}>Support</div>
+                <div className="text-sm" style={{ color: themeStyles.text.muted }}>{t('hero.support')}</div>
               </motion.div>
             </div>
           </motion.div>

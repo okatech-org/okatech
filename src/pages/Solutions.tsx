@@ -2,9 +2,11 @@ import { theme } from '@/styles/theme';
 import { motion } from 'framer-motion';
 import { Brain, Zap, Workflow, TrendingUp, Shield, CheckCircle } from "lucide-react";
 import { useThemeStyles } from '@/hooks/useThemeStyles';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Solutions = () => {
   const themeStyles = useThemeStyles();
+  const { t } = useLanguage();
 
   const solutions = [
     {
@@ -54,12 +56,12 @@ const Solutions = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
           >
-            Nos Solutions
+            {t('solutions.ourSolutions')}
             <span
               className="block mt-3"
               style={{ color: theme.colors.primary.electric }}
             >
-              Personnalisées pour Votre Métier
+              {t('solutions.subtitle')}
             </span>
           </motion.h1>
 
@@ -70,7 +72,7 @@ const Solutions = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
           >
-            De la consultation à l'implémentation complète, nous guidons chaque étape de votre transformation IA
+            {t('solutions.startTransformation')}
           </motion.p>
         </motion.div>
       </section>
@@ -84,7 +86,7 @@ const Solutions = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          Nos Domaines d'Expertise
+          {t('solutions.domainExpertise')}
         </motion.h2>
 
         <motion.div
@@ -133,7 +135,7 @@ const Solutions = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Pourquoi Nous Choisir
+            {t('solutions.whyChoose')}
           </motion.h2>
 
           <motion.div
@@ -180,7 +182,7 @@ const Solutions = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          Commençons Votre Transformation
+          {t('solutions.startTransformation')}
         </motion.h2>
 
         <motion.p
@@ -190,7 +192,7 @@ const Solutions = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          Contactez nos experts pour une consultation gratuite et décourez comment l'IA peut transformer votre entreprise
+          {t('contact.description')}
         </motion.p>
 
         <motion.button
@@ -204,7 +206,7 @@ const Solutions = () => {
           }}
           whileTap={{ scale: 0.95 }}
         >
-          Demander une Démo
+          {t('solutions.cta')}
         </motion.button>
       </section>
     </div>

@@ -6,10 +6,12 @@ import authService from "@/lib/authService";
 import { theme } from "@/styles/theme";
 import { motion } from "framer-motion";
 import { useThemeStyles } from "@/hooks/useThemeStyles";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const themeStyles = useThemeStyles();
+  const { t } = useLanguage();
   const [email, setEmail] = useState("admin@okatech.fr");
   const [password, setPassword] = useState("Asted1982*");
   const [showPassword, setShowPassword] = useState(false);
@@ -72,7 +74,7 @@ const AdminLogin = () => {
         whileHover={{ scale: 1.05 }}
       >
         <ArrowLeft size={18} />
-        <span className="text-sm font-medium">Retour</span>
+        <span className="text-sm font-medium">{t('common.back')}</span>
       </motion.button>
 
       {/* Main content - Asymmetric layout */}
@@ -143,7 +145,7 @@ const AdminLogin = () => {
               style={{ background: theme.colors.primary.electric }}
             />
             <span style={{ color: theme.colors.primary.electric }} className="text-sm font-semibold">
-              Admin Dashboard
+              {t('admin.adminDashboard')}
             </span>
           </motion.div>
 
@@ -155,7 +157,7 @@ const AdminLogin = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            Connexion Sécurisée
+            {t('admin.login')}
             <span
               className="block mt-2"
               style={{
@@ -177,7 +179,7 @@ const AdminLogin = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            Accédez au tableau de bord administrateur
+            {t('admin.dashboard')}
           </motion.p>
 
           {/* Form Container */}
@@ -206,7 +208,7 @@ const AdminLogin = () => {
                 >
                   <AlertCircle size={20} style={{ color: '#FF4365' }} className="flex-shrink-0 mt-0.5" />
                   <p style={{ color: '#FF4365' }} className="text-sm">
-                    {error}
+                    {t('admin.error')}
                   </p>
                 </motion.div>
               )}
@@ -219,7 +221,7 @@ const AdminLogin = () => {
                 transition={{ delay: 1, duration: 0.8 }}
               >
                 <label style={{ color: themeStyles.text.primary }} className="text-sm font-semibold block">
-                  Email
+                  {t('admin.email')}
                 </label>
                 <div className="relative">
                   <Mail
@@ -251,7 +253,7 @@ const AdminLogin = () => {
                 transition={{ delay: 1.1, duration: 0.8 }}
               >
                 <label style={{ color: themeStyles.text.primary }} className="text-sm font-semibold block">
-                  Mot de passe
+                  {t('admin.password')}
                 </label>
                 <div className="relative">
                   <Lock
@@ -306,12 +308,12 @@ const AdminLogin = () => {
                         borderRightColor: '#FFFFFF'
                       }} 
                     />
-                    Connexion...
+                    {t('common.loading')}
                   </>
                 ) : (
                   <>
                     <Lock size={18} />
-                    Se connecter
+                    {t('admin.signin')}
                   </>
                 )}
               </motion.button>

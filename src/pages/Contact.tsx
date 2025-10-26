@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useState } from 'react';
 import { useThemeStyles } from '@/hooks/useThemeStyles';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Contact = () => {
   const themeStyles = useThemeStyles();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
@@ -56,12 +58,12 @@ const Contact = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
           >
-            Parlons de Votre Projet
+            {t('contact.title')}
             <span
               className="block mt-3"
               style={{ color: theme.colors.primary.electric }}
             >
-              Commençons Dès Aujourd'hui
+              {t('contact.subtitle')}
             </span>
           </motion.h1>
 
@@ -72,7 +74,7 @@ const Contact = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
           >
-            Nos experts sont prêts à discuter de votre transformation IA et vous proposer les solutions adaptées
+            {t('contact.description')}
           </motion.p>
         </motion.div>
       </section>
@@ -89,24 +91,24 @@ const Contact = () => {
           {/* Contact Info */}
           <motion.div variants={itemVariants} className="space-y-8">
             <h2 className="text-3xl font-bold" style={{ color: themeStyles.text.primary }}>
-              Nos Coordonnées
+              {t('contact.ourCoordinates')}
             </h2>
 
             {[
               {
                 icon: MapPin,
-                label: "Adresse",
-                value: "50 Avenue des Champs Élysées\n75008 Paris, France"
+                label: t('contact.address'),
+                value: t('footer.address')
               },
               {
                 icon: Phone,
-                label: "Téléphone",
-                value: "+33 (0) 1 XX XX XX XX"
+                label: t('contact.phone'),
+                value: t('footer.phone_contact')
               },
               {
                 icon: Mail,
-                label: "Email",
-                value: "contact@oka-tech.com"
+                label: t('contact.email'),
+                value: t('footer.email_contact')
               }
             ].map((info, idx) => (
               <motion.div
@@ -139,7 +141,7 @@ const Contact = () => {
               }}
             >
               <h3 className="font-bold mb-4" style={{ color: themeStyles.text.primary }}>
-                Heures d'Ouverture
+                {t('contact.openingHours')}
               </h3>
               <div className="space-y-2" style={{ color: themeStyles.text.secondary }}>
                 <p>Lundi - Vendredi: 09:00 - 18:00</p>
@@ -160,12 +162,12 @@ const Contact = () => {
               }}
             >
               <h2 className="text-2xl font-bold" style={{ color: themeStyles.text.primary }}>
-                Envoyez-nous un Message
+                {t('contact.sendMessage')}
               </h2>
 
               <div>
                 <label style={{ color: themeStyles.text.primary }} className="block text-sm font-medium mb-2">
-                  Nom
+                  {t('contact.name')}
                 </label>
                 <input
                   type="text"
@@ -178,13 +180,13 @@ const Contact = () => {
                     color: themeStyles.text.primary,
                     borderColor: themeStyles.borders.medium
                   }}
-                  placeholder="Votre nom"
+                  placeholder={t('contact.name')}
                 />
               </div>
 
               <div>
                 <label style={{ color: themeStyles.text.primary }} className="block text-sm font-medium mb-2">
-                  Email
+                  {t('contact.email')}
                 </label>
                 <input
                   type="email"
@@ -197,13 +199,13 @@ const Contact = () => {
                     color: themeStyles.text.primary,
                     borderColor: themeStyles.borders.medium
                   }}
-                  placeholder="votre@email.com"
+                  placeholder={t('contact.email')}
                 />
               </div>
 
               <div>
                 <label style={{ color: themeStyles.text.primary }} className="block text-sm font-medium mb-2">
-                  Message
+                  {t('contact.message')}
                 </label>
                 <textarea
                   required
@@ -216,7 +218,7 @@ const Contact = () => {
                     color: themeStyles.text.primary,
                     borderColor: themeStyles.borders.medium
                   }}
-                  placeholder="Décrivez votre projet..."
+                  placeholder={t('contact.message')}
                 />
               </div>
 
@@ -232,7 +234,7 @@ const Contact = () => {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Envoyer le Message
+                {t('contact.send')}
               </motion.button>
 
               {submitted && (
@@ -242,7 +244,7 @@ const Contact = () => {
                   className="text-center"
                   style={{ color: theme.colors.semantic.success }}
                 >
-                  ✓ Message envoyé avec succès!
+                  ✓ {t('contact.success')}
                 </motion.p>
               )}
             </motion.form>
@@ -260,7 +262,7 @@ const Contact = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Questions Fréquentes
+            {t('contact.faq')}
           </motion.h2>
 
           <motion.div

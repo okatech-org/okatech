@@ -2,9 +2,11 @@ import { theme } from '@/styles/theme';
 import { motion } from 'framer-motion';
 import { Code2, Database, Users, Lightbulb, Target, TrendingUp, CheckCircle } from "lucide-react";
 import { useThemeStyles } from '@/hooks/useThemeStyles';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const About = () => {
   const themeStyles = useThemeStyles();
+  const { t } = useLanguage();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -89,12 +91,12 @@ const About = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
           >
-            À Propos d'OKA Tech
+            {t('about.title')}
             <span
               className="block mt-3"
               style={{ color: theme.colors.primary.electric }}
             >
-              6+ Ans d'Excellence IA
+              {t('about.subtitle')}
             </span>
           </motion.h1>
 
@@ -105,8 +107,7 @@ const About = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
           >
-            Fondée sur la conviction que l'IA doit être accessible et pratique pour chaque entreprise, 
-            OKA Tech livre des solutions IA transformatrices depuis plus de 6 ans.
+            {t('about.description')}
           </motion.p>
         </motion.div>
       </section>
@@ -123,7 +124,7 @@ const About = () => {
             {/* Story Content */}
             <motion.div variants={itemVariants} className="space-y-6">
               <h2 className="text-4xl font-bold" style={{ color: themeStyles.text.primary }}>
-                Notre Histoire
+                {t('about.ourStory')}
               </h2>
               <div className="space-y-4" style={{ color: themeStyles.text.secondary }}>
                 <p className="leading-relaxed">
@@ -150,12 +151,12 @@ const About = () => {
               {[
                 {
                   icon: Target,
-                  title: "Mission",
+                  title: t('about.mission'),
                   description: "Transformer les entreprises grâce à des solutions IA innovantes et accessibles"
                 },
                 {
                   icon: TrendingUp,
-                  title: "Vision",
+                  title: t('about.vision'),
                   description: "Être le partenaire privilégié de la transformation numérique et IA"
                 }
               ].map((item, idx) => (
@@ -193,7 +194,7 @@ const About = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Nos Spécialisations
+            {t('about.specializations')}
           </motion.h2>
 
           <motion.div
@@ -236,7 +237,7 @@ const About = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          Nos Valeurs Fondamentales
+          {t('about.coreValues')}
         </motion.h2>
 
         <motion.div
@@ -281,7 +282,7 @@ const About = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            Notre Équipe d'Experts
+            {t('about.team')}
           </motion.h2>
 
           <motion.p
