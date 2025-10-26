@@ -19,7 +19,7 @@ class AuthService {
   private defaultAdmin = {
     id: 'admin_default',
     email: 'admin@okatech.fr',
-    password: this.hashPassword('Asted1982*'),
+    password: btoa('Asted1982*'), // Hash inline: base64 of 'Asted1982*'
     name: 'Admin OKA Tech',
     role: 'admin' as const,
     createdAt: new Date().toISOString(),
