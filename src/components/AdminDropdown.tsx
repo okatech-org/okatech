@@ -224,111 +224,180 @@ export const AdminDropdown = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-2xl border p-6"
+              className="w-full max-w-2xl rounded-2xl border overflow-hidden"
               style={{
                 background: currentColors.cardBg,
                 borderColor: currentColors.borderColor
               }}
             >
-              {/* Header */}
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold" style={{ color: currentColors.textPrimary }}>
-                    Profil Admin
+              {/* Header Background */}
+              <div 
+                className="h-24 bg-gradient-to-r"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(0,217,255,0.2), rgba(139,92,221,0.2))'
+                }}
+              />
+
+              {/* Profile Content */}
+              <div className="px-8 pb-8">
+                {/* Avatar + Close Button */}
+                <div className="flex justify-between items-start -mt-12 mb-6 relative z-10">
+                  <div 
+                    className="w-24 h-24 rounded-xl flex items-center justify-center font-bold text-3xl border-4"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #00D9FF, #8B5CF6)',
+                      color: '#FFFFFF',
+                      borderColor: currentColors.cardBg
+                    }}
+                  >
+                    A
+                  </div>
+                  <button
+                    onClick={() => setShowProfileModal(false)}
+                    className="rounded-lg transition-all"
+                    style={{
+                      background: currentColors.hoverBg,
+                      color: currentColors.textPrimary,
+                      padding: '10px',
+                      marginTop: '4px'
+                    }}
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                {/* Title + Subtitle */}
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold mb-2" style={{ color: currentColors.textPrimary }}>
+                    Administrateur OKA Tech
                   </h2>
-                  <p className="text-sm" style={{ color: currentColors.textMuted }}>
-                    Informations du compte administrateur
+                  <p className="text-base" style={{ color: currentColors.textMuted }}>
+                    Admin Dashboard Access
                   </p>
                 </div>
-                <button
-                  onClick={() => setShowProfileModal(false)}
-                  className="rounded-lg transition-all"
-                  style={{
-                    background: currentColors.hoverBg,
-                    color: currentColors.textPrimary,
-                    padding: '8px'
-                  }}
-                >
-                  <X size={20} />
-                </button>
-              </div>
 
-              {/* Profile Info Grid */}
-              <div className="space-y-4 mb-6">
-                {profileInfo.map((item, idx) => {
-                  const Icon = item.icon;
-                  return (
-                    <div 
-                      key={idx}
-                      className="p-4 rounded-xl border flex items-start gap-4"
-                      style={{
-                        background: currentColors.bg,
-                        borderColor: currentColors.borderColor
-                      }}
-                    >
+                {/* Info Grid - 2 Columns */}
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  {profileInfo.map((item, idx) => {
+                    const Icon = item.icon;
+                    return (
                       <div 
-                        className="p-2 rounded-lg flex-shrink-0"
-                        style={{ background: '#00D9FF20' }}
+                        key={idx}
+                        className="p-4 rounded-lg border"
+                        style={{
+                          background: currentColors.bg,
+                          borderColor: currentColors.borderColor
+                        }}
                       >
-                        <Icon size={20} style={{ color: '#00D9FF' }} />
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold mb-1" style={{ color: currentColors.textMuted }}>
-                          {item.label}
-                        </p>
-                        <p className="text-sm font-medium" style={{ color: currentColors.textPrimary }}>
+                        <div className="flex items-center gap-3 mb-2">
+                          <div 
+                            className="p-2 rounded-lg"
+                            style={{ background: '#00D9FF20' }}
+                          >
+                            <Icon size={18} style={{ color: '#00D9FF' }} />
+                          </div>
+                          <p className="text-xs font-semibold" style={{ color: currentColors.textMuted }}>
+                            {item.label}
+                          </p>
+                        </div>
+                        <p className="text-sm font-medium pl-10" style={{ color: currentColors.textPrimary }}>
                           {item.value}
                         </p>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Stats */}
-              <div 
-                className="rounded-xl border p-4 mb-6"
-                style={{
-                  background: isDarkMode ? 'rgba(0,217,255,0.05)' : 'rgba(0,217,255,0.1)',
-                  borderColor: '#00D9FF'
-                }}
-              >
-                <p className="text-xs font-semibold mb-3" style={{ color: currentColors.textMuted }}>
-                  Statistiques
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-2xl font-bold" style={{ color: '#00D9FF' }}>
-                      0
-                    </p>
-                    <p className="text-xs" style={{ color: currentColors.textMuted }}>
-                      Leads Gérés
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold" style={{ color: '#10B981' }}>
-                      0
-                    </p>
-                    <p className="text-xs" style={{ color: currentColors.textMuted }}>
-                      Actions
-                    </p>
-                  </div>
+                    );
+                  })}
                 </div>
-              </div>
 
-              {/* Actions */}
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => setShowProfileModal(false)}
-                  className="flex-1 rounded-lg font-semibold"
+                {/* Statistics Section */}
+                <div 
+                  className="rounded-xl border p-6 mb-8"
                   style={{
-                    background: currentColors.bg,
-                    color: currentColors.textPrimary,
-                    border: `1px solid ${currentColors.borderColor}`
+                    background: isDarkMode ? 'rgba(0,217,255,0.08)' : 'rgba(0,217,255,0.15)',
+                    borderColor: '#00D9FF40'
                   }}
                 >
-                  Fermer
-                </Button>
+                  <h3 className="text-sm font-semibold mb-4 uppercase tracking-wide" style={{ color: currentColors.textMuted }}>
+                    Statistiques
+                  </h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <p className="text-3xl font-bold mb-1" style={{ color: '#00D9FF' }}>
+                        15
+                      </p>
+                      <p className="text-xs" style={{ color: currentColors.textMuted }}>
+                        Leads Gérés
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold mb-1" style={{ color: '#10B981' }}>
+                        42
+                      </p>
+                      <p className="text-xs" style={{ color: currentColors.textMuted }}>
+                        Actions
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold mb-1" style={{ color: '#8B5CF6' }}>
+                        8
+                      </p>
+                      <p className="text-xs" style={{ color: currentColors.textMuted }}>
+                        Jours
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Links */}
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <button
+                    onClick={() => setShowProfileModal(false)}
+                    className="px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+                    style={{
+                      background: '#00D9FF',
+                      color: '#000000'
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+                      (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,217,255,0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                      (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                    }}
+                  >
+                    <Settings size={18} />
+                    Éditer Profil
+                  </button>
+                  <button
+                    onClick={() => setShowProfileModal(false)}
+                    className="px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 border"
+                    style={{
+                      background: currentColors.bg,
+                      color: currentColors.textPrimary,
+                      borderColor: currentColors.borderColor
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = currentColors.hoverBg;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = currentColors.bg;
+                    }}
+                  >
+                    Fermer
+                  </button>
+                </div>
+
+                {/* Footer Info */}
+                <div 
+                  className="text-center py-4 rounded-lg text-xs"
+                  style={{
+                    background: isDarkMode ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                    color: currentColors.textMuted
+                  }}
+                >
+                  <p className="mb-1">Version 1.0.0</p>
+                  <p>© 2025 OKA Tech - Admin System</p>
+                </div>
               </div>
             </motion.div>
           </motion.div>
