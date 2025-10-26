@@ -13,6 +13,32 @@ let supabaseInstance: ReturnType<typeof createClient<Database>> | null = null;
 
 // Create a dummy client that returns null responses when Supabase is not configured
 class DummySupabaseClient {
+  auth = {
+    onAuthStateChange: (callback: any) => {
+      console.warn('[Supabase Dummy] auth.onAuthStateChange() called - Supabase not configured');
+      return { data: { subscription: { unsubscribe: () => {} } } };
+    },
+    signUp: async (params: any) => {
+      console.warn('[Supabase Dummy] auth.signUp() called - Supabase not configured');
+      return { data: { user: null, session: null }, error: new Error('Supabase not configured') };
+    },
+    signInWithPassword: async (params: any) => {
+      console.warn('[Supabase Dummy] auth.signInWithPassword() called - Supabase not configured');
+      return { data: { user: null, session: null }, error: new Error('Supabase not configured') };
+    },
+    signOut: async () => {
+      console.warn('[Supabase Dummy] auth.signOut() called - Supabase not configured');
+      return { error: null };
+    },
+    getSession: async () => {
+      console.warn('[Supabase Dummy] auth.getSession() called - Supabase not configured');
+      return { data: { session: null }, error: null };
+    },
+    getUser: async () => {
+      console.warn('[Supabase Dummy] auth.getUser() called - Supabase not configured');
+      return { data: { user: null }, error: null };
+    }
+  };
   functions = {
     invoke: async (functionName: string) => {
       console.warn(`[Supabase Dummy] functions.invoke('${functionName}') called - Supabase not configured`);
@@ -29,6 +55,10 @@ class DummySupabaseClient {
         single: async () => {
           console.warn(`[Supabase Dummy] select().eq('${column}', ${value}).single() called - Supabase not configured`);
           return { data: null, error: new Error('Supabase not configured') };
+        },
+        maybeSingle: async () => {
+          console.warn(`[Supabase Dummy] select().eq('${column}', ${value}).maybeSingle() called - Supabase not configured`);
+          return { data: null, error: new Error('Supabase not configured') };
         }
       })
     }),
@@ -36,6 +66,12 @@ class DummySupabaseClient {
       eq: async (column: string, value: any) => {
         console.warn(`[Supabase Dummy] update().eq('${column}', ${value}) called - Supabase not configured`);
         return { data: null, error: new Error('Supabase not configured') };
+      }
+    }),
+    delete: () => ({
+      eq: async (column: string, value: any) => {
+        console.warn(`[Supabase Dummy] delete().eq('${column}', ${value}) called - Supabase not configured`);
+        return { error: new Error('Supabase not configured') };
       }
     })
   });
