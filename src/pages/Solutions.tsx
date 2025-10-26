@@ -1,222 +1,348 @@
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { 
-  Bot, 
-  Brain, 
-  Code, 
-  Workflow, 
-  MessageSquare, 
-  Sparkles,
-  CheckCircle2,
-  ArrowRight 
-} from "lucide-react";
+import { theme } from '@/styles/theme';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Zap, Workflow, TrendingUp, Brain, CheckCircle, ArrowRight } from 'lucide-react';
 
 const Solutions = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: theme.animations.easing.smooth }
+    }
+  };
+
   const solutions = [
     {
-      icon: Bot,
-      title: "Custom AI Chatbots",
-      description: "Intelligent conversational agents tailored to your business needs",
+      id: 1,
+      icon: Zap,
+      title: 'Qualification Automatisée des Leads',
+      description: 'Notre agent IA capture, analyse et qualifie vos prospects 24/7',
       features: [
-        "Natural language understanding",
-        "Multi-channel deployment",
-        "24/7 customer support automation",
-        "Integration with existing systems",
+        'Conversation naturelle et contextuelle',
+        'Extraction automatique des besoins',
+        'Génération de rapports détaillés avec score de fit',
+        'Notification instantanée à votre équipe',
+        'Intégration CRM seamless',
+        'Multi-langue support'
       ],
-      benefits: "Reduce support costs by 60% while improving customer satisfaction",
+      benefits: [
+        '80% réduction du temps de qualification',
+        'Augmentation de 40% du taux de conversion',
+        'Disponibilité 24/7',
+        'Zéro coût de ressources additionnelles'
+      ],
+      timeline: '6-8 semaines'
     },
     {
-      icon: Brain,
-      title: "Advanced Prompt Engineering",
-      description: "Optimize AI performance for your specific use cases",
-      features: [
-        "Custom prompt optimization",
-        "Model fine-tuning",
-        "Performance benchmarking",
-        "Continuous improvement",
-      ],
-      benefits: "Achieve up to 3x better results from your AI systems",
-    },
-    {
-      icon: Code,
-      title: "Full-Stack AI Implementation",
-      description: "End-to-end AI solution development and deployment",
-      features: [
-        "Architecture design",
-        "Backend development",
-        "Frontend integration",
-        "Cloud deployment",
-      ],
-      benefits: "Complete, production-ready AI systems in weeks, not months",
-    },
-    {
+      id: 2,
       icon: Workflow,
-      title: "Business Process Automation",
-      description: "Streamline operations with intelligent automation",
+      title: 'Orchestration IA - Processus Réinventés',
+      description: 'Automatisez vos workflows complexes avec l\'intelligence artificielle',
       features: [
-        "Workflow analysis",
-        "Automation strategy",
-        "Implementation",
-        "Monitoring & optimization",
+        'Analyse intelligente des documents',
+        'Routage automatisé des tâches',
+        'Extraction de données avancée',
+        'Intégration multi-systèmes',
+        'Validation intelligente',
+        'Audit trail complet'
       ],
-      benefits: "Save 20+ hours per week on repetitive tasks",
-    },
-  ];
-
-  const caseStudies = [
-    {
-      industry: "E-commerce",
-      challenge: "High customer support volume overwhelming the team",
-      solution: "Implemented AI chatbot handling 80% of common queries",
-      result: "70% reduction in support tickets, 45% cost savings",
+      benefits: [
+        'Réduction du temps de traitement jusqu\'à 80%',
+        'Zéro erreur manuelle',
+        'Scalabilité illimitée',
+        'ROI visible en 3 mois'
+      ],
+      timeline: '8-12 semaines'
     },
     {
-      industry: "Financial Services",
-      challenge: "Manual document processing taking weeks",
-      solution: "Deployed AI-powered document analysis system",
-      result: "95% faster processing, 99.2% accuracy",
-    },
-    {
-      industry: "Healthcare",
-      challenge: "Patient appointment scheduling inefficiencies",
-      solution: "Created intelligent scheduling assistant",
-      result: "50% reduction in no-shows, improved patient satisfaction",
-    },
+      id: 3,
+      icon: TrendingUp,
+      title: 'Analytics & Dashboard Intelligent',
+      description: 'Visualisez vos données et prenez des décisions éclairées avec l\'IA',
+      features: [
+        'Tableaux de bord personnalisés',
+        'Analyses prédictives en temps réel',
+        'Recommandations automatisées',
+        'Export et reporting avancé',
+        'Alertes intelligentes',
+        'API complète pour intégration'
+      ],
+      benefits: [
+        'Insights exploitables en secondes',
+        'Réduction des erreurs de 90%',
+        'Meilleure allocation des ressources',
+        'Décisions data-driven'
+      ],
+      timeline: '7-10 semaines'
+    }
   ];
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold">
-              AI <span className="gradient-text">Solutions</span> That Deliver
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              From custom chatbots to complete AI system implementation, 
-              we provide solutions that drive measurable business results.
-            </p>
-          </div>
-        </div>
+    <div style={{ background: theme.colors.primary.dark, minHeight: '100vh' }}>
+      {/* HERO SECTION */}
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.secondary.cyan}15, transparent 70%)`
+          }}
+        />
+
+        <motion.div
+          className="relative z-10 max-w-4xl mx-auto text-center px-6"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h1
+            className="text-5xl md:text-6xl font-bold mb-6"
+            style={{ color: theme.colors.primary.light }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1 }}
+          >
+            Nos Solutions IA
+            <span
+              className="block mt-3"
+              style={{ color: theme.colors.secondary.cyan }}
+            >
+              Transformez Votre Entreprise
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className="text-lg md:text-xl mb-8"
+            style={{ color: theme.colors.neutral.light }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+          >
+            Des solutions IA adaptées à vos besoins spécifiques, conçues pour automatiser, 
+            accélérer et transformer votre activité.
+          </motion.p>
+        </motion.div>
       </section>
 
-      {/* Solutions Grid */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            {solutions.map((solution, index) => {
-              const Icon = solution.icon;
-              return (
-                <Card 
-                  key={index} 
-                  className="p-8 shadow-card hover:shadow-elegant transition-smooth border-2 hover:border-primary/20 group"
-                >
-                  <div className="w-16 h-16 gradient-primary rounded-lg flex items-center justify-center mb-6 shadow-glow group-hover:scale-110 transition-smooth">
-                    <Icon className="w-8 h-8 text-primary-foreground" />
+      {/* SOLUTIONS SHOWCASE */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="space-y-20"
+        >
+          {solutions.map((solution, idx) => {
+            const Icon = solution.icon;
+            const isEven = idx % 2 === 0;
+
+            return (
+              <motion.div
+                key={solution.id}
+                variants={itemVariants}
+                className="grid md:grid-cols-2 gap-12 items-center"
+              >
+                {/* Content */}
+                <div className={isEven ? 'md:order-1' : 'md:order-2'}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div
+                      className="p-3 rounded-lg"
+                      style={{
+                        background: theme.colors.secondary.cyan + '20',
+                        color: theme.colors.secondary.cyan
+                      }}
+                    >
+                      <Icon size={32} />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold" style={{ color: theme.colors.primary.light }}>
+                        {solution.title}
+                      </h2>
+                      <p className="text-sm" style={{ color: theme.colors.secondary.cyan }}>
+                        Timeline: {solution.timeline}
+                      </p>
+                    </div>
                   </div>
-                  
-                  <h3 className="text-2xl font-bold mb-3">{solution.title}</h3>
-                  <p className="text-muted-foreground mb-6">{solution.description}</p>
-                  
-                  <div className="mb-6">
-                    <h4 className="font-semibold mb-3 text-sm uppercase tracking-wide text-primary">
-                      Key Features
-                    </h4>
-                    <ul className="space-y-2">
-                      {solution.features.map((feature, fIndex) => (
-                        <li key={fIndex} className="flex items-start gap-2 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">{feature}</span>
+
+                  <p className="text-lg mb-8" style={{ color: theme.colors.neutral.light }}>
+                    {solution.description}
+                  </p>
+
+                  <div className="mb-8">
+                    <h3 className="font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+                      Fonctionnalités Clés
+                    </h3>
+                    <ul className="space-y-3">
+                      {solution.features.map((feature, fidx) => (
+                        <li key={fidx} className="flex items-start gap-3" style={{ color: theme.colors.neutral.light }}>
+                          <CheckCircle size={20} style={{ color: theme.colors.secondary.cyan, flexShrink: 0 }} />
+                          <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                  
-                  <div className="pt-6 border-t border-border">
-                    <div className="flex items-start gap-2 mb-4">
-                      <Sparkles className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                      <p className="text-sm font-medium">{solution.benefits}</p>
+
+                  <div className="mb-8">
+                    <h3 className="font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+                      Bénéfices
+                    </h3>
+                    <ul className="space-y-2">
+                      {solution.benefits.map((benefit, bidx) => (
+                        <li key={bidx} className="flex items-center gap-2" style={{ color: theme.colors.secondary.cyan }}>
+                          <span className="w-2 h-2 rounded-full" style={{ background: theme.colors.secondary.cyan }} />
+                          {benefit}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <Button
+                    className="px-8 py-6 text-lg font-semibold rounded-lg"
+                    style={{
+                      background: theme.colors.secondary.cyan,
+                      color: theme.colors.primary.dark
+                    }}
+                  >
+                    En Savoir Plus <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                </div>
+
+                {/* Visual */}
+                <motion.div
+                  className={isEven ? 'md:order-2' : 'md:order-1'}
+                  initial={{ opacity: 0, x: isEven ? 40 : -40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  <div
+                    className="p-8 rounded-lg"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.colors.secondary.cyan}15, ${theme.colors.secondary.cyan}05)`,
+                      border: `1px solid ${theme.colors.secondary.cyan}40`
+                    }}
+                  >
+                    <div className="aspect-video rounded-lg flex items-center justify-center" style={{ background: 'rgba(0, 212, 212, 0.1)' }}>
+                      <Icon size={80} style={{ color: theme.colors.secondary.cyan + '40' }} />
                     </div>
                   </div>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </section>
 
-      {/* Case Studies */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-accent/5 via-background to-primary/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="gradient-text">Success Stories</span>
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Real results from real clients across various industries
-            </p>
-          </div>
+      {/* WHY CHOOSE US */}
+      <section className="py-20 px-6" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+              Pourquoi nos Solutions?
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.neutral.light }}>
+              Ce qui nous rend différents
+            </motion.p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {caseStudies.map((study, index) => (
-              <Card 
-                key={index} 
-                className="p-6 shadow-card hover:shadow-elegant transition-smooth border-2 hover:border-primary/20"
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {[
+              {
+                icon: Brain,
+                title: 'IA Adaptée à Votre Métier',
+                description: 'Nous customisons chaque solution à vos processus et besoins spécifiques, pas du générique.'
+              },
+              {
+                icon: Zap,
+                title: 'Implémentation Rapide',
+                description: 'De 6 à 17 semaines pour une solution complète. Time-to-market optimisé.'
+              },
+              {
+                icon: TrendingUp,
+                title: 'ROI Garanti',
+                description: 'Résultats mesurables dès les premiers mois. Support 24/7 pendant 6 mois.'
+              }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="p-8 rounded-lg backdrop-blur-sm border"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderColor: theme.colors.secondary.cyan + '40',
+                  borderWidth: '1px'
+                }}
               >
-                <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-4">
-                  {study.industry}
+                <div
+                  className="mb-4 inline-block p-3 rounded-lg"
+                  style={{
+                    background: theme.colors.secondary.cyan + '20',
+                    color: theme.colors.secondary.cyan
+                  }}
+                >
+                  <item.icon size={28} />
                 </div>
-                
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-xs uppercase tracking-wide text-muted-foreground mb-1">
-                      Challenge
-                    </h4>
-                    <p className="text-sm font-medium">{study.challenge}</p>
-                  </div>
-                  
-                  <div>
-                    <h4 className="text-xs uppercase tracking-wide text-muted-foreground mb-1">
-                      Solution
-                    </h4>
-                    <p className="text-sm">{study.solution}</p>
-                  </div>
-                  
-                  <div className="pt-4 border-t border-border">
-                    <h4 className="text-xs uppercase tracking-wide text-primary mb-2">
-                      Result
-                    </h4>
-                    <p className="text-sm font-semibold gradient-text">{study.result}</p>
-                  </div>
-                </div>
-              </Card>
+                <h3 className="text-xl font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+                  {item.title}
+                </h3>
+                <p style={{ color: theme.colors.neutral.light }}>
+                  {item.description}
+                </p>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="p-8 md:p-16 shadow-elegant border-2 border-primary/10 text-center">
-            <MessageSquare className="w-16 h-16 mx-auto mb-6 text-primary" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Let's Discuss Your <span className="gradient-text">AI Needs</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Every business is unique. Our intelligent consultation system will analyze your 
-              specific challenges and recommend the perfect AI solution for you.
-            </p>
-            <Link to="/contact">
-              <Button variant="hero" size="lg" className="group">
-                Start Free Consultation
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </Card>
-        </div>
+      {/* CTA SECTION */}
+      <section className="py-20 px-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="max-w-4xl mx-auto text-center"
+        >
+          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+            Prêt à Transformer Votre Entreprise?
+          </motion.h2>
+          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: theme.colors.neutral.light }}>
+            Contactez nos experts pour discuter de la solution IA adaptée à vos besoins.
+          </motion.p>
+          <motion.div variants={itemVariants} className="flex gap-4 justify-center flex-wrap">
+            <Button
+              className="px-8 py-6 text-lg font-semibold rounded-lg"
+              style={{
+                background: theme.colors.secondary.cyan,
+                color: theme.colors.primary.dark
+              }}
+            >
+              Planifier une Consultation
+            </Button>
+          </motion.div>
+        </motion.div>
       </section>
     </div>
   );

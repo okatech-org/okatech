@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { theme } from '@/styles/theme';
+import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Mail, MapPin, Phone, MessageSquare, Send } from "lucide-react";
-import { toast } from "sonner";
+import { Mail, MapPin, Phone, Send, CheckCircle } from "lucide-react";
 import AIChatbot from "@/components/AIChatbot";
+import { toast } from "sonner";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -21,27 +18,43 @@ const Contact = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showChatbot, setShowChatbot] = useState(false);
-  const [reportGenerated, setReportGenerated] = useState(false);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: theme.animations.easing.smooth }
+    }
+  };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = "Le nom est requis";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "L'email est requis";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = "Veuillez entrer une adresse email valide";
     }
 
     if (!formData.company.trim()) {
-      newErrors.company = "Company name is required";
+      newErrors.company = "Le nom de l'entreprise est requis";
     }
 
     if (!formData.gdprConsent) {
-      newErrors.gdprConsent = "You must accept the privacy policy";
+      newErrors.gdprConsent = "Vous devez accepter la politique de confidentialité";
     }
 
     setErrors(newErrors);
@@ -52,30 +65,11 @@ const Contact = () => {
     e.preventDefault();
     
     if (validateForm()) {
-      toast.success("Opening AI Assistant...");
+      toast.success("Lancement de l'assistant IA...");
       setShowChatbot(true);
     } else {
-      toast.error("Please fix the errors in the form");
+      toast.error("Veuillez corriger les erreurs du formulaire");
     }
-  };
-
-  const handleChatbotClose = () => {
-    setShowChatbot(false);
-  };
-
-  const handleReportGenerated = () => {
-    setReportGenerated(true);
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      phone: "",
-      message: "",
-      gdprConsent: false,
-    });
-    setTimeout(() => {
-      setShowChatbot(false);
-    }, 3000);
   };
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -86,7 +80,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen pt-20">
+    <div style={{ background: theme.colors.primary.dark, minHeight: '100vh' }}>
       {showChatbot && (
         <AIChatbot
           prospectInfo={{
@@ -95,222 +89,305 @@ const Contact = () => {
             company: formData.company,
             phone: formData.phone,
           }}
-          onClose={handleChatbotClose}
-          onReportGenerated={handleReportGenerated}
+          onClose={() => setShowChatbot(false)}
+          onReportGenerated={() => {
+            setShowChatbot(false);
+            setFormData({
+              name: "",
+              email: "",
+              company: "",
+              phone: "",
+              message: "",
+              gdprConsent: false,
+            });
+          }}
         />
       )}
-      {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold">
-              Get in <span className="gradient-text">Touch</span>
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Start your AI transformation journey today. Our intelligent consultation system 
-              will analyze your needs and provide personalized recommendations.
-            </p>
-          </div>
-        </div>
+
+      {/* HERO SECTION */}
+      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.secondary.cyan}15, transparent 70%)`
+          }}
+        />
+
+        <motion.div
+          className="relative z-10 max-w-4xl mx-auto text-center px-6"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h1
+            className="text-5xl md:text-6xl font-bold mb-6"
+            style={{ color: theme.colors.primary.light }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 1 }}
+          >
+            Parlons de Votre Projet
+            <span
+              className="block mt-3"
+              style={{ color: theme.colors.secondary.cyan }}
+            >
+              Notre équipe est prête à vous aider
+            </span>
+          </motion.h1>
+
+          <motion.p
+            className="text-lg md:text-xl"
+            style={{ color: theme.colors.neutral.light }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+          >
+            Commencez votre parcours de transformation IA dès aujourd'hui. 
+            Notre assistant IA analysera vos besoins et vous fournira des recommandations personnalisées.
+          </motion.p>
+        </motion.div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* Contact Information */}
-            <div className="lg:col-span-1 space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 gradient-primary rounded-lg flex items-center justify-center flex-shrink-0 shadow-glow">
-                      <MapPin className="w-6 h-6 text-primary-foreground" />
+      {/* CONTACT SECTION */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="grid lg:grid-cols-3 gap-12"
+        >
+          {/* Contact Information */}
+          <motion.div variants={itemVariants} className="lg:col-span-1 space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.primary.light }}>
+                Coordonnées
+              </h2>
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: MapPin,
+                    title: "Adresse",
+                    content: "50 Avenue des Champs Élysées\n75008 Paris, France"
+                  },
+                  {
+                    icon: Mail,
+                    title: "Email",
+                    content: "contact@oka-tech.com"
+                  },
+                  {
+                    icon: Phone,
+                    title: "Téléphone",
+                    content: "+33 (0) 1 XX XX XX XX"
+                  }
+                ].map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={idx} className="flex items-start gap-4">
+                      <div
+                        className="p-3 rounded-lg"
+                        style={{
+                          background: theme.colors.secondary.cyan + '20',
+                          color: theme.colors.secondary.cyan
+                        }}
+                      >
+                        <Icon size={24} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-1" style={{ color: theme.colors.primary.light }}>
+                          {item.title}
+                        </h3>
+                        <p className="text-sm whitespace-pre-line" style={{ color: theme.colors.neutral.light }}>
+                          {item.content}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">Address</h3>
-                      <p className="text-sm text-muted-foreground">
-                        50 Avenue des Champs Élysées<br />
-                        75008 Paris, France
-                      </p>
-                    </div>
-                  </div>
+                  );
+                })}
+              </div>
+            </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 gradient-primary rounded-lg flex items-center justify-center flex-shrink-0 shadow-glow">
-                      <Mail className="w-6 h-6 text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-sm text-muted-foreground">
-                        info@oka-tech.fr
-                      </p>
-                    </div>
-                  </div>
+            <motion.div
+              className="p-6 rounded-lg border"
+              style={{
+                background: 'rgba(0, 212, 212, 0.05)',
+                borderColor: theme.colors.secondary.cyan + '40',
+                borderWidth: '1px'
+              }}
+            >
+              <div className="mb-4 p-3 rounded-lg" style={{ background: theme.colors.secondary.cyan + '20' }}>
+                <CheckCircle size={24} style={{ color: theme.colors.secondary.cyan }} />
+              </div>
+              <h3 className="font-semibold mb-2" style={{ color: theme.colors.primary.light }}>
+                Consultation IA Gratuite
+              </h3>
+              <p className="text-sm" style={{ color: theme.colors.neutral.light }}>
+                Après soumission, notre assistant IA engagera une conversation pour comprendre profondément vos besoins et fournir une analyse complète.
+              </p>
+            </motion.div>
+          </motion.div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 gradient-primary rounded-lg flex items-center justify-center flex-shrink-0 shadow-glow">
-                      <Phone className="w-6 h-6 text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">Phone</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Available through contact form
-                      </p>
-                    </div>
-                  </div>
+          {/* Contact Form */}
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2 p-8 rounded-lg backdrop-blur-sm border"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderColor: theme.colors.secondary.cyan + '40',
+              borderWidth: '1px'
+            }}
+          >
+            <h2 className="text-2xl font-bold mb-8" style={{ color: theme.colors.primary.light }}>
+              Formulaire de Contact
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                    Nom Complet <span style={{ color: theme.colors.secondary.cyan }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    placeholder="Jean Dupont"
+                    className="w-full px-4 py-3 rounded-lg"
+                    style={{
+                      background: 'rgba(0, 212, 212, 0.1)',
+                      borderColor: errors.name ? '#ef4444' : theme.colors.secondary.cyan + '40',
+                      color: theme.colors.primary.light,
+                      borderWidth: '1px'
+                    }}
+                  />
+                  {errors.name && (
+                    <p className="text-sm" style={{ color: '#ef4444' }}>{errors.name}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                    Email <span style={{ color: theme.colors.secondary.cyan }}>*</span>
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    placeholder="jean@example.com"
+                    className="w-full px-4 py-3 rounded-lg"
+                    style={{
+                      background: 'rgba(0, 212, 212, 0.1)',
+                      borderColor: errors.email ? '#ef4444' : theme.colors.secondary.cyan + '40',
+                      color: theme.colors.primary.light,
+                      borderWidth: '1px'
+                    }}
+                  />
+                  {errors.email && (
+                    <p className="text-sm" style={{ color: '#ef4444' }}>{errors.email}</p>
+                  )}
                 </div>
               </div>
 
-              <Card className="p-6 shadow-card border-2 border-primary/10">
-                <MessageSquare className="w-12 h-12 text-primary mb-4" />
-                <h3 className="font-semibold mb-2">AI-Powered Consultation</h3>
-                <p className="text-sm text-muted-foreground">
-                  After submitting the form, our intelligent AI assistant will engage with you 
-                  to deeply understand your needs and provide a comprehensive analysis.
-                </p>
-              </Card>
-            </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                    Entreprise <span style={{ color: theme.colors.secondary.cyan }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.company}
+                    onChange={(e) => handleChange("company", e.target.value)}
+                    placeholder="Votre entreprise"
+                    className="w-full px-4 py-3 rounded-lg"
+                    style={{
+                      background: 'rgba(0, 212, 212, 0.1)',
+                      borderColor: errors.company ? '#ef4444' : theme.colors.secondary.cyan + '40',
+                      color: theme.colors.primary.light,
+                      borderWidth: '1px'
+                    }}
+                  />
+                  {errors.company && (
+                    <p className="text-sm" style={{ color: '#ef4444' }}>{errors.company}</p>
+                  )}
+                </div>
 
-            {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <Card className="p-8 shadow-elegant border-2 border-primary/10">
-                <h2 className="text-2xl font-bold mb-6">Start Your Free Consultation</h2>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">
-                        Full Name <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => handleChange("name", e.target.value)}
-                        className={errors.name ? "border-destructive" : ""}
-                        placeholder="John Doe"
-                      />
-                      {errors.name && (
-                        <p className="text-sm text-destructive">{errors.name}</p>
-                      )}
-                    </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                    Téléphone (Optionnel)
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    placeholder="+33 1 23 45 67 89"
+                    className="w-full px-4 py-3 rounded-lg"
+                    style={{
+                      background: 'rgba(0, 212, 212, 0.1)',
+                      borderColor: theme.colors.secondary.cyan + '40',
+                      color: theme.colors.primary.light,
+                      borderWidth: '1px'
+                    }}
+                  />
+                </div>
+              </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="email">
-                        Email Address <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleChange("email", e.target.value)}
-                        className={errors.email ? "border-destructive" : ""}
-                        placeholder="john@example.com"
-                      />
-                      {errors.email && (
-                        <p className="text-sm text-destructive">{errors.email}</p>
-                      )}
-                    </div>
-                  </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium" style={{ color: theme.colors.primary.light }}>
+                  Décrivez Votre Projet (Optionnel)
+                </label>
+                <textarea
+                  value={formData.message}
+                  onChange={(e) => handleChange("message", e.target.value)}
+                  placeholder="Parlez-nous de vos défis ou de ce que vous souhaitez réaliser avec l'IA..."
+                  rows={5}
+                  className="w-full px-4 py-3 rounded-lg resize-none"
+                  style={{
+                    background: 'rgba(0, 212, 212, 0.1)',
+                    borderColor: theme.colors.secondary.cyan + '40',
+                    color: theme.colors.primary.light,
+                    borderWidth: '1px'
+                  }}
+                />
+              </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="company">
-                        Company Name <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="company"
-                        value={formData.company}
-                        onChange={(e) => handleChange("company", e.target.value)}
-                        className={errors.company ? "border-destructive" : ""}
-                        placeholder="Your Company"
-                      />
-                      {errors.company && (
-                        <p className="text-sm text-destructive">{errors.company}</p>
-                      )}
-                    </div>
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="gdpr"
+                  checked={formData.gdprConsent}
+                  onChange={(e) => handleChange("gdprConsent", e.target.checked)}
+                  className="mt-1"
+                />
+                <label htmlFor="gdpr" className="text-sm cursor-pointer" style={{ color: theme.colors.neutral.light }}>
+                  J'accepte le traitement de mes données personnelles conformément à la{" "}
+                  <a href="#" className="hover:underline" style={{ color: theme.colors.secondary.cyan }}>
+                    Politique de Confidentialité
+                  </a>
+                  {" "}et consens à être contacté par OKA Tech.{" "}
+                  <span style={{ color: '#ef4444' }}>*</span>
+                </label>
+              </div>
+              {errors.gdprConsent && (
+                <p className="text-sm" style={{ color: '#ef4444' }}>{errors.gdprConsent}</p>
+              )}
 
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number (Optional)</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => handleChange("phone", e.target.value)}
-                        placeholder="+33 1 23 45 67 89"
-                      />
-                    </div>
-                  </div>
+              <Button
+                type="submit"
+                className="w-full py-6 text-lg font-semibold rounded-lg"
+                style={{
+                  background: theme.colors.secondary.cyan,
+                  color: theme.colors.primary.dark
+                }}
+              >
+                Soumettre et Commencer <Send className="ml-2" size={20} />
+              </Button>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message">
-                      Brief Description of Your Challenge (Optional)
-                    </Label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => handleChange("message", e.target.value)}
-                      placeholder="Tell us about the challenges you're facing or what you'd like to achieve with AI..."
-                      rows={5}
-                    />
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Checkbox
-                      id="gdpr"
-                      checked={formData.gdprConsent}
-                      onCheckedChange={(checked) => 
-                        handleChange("gdprConsent", checked as boolean)
-                      }
-                      className={errors.gdprConsent ? "border-destructive" : ""}
-                    />
-                    <div className="space-y-1">
-                      <Label htmlFor="gdpr" className="text-sm font-normal cursor-pointer">
-                        I agree to the processing of my personal data in accordance with the{" "}
-                        <a href="#" className="text-primary hover:underline">
-                          Privacy Policy
-                        </a>{" "}
-                        and consent to be contacted by OKA Tech.{" "}
-                        <span className="text-destructive">*</span>
-                      </Label>
-                      {errors.gdprConsent && (
-                        <p className="text-sm text-destructive">{errors.gdprConsent}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    variant="hero" 
-                    size="lg" 
-                    className="w-full group"
-                  >
-                    Submit & Start Consultation
-                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-
-                  <p className="text-xs text-muted-foreground text-center">
-                    By submitting this form, you'll receive a personalized AI-generated analysis 
-                    of your needs and recommended solutions.
-                  </p>
-                </form>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Map Placeholder */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="h-96 shadow-elegant border-2 border-primary/10 flex items-center justify-center">
-            <div className="text-center space-y-4">
-              <MapPin className="w-16 h-16 mx-auto text-primary" />
-              <p className="text-muted-foreground">
-                Interactive map will be integrated here
+              <p className="text-xs text-center" style={{ color: theme.colors.neutral.medium }}>
+                En soumettant ce formulaire, vous recevrez une analyse personnalisée générée par l'IA 
+                de vos besoins et les solutions recommandées.
               </p>
-            </div>
-          </Card>
-        </div>
+            </form>
+          </motion.div>
+        </motion.div>
       </section>
     </div>
   );

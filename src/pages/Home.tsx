@@ -31,7 +31,7 @@ const Home = () => {
         <div
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.colors.secondary.cyan}15, transparent 70%)`
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}15, transparent 70%)`
           }}
         />
 
@@ -43,7 +43,7 @@ const Home = () => {
         >
           <motion.h1
             className="text-5xl md:text-7xl font-bold mb-6"
-            style={{ color: theme.colors.primary.light }}
+            style={{ color: theme.colors.text.primary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -51,7 +51,7 @@ const Home = () => {
             Nous comprenons votre activité
             <span
               className="block mt-3"
-              style={{ color: theme.colors.secondary.cyan }}
+              style={{ color: theme.colors.primary.electric }}
             >
               au-delà de vos pensées
             </span>
@@ -59,7 +59,7 @@ const Home = () => {
 
           <motion.p
             className="text-lg md:text-xl mb-8 leading-relaxed"
-            style={{ color: theme.colors.neutral.light }}
+            style={{ color: theme.colors.text.secondary }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
@@ -78,7 +78,7 @@ const Home = () => {
             <Button
               className="px-8 py-6 text-lg font-semibold rounded-lg"
               style={{
-                background: theme.colors.secondary.cyan,
+                background: theme.colors.primary.electric,
                 color: theme.colors.primary.dark
               }}
               onClick={() => document.getElementById('chatbot-section')?.scrollIntoView({ behavior: 'smooth' })}
@@ -89,8 +89,8 @@ const Home = () => {
               variant="outline"
               className="px-8 py-6 text-lg font-semibold rounded-lg"
               style={{
-                borderColor: theme.colors.secondary.cyan,
-                color: theme.colors.secondary.cyan
+                borderColor: theme.colors.primary.electric,
+                color: theme.colors.primary.electric
               }}
               onClick={() => document.getElementById('contact-section')?.scrollIntoView({ behavior: 'smooth' })}
             >
@@ -109,10 +109,10 @@ const Home = () => {
           variants={containerVariants}
           className="text-center mb-16"
         >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
             Pourquoi choisir OKA Tech ?
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.neutral.light }}>
+          <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.text.secondary }}>
             Trois piliers fondamentaux de notre approche
           </motion.p>
         </motion.div>
@@ -147,7 +147,7 @@ const Home = () => {
               className="p-8 rounded-lg backdrop-blur-sm border transition-all duration-300 hover:shadow-lg"
               style={{
                 background: 'rgba(255, 255, 255, 0.05)',
-                borderColor: theme.colors.secondary.cyan + '40',
+                borderColor: theme.colors.primary.electric + '40',
                 borderWidth: '1px'
               }}
               onMouseEnter={() => setHoveredCard(idx)}
@@ -156,17 +156,17 @@ const Home = () => {
               <motion.div
                 className="mb-4 inline-block p-3 rounded-lg"
                 style={{
-                  background: theme.colors.secondary.cyan + '20',
-                  color: theme.colors.secondary.cyan
+                  background: theme.colors.primary.electric + '20',
+                  color: theme.colors.primary.electric
                 }}
                 animate={{ scale: hoveredCard === idx ? 1.1 : 1 }}
               >
                 <pillar.icon size={32} />
               </motion.div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+              <h3 className="text-xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
                 {pillar.title}
               </h3>
-              <p style={{ color: theme.colors.neutral.light }}>
+              <p style={{ color: theme.colors.text.secondary }}>
                 {pillar.description}
               </p>
             </motion.div>
@@ -184,10 +184,10 @@ const Home = () => {
             variants={containerVariants}
             className="text-center mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
               Nos Solutions - En Action
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.neutral.light }}>
+            <motion.p variants={itemVariants} className="text-xl" style={{ color: theme.colors.text.secondary }}>
               De l'idée à l'automatisation
             </motion.p>
           </motion.div>
@@ -243,29 +243,29 @@ const Home = () => {
                 className="p-8 rounded-lg backdrop-blur-sm border transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
                 style={{
                   background: 'rgba(255, 255, 255, 0.05)',
-                  borderColor: theme.colors.secondary.cyan + '40',
+                  borderColor: theme.colors.primary.electric + '40',
                   borderWidth: '1px'
                 }}
               >
                 <div
                   className="mb-6 inline-block p-3 rounded-lg"
                   style={{
-                    background: theme.colors.secondary.cyan + '20',
-                    color: theme.colors.secondary.cyan
+                    background: theme.colors.primary.electric + '20',
+                    color: theme.colors.primary.electric
                   }}
                 >
                   <solution.icon size={32} />
                 </div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: theme.colors.primary.light }}>
+                <h3 className="text-xl font-bold mb-3" style={{ color: theme.colors.text.primary }}>
                   {solution.title}
                 </h3>
-                <p className="mb-6" style={{ color: theme.colors.neutral.light }}>
+                <p className="mb-6" style={{ color: theme.colors.text.secondary }}>
                   {solution.description}
                 </p>
                 <ul className="mb-8 space-y-2">
                   {solution.features.map((feature, fidx) => (
-                    <li key={fidx} className="text-sm flex items-start gap-2" style={{ color: theme.colors.neutral.light }}>
-                      <span style={{ color: theme.colors.secondary.cyan }}>✓</span>
+                    <li key={fidx} className="text-sm flex items-start gap-2" style={{ color: theme.colors.text.secondary }}>
+                      <span style={{ color: theme.colors.primary.electric }}>✓</span>
                       {feature}
                     </li>
                   ))}
@@ -274,8 +274,8 @@ const Home = () => {
                   variant="outline"
                   className="w-full text-sm rounded-lg"
                   style={{
-                    borderColor: theme.colors.secondary.cyan,
-                    color: theme.colors.secondary.cyan
+                    borderColor: theme.colors.primary.electric,
+                    color: theme.colors.primary.electric
                   }}
                 >
                   {solution.cta}
@@ -294,10 +294,10 @@ const Home = () => {
           viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
         >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
             Ce qui nous rend différents
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: theme.colors.neutral.light }}>
+          <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: theme.colors.text.secondary }}>
             L'IA n'est pas une mode, c'est une nécessité. Depuis 2019, OKA Tech anticipe et accompagne la transformation digitale.
           </motion.p>
 
@@ -330,23 +330,23 @@ const Home = () => {
                 className="p-8 rounded-lg flex gap-6"
                 style={{
                   background: 'rgba(0, 212, 212, 0.05)',
-                  borderLeft: `4px solid ${theme.colors.secondary.cyan}`
+                  borderLeft: `4px solid ${theme.colors.primary.electric}`
                 }}
               >
                 <div
                   className="p-3 rounded-lg h-fit"
                   style={{
-                    background: theme.colors.secondary.cyan + '20',
-                    color: theme.colors.secondary.cyan
+                    background: theme.colors.primary.electric + '20',
+                    color: theme.colors.primary.electric
                   }}
                 >
                   <adv.icon size={24} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: theme.colors.primary.light }}>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: theme.colors.text.primary }}>
                     {adv.title}
                   </h3>
-                  <p style={{ color: theme.colors.neutral.light }}>
+                  <p style={{ color: theme.colors.text.secondary }}>
                     {adv.description}
                   </p>
                 </div>
@@ -361,7 +361,7 @@ const Home = () => {
         id="chatbot-section"
         className="py-20 px-6 rounded-2xl mx-6 my-20"
         style={{
-          background: `linear-gradient(135deg, ${theme.colors.secondary.cyan}15, ${theme.colors.secondary.cyan}05)`
+          background: `linear-gradient(135deg, ${theme.colors.primary.electric}15, ${theme.colors.primary.electric}05)`
         }}
       >
         <motion.div
@@ -371,10 +371,10 @@ const Home = () => {
           variants={containerVariants}
           className="max-w-4xl mx-auto text-center"
         >
-          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: theme.colors.primary.light }}>
+          <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6" style={{ color: theme.colors.text.primary }}>
             Agent IA en Action
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: theme.colors.neutral.light }}>
+          <motion.p variants={itemVariants} className="text-xl mb-8" style={{ color: theme.colors.text.secondary }}>
             Découvrez comment notre agent IA peut qualifier vos prospects et générer des rapports intelligents. 
             Commencez une conversation.
           </motion.p>
@@ -382,14 +382,14 @@ const Home = () => {
             <Button
               className="px-10 py-6 text-lg font-semibold rounded-lg"
               style={{
-                background: theme.colors.secondary.cyan,
+                background: theme.colors.primary.electric,
                 color: theme.colors.primary.dark
               }}
             >
               Lancer une Conversation <ChevronRight className="ml-2" />
             </Button>
           </motion.div>
-          <motion.p variants={itemVariants} className="text-sm mt-6" style={{ color: theme.colors.neutral.medium }}>
+          <motion.p variants={itemVariants} className="text-sm mt-6" style={{ color: theme.colors.text.muted }}>
             Aucune obligation. Aucun spam. Juste une conversation.
           </motion.p>
         </motion.div>
@@ -403,38 +403,38 @@ const Home = () => {
           viewport={{ once: true, margin: '-100px' }}
           variants={containerVariants}
         >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.colors.primary.light }}>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: theme.colors.text.primary }}>
             Parlons de Votre Transformation
           </motion.h2>
 
           <motion.div variants={containerVariants} className="grid md:grid-cols-2 gap-12 mt-12">
             {/* Contact Info */}
             <motion.div variants={itemVariants}>
-              <h3 className="text-2xl font-bold mb-8" style={{ color: theme.colors.secondary.cyan }}>
+              <h3 className="text-2xl font-bold mb-8" style={{ color: theme.colors.primary.electric }}>
                 Informations de Contact
               </h3>
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.neutral.medium }}>ADRESSE</p>
-                  <p style={{ color: theme.colors.primary.light }} className="font-semibold">
+                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>ADRESSE</p>
+                  <p style={{ color: theme.colors.text.primary }} className="font-semibold">
                     50 Avenue des Champs Élysées<br />75008 Paris, France
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.neutral.medium }}>EMAIL</p>
-                  <p style={{ color: theme.colors.secondary.cyan }} className="font-semibold">
+                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>EMAIL</p>
+                  <p style={{ color: theme.colors.primary.electric }} className="font-semibold">
                     contact@oka-tech.com
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.neutral.medium }}>TÉLÉPHONE</p>
-                  <p style={{ color: theme.colors.primary.light }} className="font-semibold">
+                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>TÉLÉPHONE</p>
+                  <p style={{ color: theme.colors.text.primary }} className="font-semibold">
                     +33 (0) 1 XX XX XX XX
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: theme.colors.neutral.medium }}>HEURES DE BUREAU</p>
-                  <p style={{ color: theme.colors.primary.light }} className="font-semibold">
+                  <p className="text-sm" style={{ color: theme.colors.text.muted }}>HEURES DE BUREAU</p>
+                  <p style={{ color: theme.colors.text.primary }} className="font-semibold">
                     Lun-Ven: 9h-18h
                   </p>
                 </div>
@@ -443,7 +443,7 @@ const Home = () => {
 
             {/* Contact Form */}
             <motion.div variants={itemVariants} className="p-8 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-              <h3 className="text-2xl font-bold mb-6" style={{ color: theme.colors.secondary.cyan }}>
+              <h3 className="text-2xl font-bold mb-6" style={{ color: theme.colors.primary.electric }}>
                 Formulaire de Contact
               </h3>
               <form className="space-y-4">
@@ -453,8 +453,8 @@ const Home = () => {
                   className="w-full px-4 py-3 rounded-lg"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
-                    borderColor: theme.colors.secondary.cyan + '40',
-                    color: theme.colors.primary.light,
+                    borderColor: theme.colors.primary.electric + '40',
+                    color: theme.colors.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -464,8 +464,8 @@ const Home = () => {
                   className="w-full px-4 py-3 rounded-lg"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
-                    borderColor: theme.colors.secondary.cyan + '40',
-                    color: theme.colors.primary.light,
+                    borderColor: theme.colors.primary.electric + '40',
+                    color: theme.colors.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -475,8 +475,8 @@ const Home = () => {
                   className="w-full px-4 py-3 rounded-lg"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
-                    borderColor: theme.colors.secondary.cyan + '40',
-                    color: theme.colors.primary.light,
+                    borderColor: theme.colors.primary.electric + '40',
+                    color: theme.colors.text.primary,
                     borderWidth: '1px'
                   }}
                 />
@@ -486,15 +486,15 @@ const Home = () => {
                   className="w-full px-4 py-3 rounded-lg resize-none"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
-                    borderColor: theme.colors.secondary.cyan + '40',
-                    color: theme.colors.primary.light,
+                    borderColor: theme.colors.primary.electric + '40',
+                    color: theme.colors.text.primary,
                     borderWidth: '1px'
                   }}
                 />
                 <Button
                   className="w-full py-3 font-semibold rounded-lg"
                   style={{
-                    background: theme.colors.secondary.cyan,
+                    background: theme.colors.primary.electric,
                     color: theme.colors.primary.dark
                   }}
                 >
