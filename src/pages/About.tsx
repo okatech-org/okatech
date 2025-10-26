@@ -3,6 +3,13 @@ import { motion } from 'framer-motion';
 import { Code2, Database, Users, Lightbulb, Target, TrendingUp, CheckCircle } from "lucide-react";
 import { useThemeStyles } from '@/hooks/useThemeStyles';
 import { useLanguage } from '@/contexts/LanguageContext';
+import aboutTeam1 from '@/assets/about-team-1.jpg';
+import aboutTeam2 from '@/assets/about-team-2.jpg';
+import aboutWorkspace from '@/assets/about-workspace.jpg';
+import expert1 from '@/assets/expert-1.jpg';
+import expert2 from '@/assets/expert-2.jpg';
+import expert3 from '@/assets/expert-3.jpg';
+import expert4 from '@/assets/expert-4.jpg';
 
 const About = () => {
   const themeStyles = useThemeStyles();
@@ -137,6 +144,35 @@ const About = () => {
                   {t('about.storyP3')}
                 </p>
               </div>
+
+              {/* Image Grid */}
+              <motion.div 
+                className="grid grid-cols-2 gap-4 mt-8"
+                variants={itemVariants}
+              >
+                <motion.div
+                  className="rounded-xl overflow-hidden"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img 
+                    src={aboutTeam1} 
+                    alt="Our Team"
+                    className="w-full h-48 object-cover"
+                  />
+                </motion.div>
+                <motion.div
+                  className="rounded-xl overflow-hidden"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img 
+                    src={aboutTeam2} 
+                    alt="Team Collaboration"
+                    className="w-full h-48 object-cover"
+                  />
+                </motion.div>
+              </motion.div>
             </motion.div>
 
             {/* Mission & Vision Cards */}
@@ -272,7 +308,7 @@ const About = () => {
       <section className="py-20 px-6" style={{ background: themeStyles.backgrounds.secondary }}>
         <div className="max-w-7xl mx-auto">
           <motion.h2 
-            className="text-4xl font-bold text-center mb-16"
+            className="text-4xl font-bold text-center mb-8"
             style={{ color: themeStyles.text.primary }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -290,6 +326,73 @@ const About = () => {
           >
             {t('about.teamDesc')}
           </motion.p>
+
+          {/* Team Grid */}
+          <motion.div
+            className="grid md:grid-cols-4 gap-8 mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={containerVariants}
+          >
+            {[
+              { image: expert1, name: "Software Architect", role: "Lead Engineer" },
+              { image: expert2, name: "Data Scientist", role: "AI Specialist" },
+              { image: expert3, name: "Tech Leader", role: "CTO" },
+              { image: expert4, name: "Full Stack Developer", role: "Senior Engineer" },
+            ].map((expert, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="group"
+              >
+                <motion.div
+                  className="relative overflow-hidden rounded-xl mb-4"
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <img 
+                    src={expert.image} 
+                    alt={expert.name}
+                    className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background: `linear-gradient(180deg, transparent 0%, ${theme.colors.primary.electric}40 100%)`
+                    }}
+                  />
+                </motion.div>
+                <h3 
+                  className="text-lg font-bold text-center"
+                  style={{ color: themeStyles.text.primary }}
+                >
+                  {expert.name}
+                </h3>
+                <p 
+                  className="text-sm text-center"
+                  style={{ color: themeStyles.text.secondary }}
+                >
+                  {expert.role}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Workspace Image */}
+          <motion.div
+            className="rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <img 
+              src={aboutWorkspace} 
+              alt="Our Workspace"
+              className="w-full h-96 object-cover"
+            />
+          </motion.div>
         </div>
       </section>
     </div>

@@ -1,7 +1,7 @@
 import { theme } from '@/styles/theme';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, Zap, Users, Workflow, Brain, Lock, Rocket } from 'lucide-react';
+import { ChevronRight, Zap, Users, Workflow, Brain, Lock, Rocket, Sparkles, TrendingUp, Shield, Target, LineChart } from 'lucide-react';
 import { useState } from 'react';
 import { useThemeStyles } from '@/hooks/useThemeStyles';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -13,6 +13,13 @@ import person3 from '@/assets/person-3.jpg';
 import person4 from '@/assets/person-4.jpg';
 import person5 from '@/assets/person-5.jpg';
 import person6 from '@/assets/person-6.jpg';
+import digitalAiWorkspace from '@/assets/digital-ai-workspace.jpg';
+import teamCollaboration from '@/assets/team-collaboration.jpg';
+import workflowAutomation from '@/assets/workflow-automation.jpg';
+import dataCenter from '@/assets/data-center.jpg';
+import solutionAi from '@/assets/solution-ai.jpg';
+import solutionPerformance from '@/assets/solution-performance.jpg';
+import solutionIntegration from '@/assets/solution-integration.jpg';
 
 const Home = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -287,7 +294,7 @@ const Home = () => {
       </section>
 
       {/* ===== VALUE PROPOSITION SECTION ===== */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
+      <section className="py-32 px-6 max-w-7xl mx-auto">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -312,56 +319,77 @@ const Home = () => {
         >
           {[
             {
-              icon: Brain,
+              icon: Sparkles,
               title: t('whyChoose.pillar1Title'),
-              description: t('whyChoose.pillar1Desc')
+              description: t('whyChoose.pillar1Desc'),
+              image: digitalAiWorkspace
             },
             {
-              icon: Users,
+              icon: TrendingUp,
               title: t('whyChoose.pillar2Title'),
-              description: t('whyChoose.pillar2Desc')
+              description: t('whyChoose.pillar2Desc'),
+              image: teamCollaboration
             },
             {
-              icon: Workflow,
+              icon: Shield,
               title: t('whyChoose.pillar3Title'),
-              description: t('whyChoose.pillar3Desc')
+              description: t('whyChoose.pillar3Desc'),
+              image: workflowAutomation
             }
           ].map((pillar, idx) => (
             <motion.div
               key={idx}
               variants={itemVariants}
-              className="p-8 rounded-lg backdrop-blur-sm border transition-all duration-300 hover:shadow-lg"
+              className="relative overflow-hidden p-8 rounded-2xl border group hover:border-opacity-60 transition-all duration-500"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                borderColor: theme.colors.primary.electric + '40',
-                borderWidth: '1px'
+                background: themeStyles.card.background,
+                borderColor: themeStyles.card.border,
+                boxShadow: themeStyles.shadows.soft,
               }}
-              onMouseEnter={() => setHoveredCard(idx)}
-              onMouseLeave={() => setHoveredCard(null)}
+              whileHover={{
+                y: -8,
+                boxShadow: themeStyles.shadows.glow
+              }}
             >
-              <motion.div
-                className="mb-4 inline-block p-3 rounded-lg"
-                style={{
-                  background: theme.colors.primary.electric + '20',
-                  color: theme.colors.primary.electric
-                }}
-                animate={{ scale: hoveredCard === idx ? 1.1 : 1 }}
-              >
-                <pillar.icon size={32} />
-              </motion.div>
-              <h3 className="text-xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
-                {pillar.title}
-              </h3>
-              <p style={{ color: themeStyles.text.secondary }}>
-                {pillar.description}
-              </p>
+              {/* Background Image with Overlay */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500">
+                <img 
+                  src={pillar.image} 
+                  alt={pillar.title}
+                  className="w-full h-full object-cover"
+                />
+                <div 
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(180deg, transparent 0%, ${themeStyles.card.background} 100%)`
+                  }}
+                />
+              </div>
+
+              {/* Content */}
+              <div className="relative z-10">
+                <pillar.icon
+                  size={40}
+                  className="mb-4 transition-transform duration-300 group-hover:scale-110"
+                  style={{ color: theme.colors.primary.electric }}
+                />
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{ color: themeStyles.text.primary }}
+                >
+                  {pillar.title}
+                </h3>
+                <p style={{ color: themeStyles.text.secondary }}>
+                  {pillar.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
       {/* ===== SOLUTIONS SECTION ===== */}
-      <section className="py-20 px-6" style={{ background: themeStyles.backgrounds.secondary }}>
+      <section className="py-32 px-6 relative" style={{ background: themeStyles.backgrounds.secondary }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -387,9 +415,10 @@ const Home = () => {
           >
             {[
               {
-                icon: Zap,
+                icon: Brain,
                 title: t('solutionsHome.sol1Title'),
                 description: t('solutionsHome.sol1Desc'),
+                image: solutionAi,
                 features: [
                   t('solutionsHome.sol1Feature1'),
                   t('solutionsHome.sol1Feature2'),
@@ -399,9 +428,10 @@ const Home = () => {
                 cta: t('solutionsHome.sol1Cta')
               },
               {
-                icon: Workflow,
+                icon: Zap,
                 title: t('solutionsHome.sol2Title'),
                 description: t('solutionsHome.sol2Desc'),
+                image: solutionPerformance,
                 features: [
                   t('solutionsHome.sol2Feature1'),
                   t('solutionsHome.sol2Feature2'),
@@ -411,9 +441,10 @@ const Home = () => {
                 cta: t('solutionsHome.sol2Cta')
               },
               {
-                icon: Rocket,
+                icon: Workflow,
                 title: t('solutionsHome.sol3Title'),
                 description: t('solutionsHome.sol3Desc'),
+                image: solutionIntegration,
                 features: [
                   t('solutionsHome.sol3Feature1'),
                   t('solutionsHome.sol3Feature2'),
@@ -426,51 +457,71 @@ const Home = () => {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="p-8 rounded-xl border transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+                className="relative overflow-hidden rounded-2xl border backdrop-blur-sm group"
                 style={{
-                  background: themeStyles.card.background,
                   borderColor: themeStyles.card.border,
                   boxShadow: themeStyles.shadows.soft
                 }}
+                whileHover={{
+                  y: -8,
+                  boxShadow: `0 20px 40px ${theme.colors.primary.electric}30`
+                }}
               >
-                <div
-                  className="mb-6 inline-block p-3 rounded-lg"
-                  style={{
-                    background: theme.colors.primary.electric + '20',
-                    color: theme.colors.primary.electric
-                  }}
-                >
-                  <solution.icon size={32} />
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                  <img 
+                    src={solution.image} 
+                    alt={solution.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div 
+                    className="absolute inset-0 transition-opacity duration-500"
+                    style={{
+                      background: `linear-gradient(180deg, ${themeStyles.card.background}95 0%, ${themeStyles.card.background}E6 100%)`
+                    }}
+                  />
                 </div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: themeStyles.text.primary }}>
-                  {solution.title}
-                </h3>
-                <p className="mb-6" style={{ color: themeStyles.text.secondary }}>
-                  {solution.description}
-                </p>
-                <ul className="mb-8 space-y-2">
-                  {solution.features.map((feature, fidx) => (
-                    <li key={fidx} className="text-sm flex items-start gap-2" style={{ color: themeStyles.text.secondary }}>
-                      <span style={{ color: theme.colors.primary.electric }}>✓</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <motion.button
-                  className="w-full text-sm font-medium py-2 px-4 rounded-lg border transition-all"
-                  style={{
-                    borderColor: theme.colors.primary.electric,
-                    color: theme.colors.primary.electric,
-                    background: `${theme.colors.primary.electric}10`
-                  }}
-                  whileHover={{
-                    background: `${theme.colors.primary.electric}20`,
-                    boxShadow: `0 0 15px ${theme.colors.primary.electric}30`
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {solution.cta}
-                </motion.button>
+
+                {/* Content */}
+                <div className="relative z-10 p-8">
+                  <solution.icon
+                    size={48}
+                    className="mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+                    style={{ color: theme.colors.primary.electric }}
+                  />
+                  <h3
+                    className="text-2xl font-bold mb-4"
+                    style={{ color: themeStyles.text.primary }}
+                  >
+                    {solution.title}
+                  </h3>
+                  <p className="mb-6" style={{ color: themeStyles.text.secondary }}>
+                    {solution.description}
+                  </p>
+                  <ul className="mb-8 space-y-2">
+                    {solution.features.map((feature, fidx) => (
+                      <li key={fidx} className="text-sm flex items-start gap-2" style={{ color: themeStyles.text.secondary }}>
+                        <span style={{ color: theme.colors.primary.electric }}>✓</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <motion.button
+                    className="w-full text-sm font-medium py-2 px-4 rounded-lg border transition-all"
+                    style={{
+                      borderColor: theme.colors.primary.electric,
+                      color: theme.colors.primary.electric,
+                      background: `${theme.colors.primary.electric}10`
+                    }}
+                    whileHover={{
+                      background: `${theme.colors.primary.electric}20`,
+                      boxShadow: `0 0 15px ${theme.colors.primary.electric}30`
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {solution.cta}
+                  </motion.button>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -478,73 +529,74 @@ const Home = () => {
       </section>
 
       {/* ===== ADVANTAGES SECTION ===== */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={containerVariants}
-        >
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
-            {t('advantages.title')}
-          </motion.h2>
-          <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: themeStyles.text.secondary }}>
-            {t('advantages.subtitle')}
-          </motion.p>
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img src={dataCenter} alt="Data Center" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${themeStyles.backgrounds.primary}F0 0%, ${themeStyles.backgrounds.primary}E6 100%)` }} />
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={containerVariants}>
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4" style={{ color: themeStyles.text.primary }}>
+              {t('advantages.title')}
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-xl mb-12" style={{ color: themeStyles.text.secondary }}>
+              {t('advantages.subtitle')}
+            </motion.p>
 
-          <motion.div variants={containerVariants} className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                title: t('advantages.adv1Title'),
-                description: t('advantages.adv1Desc'),
-                icon: Brain
-              },
-              {
-                title: t('advantages.adv2Title'),
-                description: t('advantages.adv2Desc'),
-                icon: Lock
-              },
-              {
-                title: t('advantages.adv3Title'),
-                description: t('advantages.adv3Desc'),
-                icon: Users
-              },
-              {
-                title: t('advantages.adv4Title'),
-                description: t('advantages.adv4Desc'),
-                icon: Rocket
-              }
-            ].map((adv, idx) => (
-              <motion.div
-                key={idx}
-                variants={itemVariants}
-                className="p-8 rounded-lg flex gap-6"
-                style={{
-                  background: 'rgba(0, 212, 212, 0.05)',
-                  borderLeft: `4px solid ${theme.colors.primary.electric}`
-                }}
-              >
-                <div
-                  className="p-3 rounded-lg h-fit"
+            <motion.div variants={containerVariants} className="grid md:grid-cols-2 gap-8">
+              {[
+                {
+                  title: t('advantages.adv1Title'),
+                  description: t('advantages.adv1Desc'),
+                  icon: Brain
+                },
+                {
+                  title: t('advantages.adv2Title'),
+                  description: t('advantages.adv2Desc'),
+                  icon: Lock
+                },
+                {
+                  title: t('advantages.adv3Title'),
+                  description: t('advantages.adv3Desc'),
+                  icon: Users
+                },
+                {
+                  title: t('advantages.adv4Title'),
+                  description: t('advantages.adv4Desc'),
+                  icon: Rocket
+                }
+              ].map((adv, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={itemVariants}
+                  className="p-8 rounded-lg flex gap-6 backdrop-blur-sm"
                   style={{
-                    background: theme.colors.primary.electric + '20',
-                    color: theme.colors.primary.electric
+                    background: `${themeStyles.card.background}CC`,
+                    borderLeft: `4px solid ${theme.colors.primary.electric}`
                   }}
                 >
-                  <adv.icon size={24} />
+                  <div
+                    className="p-3 rounded-lg h-fit"
+                    style={{
+                      background: theme.colors.primary.electric + '20',
+                      color: theme.colors.primary.electric
+                    }}
+                  >
+                    <adv.icon size={24} />
                   </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: themeStyles.text.primary }}>
-                    {adv.title}
-                  </h3>
-                  <p style={{ color: themeStyles.text.secondary }}>
-                    {adv.description}
-                  </p>
-          </div>
-              </motion.div>
-            ))}
+                  <div>
+                    <h3 className="text-lg font-bold mb-2" style={{ color: themeStyles.text.primary }}>
+                      {adv.title}
+                    </h3>
+                    <p style={{ color: themeStyles.text.secondary }}>
+                      {adv.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* ===== CHATBOT CTA SECTION ===== */}

@@ -3,6 +3,10 @@ import { motion } from 'framer-motion';
 import { Brain, Zap, Workflow, TrendingUp, Shield, CheckCircle } from "lucide-react";
 import { useThemeStyles } from '@/hooks/useThemeStyles';
 import { useLanguage } from '@/contexts/LanguageContext';
+import digitalAiWorkspace from '@/assets/digital-ai-workspace.jpg';
+import solutionAi from '@/assets/solution-ai.jpg';
+import solutionPerformance from '@/assets/solution-performance.jpg';
+import solutionIntegration from '@/assets/solution-integration.jpg';
 
 const Solutions = () => {
   const themeStyles = useThemeStyles();
@@ -12,17 +16,20 @@ const Solutions = () => {
     {
       icon: Brain,
       title: "AI-Powered Automation",
-      description: "Automate complex business processes with intelligent agents"
+      description: "Automate complex business processes with intelligent agents",
+      image: solutionAi
     },
     {
       icon: Zap,
       title: "Performance Optimization",
-      description: "Optimize system performance and resource utilization"
+      description: "Optimize system performance and resource utilization",
+      image: solutionPerformance
     },
     {
       icon: Workflow,
       title: "Workflow Integration",
-      description: "Seamlessly integrate AI into existing workflows"
+      description: "Seamlessly integrate AI into existing workflows",
+      image: solutionIntegration
     },
   ];
 
@@ -35,11 +42,27 @@ const Solutions = () => {
   return (
     <div style={{ background: themeStyles.backgrounds.primary, minHeight: '100vh' }}>
       {/* HERO SECTION */}
-      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20 pb-20">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={digitalAiWorkspace} 
+            alt="Digital Transformation"
+            className="w-full h-full object-cover"
+          />
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(135deg, ${themeStyles.backgrounds.primary}E6 0%, ${themeStyles.backgrounds.primary}B3 50%, ${themeStyles.backgrounds.primary}E6 100%)`
+            }}
+          />
+        </div>
+
+        {/* Gradient Overlay */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-40"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}15, transparent 70%)`
+            background: `radial-gradient(circle at 50% 50%, ${theme.colors.primary.electric}30, transparent 70%)`
           }}
         />
 
@@ -98,28 +121,48 @@ const Solutions = () => {
           {solutions.map((solution, idx) => (
             <motion.div
               key={idx}
-              className="p-8 rounded-xl border"
+              className="relative overflow-hidden rounded-xl border group"
               style={{
-                background: themeStyles.card.background,
                 borderColor: themeStyles.card.border,
                 boxShadow: themeStyles.shadows.soft
               }}
-              whileHover={{ y: -5 }}
+              whileHover={{ 
+                y: -8,
+                boxShadow: `0 20px 40px ${theme.colors.primary.electric}30`
+              }}
               transition={{ duration: 0.3 }}
             >
-              <solution.icon
-                size={40}
-                style={{
-                  color: theme.colors.primary.electric,
-                  marginBottom: '16px'
-                }}
-              />
-              <h3 className="text-xl font-bold mb-3" style={{ color: themeStyles.text.primary }}>
-                {solution.title}
-              </h3>
-              <p style={{ color: themeStyles.text.secondary }}>
-                {solution.description}
-              </p>
+              {/* Background Image */}
+              <div className="absolute inset-0">
+                <img 
+                  src={solution.image} 
+                  alt={solution.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div 
+                  className="absolute inset-0 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(180deg, ${themeStyles.card.background}99 0%, ${themeStyles.card.background}F0 100%)`
+                  }}
+                />
+              </div>
+
+              {/* Content */}
+              <div className="relative z-10 p-8">
+                <solution.icon
+                  size={40}
+                  className="mb-4 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+                  style={{
+                    color: theme.colors.primary.electric
+                  }}
+                />
+                <h3 className="text-xl font-bold mb-3" style={{ color: themeStyles.text.primary }}>
+                  {solution.title}
+                </h3>
+                <p style={{ color: themeStyles.text.secondary }}>
+                  {solution.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>
