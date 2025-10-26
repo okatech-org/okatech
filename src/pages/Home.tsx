@@ -517,31 +517,31 @@ const Home = () => {
             {/* Contact Info */}
             <motion.div variants={itemVariants}>
               <h3 className="text-2xl font-bold mb-8" style={{ color: theme.colors.primary.electric }}>
-                Informations de Contact
+                {t('contactHome.contactInfo')}
               </h3>
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>ADRESSE</p>
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>{t('contactHome.addressLabel')}</p>
                   <p style={{ color: themeStyles.text.primary }} className="font-semibold">
-                    50 Avenue des Champs Élysées<br />75008 Paris, France
+                    {t('footer.address')}
                   </p>
               </div>
                 <div>
-                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>EMAIL</p>
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>{t('contactHome.emailLabel')}</p>
                   <p style={{ color: theme.colors.primary.electric }} className="font-semibold">
-                    contact@oka-tech.com
+                    {t('footer.email_contact')}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>TÉLÉPHONE</p>
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>{t('contactHome.phoneLabel')}</p>
                   <p style={{ color: themeStyles.text.primary }} className="font-semibold">
-                    +33 (0) 1 XX XX XX XX
+                    {t('footer.phone_contact')}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>HEURES DE BUREAU</p>
+                  <p className="text-sm" style={{ color: themeStyles.text.muted }}>{t('contactHome.hoursLabel')}</p>
                   <p style={{ color: themeStyles.text.primary }} className="font-semibold">
-                    Lun-Ven: 9h-18h
+                    {t('contactHome.hoursValue')}
                   </p>
                 </div>
               </div>
@@ -550,12 +550,12 @@ const Home = () => {
             {/* Contact Form */}
             <motion.div variants={itemVariants} className="p-8 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
               <h3 className="text-2xl font-bold mb-6" style={{ color: theme.colors.primary.electric }}>
-                Formulaire de Contact
+                {t('contactHome.formTitle')}
               </h3>
               <form className="space-y-4">
                 <input
                   type="text"
-                  placeholder="Votre nom"
+                  placeholder={t('contactHome.namePlaceholder')}
                   className="w-full px-4 py-3 rounded-lg"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
@@ -566,7 +566,7 @@ const Home = () => {
                 />
                 <input
                   type="email"
-                  placeholder="Votre email"
+                  placeholder={t('contactHome.emailPlaceholder')}
                   className="w-full px-4 py-3 rounded-lg"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
@@ -577,7 +577,7 @@ const Home = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Votre entreprise"
+                  placeholder={t('contactHome.companyPlaceholder')}
                   className="w-full px-4 py-3 rounded-lg"
                   style={{
                     background: 'rgba(0, 212, 212, 0.1)',
@@ -587,7 +587,7 @@ const Home = () => {
                   }}
                 />
                 <textarea
-                  placeholder="Décrivez votre projet..."
+                  placeholder={t('contactHome.messagePlaceholder')}
                   rows={4}
                   className="w-full px-4 py-3 rounded-lg resize-none"
                   style={{
@@ -604,7 +604,7 @@ const Home = () => {
                     color: theme.colors.primary.dark
                   }}
                 >
-                  Envoyer
+                  {t('contactHome.submitButton')}
                 </Button>
               </form>
             </motion.div>
