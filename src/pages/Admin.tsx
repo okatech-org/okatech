@@ -33,6 +33,7 @@ import { initializeDemoData } from "@/lib/demoData";
 import LeadManagementAdvanced from "@/components/LeadManagementAdvanced";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
 import SettingsPanel from "@/components/SettingsPanel";
+import AdminDropdown from "@/components/AdminDropdown";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -268,19 +269,11 @@ const Admin = () => {
               <Button variant="ghost" size="sm">
                 <Bell size={18} />
               </Button>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">A</span>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: currentColors.textPrimary }}>
-                    Admin
-                  </p>
-                  <p className="text-xs" style={{ color: currentColors.textMuted }}>
-                    admin@okatech.fr
-                  </p>
-                </div>
-              </div>
+              <AdminDropdown 
+                isDarkMode={isDarkMode}
+                currentColors={currentColors}
+                onSettingsClick={() => setActiveTab('settings')}
+              />
             </div>
           </div>
         </div>
