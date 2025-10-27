@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Lock, Mail, AlertCircle, ArrowLeft, Eye, EyeOff, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { supabaseAuth } from "@/lib/supabaseAuth";
+import authService from "@/lib/authService";
 import { useAuth } from "@/hooks/useAuth";
 import { theme } from "@/styles/theme";
 import { motion } from "framer-motion";
@@ -47,13 +48,20 @@ const AdminLogin = () => {
         }
       } else {
         const { data, error } = await supabaseAuth.signIn(email, password);
-        
-        if (error) {
-          setError("Email ou mot de passe incorrect");
-          toast.error("Erreur de connexion");
-        } else if (data.session) {
+
+        if (data?.session && !error) {
           toast.success("Connexion réussie!");
           navigate("/admin");
+        } else {
+          // Fallback local (admin embarqué)
+          const localAuth = authService.login(email, password);
+          if (localAuth) {
+            toast.success("Connexion réussie!");
+            navigate("/admin");
+          } else {
+            setError("Email ou mot de passe incorrect");
+            toast.error("Erreur de connexion");
+          }
         }
       }
     } catch (err) {

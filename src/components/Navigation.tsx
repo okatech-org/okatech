@@ -121,7 +121,7 @@ const Navigation = () => {
               >
                 OKA Tech
               </span>
-            </Link>
+          </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -141,8 +141,8 @@ const Navigation = () => {
                       ? theme.colors.primary.electric
                       : isDark ? theme.colors.text.secondary : '#666666'
                   }}
-                >
-                  {item.name}
+              >
+                {item.name}
                   {isActive(item.path) && (
                     <motion.div
                       layoutId="activeNav"
@@ -163,7 +163,7 @@ const Navigation = () => {
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
                   />
-                </Link>
+              </Link>
               </motion.div>
             ))}
           </div>
@@ -317,7 +317,7 @@ const Navigation = () => {
                     {t('nav.admin')}
                   </motion.button>
                 </Link>
-                <Link to="/contact">
+            <Link to="/contact">
                   <motion.button
                     className="px-6 py-2 rounded-lg font-medium text-white transition-all"
                     style={{
@@ -331,7 +331,7 @@ const Navigation = () => {
                   >
                     {t('nav.getStarted')}
                   </motion.button>
-                </Link>
+            </Link>
               </>
             )}
           </div>
@@ -353,7 +353,7 @@ const Navigation = () => {
 
         {/* Mobile Menu */}
         <AnimatePresence>
-          {isOpen && (
+        {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
@@ -362,11 +362,11 @@ const Navigation = () => {
               className="md:hidden py-4 space-y-2 border-t"
               style={{ borderColor: `${theme.colors.primary.electric}20` }}
             >
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsOpen(false)}
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setIsOpen(false)}
                   className="block px-4 py-2 rounded-lg font-medium transition-all"
                   style={{
                     color: isActive(item.path)
@@ -379,10 +379,10 @@ const Navigation = () => {
                       ? `1px solid ${theme.colors.primary.electric}30`
                       : 'none'
                   }}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              >
+                {item.name}
+              </Link>
+            ))}
 
               <div className="h-px my-2" style={{ background: `${theme.colors.primary.electric}20` }} />
 
@@ -503,7 +503,7 @@ const Navigation = () => {
                       {t('nav.admin')}
                     </button>
                   </Link>
-                  <Link to="/contact" onClick={() => setIsOpen(false)}>
+            <Link to="/contact" onClick={() => setIsOpen(false)}>
                     <button
                       className="w-full px-6 py-2 rounded-lg font-medium text-white transition-all mx-4"
                       style={{
@@ -512,11 +512,11 @@ const Navigation = () => {
                     >
                       {t('nav.getStarted')}
                     </button>
-                  </Link>
+            </Link>
                 </>
               )}
             </motion.div>
-          )}
+        )}
         </AnimatePresence>
       </div>
     </nav>

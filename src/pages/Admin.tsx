@@ -28,6 +28,7 @@ import pdfGenerator from "@/lib/pdfGenerator";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import authService from "@/lib/authService";
+import { supabaseAuth } from "@/lib/supabaseAuth";
 import { useNavigate } from "react-router-dom";
 import { initializeDemoData } from "@/lib/demoData";
 import LeadManagementAdvanced from "@/components/LeadManagementAdvanced";
@@ -93,7 +94,10 @@ const Admin = () => {
     toast.success("Statut mis à jour");
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Déconnecter Supabase si connecté
+    await supabaseAuth.signOut();
+    // Nettoyer la session locale éventuelle
     authService.logout();
     toast.success("Déconnexion réussie");
     navigate("/admin-login");

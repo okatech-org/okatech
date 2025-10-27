@@ -50,7 +50,16 @@ class AuthService {
 
   login(email: string, password: string): AuthToken | null {
     const admins = this.getAllAdmins();
-    const admin = admins.find(a => a.email === email);
+    let admin = admins.find(a => a.email === email);
+
+    // Fallback: si l'admin n'existe pas en stockage mais correspond au compte par défaut
+    if (!admin && email === this.defaultAdmin.email) {
+      if (this.verifyPassword(password, this.defaultAdmin.password)) {
+        // Réinstate le compte par défaut et poursuivre
+        this.saveAdmin(this.defaultAdmin as any);
+        admin = this.defaultAdmin as any;
+      }
+    }
 
     if (!admin || !this.verifyPassword(password, admin.password)) {
       return null;
