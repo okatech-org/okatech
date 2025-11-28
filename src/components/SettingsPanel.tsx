@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SettingsPanelProps {
   currentColors: any;
@@ -27,23 +28,24 @@ export const SettingsPanel = ({
   isDarkMode,
   onLogout
 }: SettingsPanelProps) => {
+  const { t, language, setLanguage } = useLanguage();
   const [activeTab, setActiveTab] = useState<'profile' | 'password' | 'preferences' | 'history'>('profile');
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  
+
   const [passwordForm, setPasswordForm] = useState({
     current: '',
     new: '',
     confirm: ''
   });
-  
+
   const [preferences, setPreferences] = useState({
     notifications: true,
     emailAlerts: true,
     darkMode: isDarkMode,
     itemsPerPage: 15,
-    language: 'fr'
+    language: language
   });
 
   const [loading, setLoading] = useState(false);
@@ -52,13 +54,13 @@ export const SettingsPanel = ({
 
   const validatePassword = () => {
     setPasswordError(null);
-    
-    if (!passwordForm.current) return "Mot de passe actuel requis";
-    if (!passwordForm.new) return "Nouveau mot de passe requis";
-    if (passwordForm.new.length < 8) return "Minimum 8 caractères";
-    if (passwordForm.new !== passwordForm.confirm) return "Mots de passe différents";
-    if (passwordForm.new === passwordForm.current) return "Doit être différent du mot de passe actuel";
-    
+
+    if (!passwordForm.current) return t('admin.settings.currentPasswordRequired');
+    if (!passwordForm.new) return t('admin.settings.newPasswordRequired');
+    if (passwordForm.new.length < 8) return t('admin.settings.passwordLength');
+    if (passwordForm.new !== passwordForm.confirm) return t('admin.settings.passwordMismatch');
+    if (passwordForm.new === passwordForm.current) return t('admin.settings.passwordSame');
+
     return null;
   };
 
@@ -74,10 +76,10 @@ export const SettingsPanel = ({
       await new Promise(resolve => setTimeout(resolve, 1000));
       setPasswordForm({ current: '', new: '', confirm: '' });
       setPasswordSuccess(true);
-      toast.success("Mot de passe changé avec succès");
+      toast.success(t('admin.settings.passwordSuccess'));
       setTimeout(() => setPasswordSuccess(false), 3000);
     } catch (err) {
-      setPasswordError("Erreur lors de la modification");
+      setPasswordError(t('admin.settings.passwordError'));
     } finally {
       setLoading(false);
     }
@@ -85,14 +87,17 @@ export const SettingsPanel = ({
 
   const handlePreferenceChange = (key: string, value: any) => {
     setPreferences(prev => ({ ...prev, [key]: value }));
-    toast.success("Préférence mise à jour");
+    if (key === 'language') {
+      setLanguage(value);
+    }
+    toast.success(t('admin.settings.preferenceUpdated'));
   };
 
   const tabs = [
-    { id: 'profile' as const, label: 'Profil', icon: User },
-    { id: 'password' as const, label: 'Mot de passe', icon: Lock },
-    { id: 'preferences' as const, label: 'Préférences', icon: Globe },
-    { id: 'history' as const, label: 'Historique', icon: History }
+    { id: 'profile' as const, label: t('admin.settings.profile'), icon: User },
+    { id: 'password' as const, label: t('admin.settings.password'), icon: Lock },
+    { id: 'preferences' as const, label: t('admin.settings.preferences'), icon: Globe },
+    { id: 'history' as const, label: t('admin.settings.history'), icon: History }
   ];
 
   const auditLog = [
@@ -139,37 +144,37 @@ export const SettingsPanel = ({
         >
           <div>
             <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-              Informations du Profil
+              {t('admin.settings.profileInfo')}
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Nom complet
+                  {t('admin.settings.fullName')}
                 </label>
-                <Input 
+                <Input
                   value="Administrateur OKA Tech"
                   disabled
                   className="rounded-lg"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Email
+                  {t('admin.email')}
                 </label>
-                <Input 
+                <Input
                   value="admin@okatech.fr"
                   disabled
                   className="rounded-lg"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Rôle
+                  {t('admin.settings.role')}
                 </label>
-                <Input 
+                <Input
                   value="Administrateur"
                   disabled
                   className="rounded-lg"
@@ -178,9 +183,9 @@ export const SettingsPanel = ({
 
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Depuis
+                  {t('admin.settings.since')}
                 </label>
-                <Input 
+                <Input
                   value="1er Janvier 2025"
                   disabled
                   className="rounded-lg"
@@ -204,11 +209,11 @@ export const SettingsPanel = ({
         >
           <div>
             <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-              Changer le Mot de Passe
+              {t('admin.settings.changePassword')}
             </h3>
 
             {passwordError && (
-              <div 
+              <div
                 className="mb-4 p-4 rounded-lg flex items-center gap-3"
                 style={{
                   background: '#EF4444' + '20',
@@ -221,7 +226,7 @@ export const SettingsPanel = ({
             )}
 
             {passwordSuccess && (
-              <div 
+              <div
                 className="mb-4 p-4 rounded-lg flex items-center gap-3"
                 style={{
                   background: '#10B981' + '20',
@@ -229,21 +234,21 @@ export const SettingsPanel = ({
                 }}
               >
                 <Check size={20} style={{ color: '#10B981' }} />
-                <span style={{ color: '#10B981' }}>Mot de passe changé avec succès</span>
+                <span style={{ color: '#10B981' }}>{t('admin.settings.passwordSuccess')}</span>
               </div>
             )}
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Mot de passe actuel
+                  {t('admin.settings.currentPassword')}
                 </label>
                 <div className="relative">
-                  <Input 
+                  <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Entrez votre mot de passe"
+                    placeholder={t('admin.settings.enterPassword')}
                     value={passwordForm.current}
-                    onChange={(e) => setPasswordForm({...passwordForm, current: e.target.value})}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, current: e.target.value })}
                     className="rounded-lg pr-10"
                   />
                   <button
@@ -257,14 +262,14 @@ export const SettingsPanel = ({
 
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Nouveau mot de passe
+                  {t('admin.settings.newPassword')}
                 </label>
                 <div className="relative">
-                  <Input 
+                  <Input
                     type={showNewPassword ? "text" : "password"}
-                    placeholder="Minimum 8 caractères"
+                    placeholder={t('admin.settings.passwordLength')}
                     value={passwordForm.new}
-                    onChange={(e) => setPasswordForm({...passwordForm, new: e.target.value})}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, new: e.target.value })}
                     className="rounded-lg pr-10"
                   />
                   <button
@@ -278,14 +283,14 @@ export const SettingsPanel = ({
 
               <div>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Confirmer le mot de passe
+                  {t('admin.settings.confirmPassword')}
                 </label>
                 <div className="relative">
-                  <Input 
+                  <Input
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirmez le nouveau mot de passe"
+                    placeholder={t('admin.settings.confirmNewPassword')}
                     value={passwordForm.confirm}
-                    onChange={(e) => setPasswordForm({...passwordForm, confirm: e.target.value})}
+                    onChange={(e) => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
                     className="rounded-lg pr-10"
                   />
                   <button
@@ -303,7 +308,7 @@ export const SettingsPanel = ({
                 className="w-full rounded-lg font-semibold"
                 style={{ background: '#00D9FF', color: '#000' }}
               >
-                {loading ? 'Modification en cours...' : 'Changer le mot de passe'}
+                {loading ? t('admin.settings.processing') : t('admin.settings.changePassword')}
               </Button>
             </div>
           </div>
@@ -323,7 +328,7 @@ export const SettingsPanel = ({
         >
           <div>
             <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-              Préférences
+              {t('admin.settings.preferences')}
             </h3>
 
             <div className="space-y-4">
@@ -332,12 +337,12 @@ export const SettingsPanel = ({
                 <div className="flex items-center gap-3">
                   <Bell size={20} style={{ color: '#00D9FF' }} />
                   <div>
-                    <p className="font-semibold" style={{ color: currentColors.textPrimary }}>Notifications</p>
-                    <p className="text-sm" style={{ color: currentColors.textMuted }}>Activer les notifications</p>
+                    <p className="font-semibold" style={{ color: currentColors.textPrimary }}>{t('admin.settings.notifications')}</p>
+                    <p className="text-sm" style={{ color: currentColors.textMuted }}>{t('admin.settings.notificationsDesc')}</p>
                   </div>
                 </div>
                 <label className="flex items-center">
-                  <input 
+                  <input
                     type="checkbox"
                     checked={preferences.notifications}
                     onChange={(e) => handlePreferenceChange('notifications', e.target.checked)}
@@ -351,12 +356,12 @@ export const SettingsPanel = ({
                 <div className="flex items-center gap-3">
                   <AlertCircle size={20} style={{ color: '#F59E0B' }} />
                   <div>
-                    <p className="font-semibold" style={{ color: currentColors.textPrimary }}>Alertes Email</p>
-                    <p className="text-sm" style={{ color: currentColors.textMuted }}>Recevoir les alertes par email</p>
+                    <p className="font-semibold" style={{ color: currentColors.textPrimary }}>{t('admin.settings.emailAlerts')}</p>
+                    <p className="text-sm" style={{ color: currentColors.textMuted }}>{t('admin.settings.emailAlertsDesc')}</p>
                   </div>
                 </div>
                 <label className="flex items-center">
-                  <input 
+                  <input
                     type="checkbox"
                     checked={preferences.emailAlerts}
                     onChange={(e) => handlePreferenceChange('emailAlerts', e.target.checked)}
@@ -368,7 +373,7 @@ export const SettingsPanel = ({
               {/* Language */}
               <div className="p-4 rounded-lg border" style={{ borderColor: currentColors.borderColor }}>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Langue
+                  {t('admin.settings.language')}
                 </label>
                 <select
                   value={preferences.language}
@@ -381,15 +386,16 @@ export const SettingsPanel = ({
                   }}
                 >
                   <option value="fr">Français</option>
-                  <option value="en">Anglais</option>
-                  <option value="es">Espagnol</option>
+                  <option value="en">English</option>
+                  <option value="es">Español</option>
+                  <option value="ar">العربية</option>
                 </select>
               </div>
 
               {/* Items Per Page */}
               <div className="p-4 rounded-lg border" style={{ borderColor: currentColors.borderColor }}>
                 <label className="block text-sm font-semibold mb-2" style={{ color: currentColors.textMuted }}>
-                  Éléments par page
+                  {t('admin.settings.itemsPerPage')}
                 </label>
                 <select
                   value={preferences.itemsPerPage}
@@ -425,12 +431,12 @@ export const SettingsPanel = ({
         >
           <div>
             <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-              Historique des Actions
+              {t('admin.settings.history')}
             </h3>
 
             <div className="space-y-3">
               {auditLog.map((entry, idx) => (
-                <div 
+                <div
                   key={idx}
                   className="p-4 rounded-lg border flex justify-between items-center"
                   style={{ borderColor: currentColors.borderColor }}
@@ -463,7 +469,7 @@ export const SettingsPanel = ({
         }}
       >
         <X size={18} className="mr-2" />
-        Déconnexion
+        {t('admin.settings.logout')}
       </Button>
     </div>
   );

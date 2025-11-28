@@ -12,8 +12,8 @@ serve(async (req) => {
   }
 
   try {
-    const { conversationId, userMessage, prospectInfo } = await req.json();
-    
+    const { conversationId, userMessage, prospectInfo, language } = await req.json();
+
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -46,7 +46,7 @@ serve(async (req) => {
         .select('*')
         .eq('id', conversationId)
         .single();
-      
+
       if (error) throw error;
       conversation = data;
     } else {
@@ -58,7 +58,7 @@ serve(async (req) => {
         })
         .select()
         .single();
-      
+
       if (error) throw error;
       conversation = data;
     }
@@ -72,7 +72,7 @@ serve(async (req) => {
     });
 
     // Préparer le prompt système
-    const detectedLanguage = detectLanguage(userMessage);
+    const detectedLanguage = language || detectLanguage(userMessage);
     const identifiedNeed = identifyNeed(messages);
     const phase = Math.min(Math.floor(messages.filter((m: any) => m.role === 'user').length / 2) + 1, 3);
 
@@ -84,6 +84,15 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
+    // Map language codes to full names for clarity
+    const languageMap: { [key: string]: string } = {
+      'fr': 'FRANÇAIS',
+      'en': 'ENGLISH',
+      'es': 'ESPAÑOL',
+      'ar': 'العربية (ARABIC)'
+    };
+    const fullLanguageName = languageMap[detectedLanguage.toLowerCase()] || 'FRANÇAIS';
+
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -94,7 +103,11 @@ serve(async (req) => {
         model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: systemPrompt },
-          ...messages.slice(-10).map((m: any) => ({ role: m.role, content: m.content }))
+          ...messages.slice(-10, -1).map((m: any) => ({ role: m.role, content: m.content })),
+          {
+            role: 'user',
+            content: `${messages[messages.length - 1].content} (IMPORTANT: Réponds UNIQUEMENT en ${fullLanguageName})`
+          }
         ],
         temperature: 0.7,
         max_tokens: 500,
@@ -131,8 +144,8 @@ serve(async (req) => {
     if (updateError) throw updateError;
 
     // Déterminer si on doit collecter les coordonnées
-    const shouldCollectContact = messages.filter((m: any) => m.role === 'user').length >= 6 || 
-                                  shouldCollectContactInfo(assistantMessage);
+    const shouldCollectContact = messages.filter((m: any) => m.role === 'user').length >= 6 ||
+      shouldCollectContactInfo(assistantMessage);
 
     return new Response(
       JSON.stringify({
@@ -162,17 +175,17 @@ serve(async (req) => {
 function detectLanguage(text: string): string {
   const frenchWords = ['je', 'vous', 'merci', 'oui', 'non', 'français', 'bonjour', 'problème'];
   const englishWords = ['i', 'you', 'thank', 'yes', 'no', 'english', 'hello', 'problem'];
-  
+
   const lowerText = text.toLowerCase();
   const frenchCount = frenchWords.filter(word => lowerText.includes(word)).length;
   const englishCount = englishWords.filter(word => lowerText.includes(word)).length;
-  
+
   return frenchCount > englishCount ? 'FR' : 'EN';
 }
 
 function identifyNeed(messages: any[]): string {
   const allText = messages.map(m => m.content).join(' ').toLowerCase();
-  
+
   const needs: { [key: string]: string[] } = {
     'Patient Management': ['patient', 'médecin', 'généraliste', 'appointment', 'consultation', 'dossier'],
     'E-commerce': ['shop', 'store', 'vendre', 'commerce', 'produit', 'panier'],
@@ -186,7 +199,7 @@ function identifyNeed(messages: any[]): string {
       return need;
     }
   }
-  
+
   return 'Not identified yet';
 }
 
@@ -197,22 +210,34 @@ function shouldCollectContactInfo(response: string): boolean {
 }
 
 function buildSystemPrompt(prospectInfo: any, language: string, messageCount: number, need: string, phase: number): string {
-  return `Tu es un assistant commercial expert d'OKA Tech, une entreprise spécialisée en solutions IA et développement logiciel depuis 6+ ans.
+  // Map language codes to full names for clarity
+  const languageMap: { [key: string]: string } = {
+    'fr': 'FRANÇAIS',
+    'en': 'ENGLISH',
+    'es': 'ESPAÑOL',
+    'ar': 'العربية (ARABIC)'
+  };
+
+  const fullLanguageName = languageMap[language.toLowerCase()] || 'FRANÇAIS';
+
+  return `⚠️ RÈGLE ABSOLUE: Tu DOIS répondre UNIQUEMENT en ${fullLanguageName}. JAMAIS en anglais si le prospect parle ${fullLanguageName}. ⚠️
+
+Tu es un assistant commercial expert d'OKA Tech, une entreprise spécialisée en solutions IA et développement logiciel depuis 6+ ans.
 
 RÔLES: Tu es simultanément commercial, chef de projet, et consultant technique expérimenté.
 
-INSTRUCTIONS CRITIQUES:
-1. LANGUE: Réponds toujours dans la langue du prospect (${language})
-2. STYLE: Sois naturel, conversationnel, humain - PAS de robot
-3. EXPERTISE: Identifie les vrais besoins business derrière les demandes
-4. PROGRESSIF: Pose une seule question majeure à la fois
-5. COMMERCIAL: Guide progressivement vers un appel téléphone
+INSTRUCTIONS CRITIQUES (PAR ORDRE DE PRIORITÉ):
+1. 🌍 LANGUE: TOUJOURS répondre en ${fullLanguageName} - C'EST LA RÈGLE #1 ABSOLUE
+2. 🎭 STYLE: Sois naturel, conversationnel, humain - PAS de robot
+3. 🎯 EXPERTISE: Identifie les vrais besoins business derrière les demandes
+4. 📊 PROGRESSIF: Pose une seule question majeure à la fois
+5. 📞 COMMERCIAL: Guide progressivement vers un appel téléphone
 
 CONTEXTE PROSPECT:
 - Nom: ${prospectInfo.name}
 - Entreprise: ${prospectInfo.company}
 - Téléphone: ${prospectInfo.phone || 'Non fourni'}
-- Langue: ${language}
+- Langue préférée: ${fullLanguageName}
 
 PHASE DE CONVERSATION ACTUELLE:
 - Messages précédents: ${messageCount}
@@ -240,5 +265,7 @@ RÉPONSE A DONNER:
 - Soit pertinent et concis (2-3 phrases max)
 - Propose une valeur ajoutée immédiate
 - Pose UNE question engageante
-- À partir de 6+ messages, propose un appel téléphone`;
+- À partir de 6+ messages, propose un appel téléphone
+
+⚠️ RAPPEL FINAL: Réponds EXCLUSIVEMENT en ${fullLanguageName}. Aucune exception. ⚠️`;
 }

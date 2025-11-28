@@ -13,6 +13,7 @@ import {
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Lead as BaseLead } from "@/lib/leadStorage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Lead extends BaseLead {
   priority?: 'high' | 'medium' | 'low';
@@ -32,6 +33,7 @@ export const LeadManagementAdvanced = ({
   currentColors,
   isDarkMode
 }: LeadManagementAdvancedProps) => {
+  const { t, language } = useLanguage();
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
   const [bulkLoading, setBulkLoading] = useState(false);
   const [filterArchived, setFilterArchived] = useState(false);
@@ -60,14 +62,14 @@ export const LeadManagementAdvanced = ({
   };
 
   const handleBulkDelete = async () => {
-    if (!window.confirm(`Supprimer ${selectedLeads.length} lead(s) ?`)) return;
+    if (!window.confirm(t('admin.leadManagement.bulkDeleteConfirm').replace('{count}', selectedLeads.length.toString()))) return;
 
     setBulkLoading(true);
     try {
       const updatedLeads = leads.filter(l => !selectedLeads.includes(l.id));
       onLeadsUpdate(updatedLeads);
       setSelectedLeads([]);
-      toast.success(`${selectedLeads.length} lead(s) supprimé(s)`);
+      toast.success(t('admin.leadManagement.bulkDeleted').replace('{count}', selectedLeads.length.toString()));
     } catch (error) {
       toast.error("Erreur lors de la suppression");
     } finally {
@@ -83,7 +85,7 @@ export const LeadManagementAdvanced = ({
       );
       onLeadsUpdate(updatedLeads);
       setSelectedLeads([]);
-      toast.success(`${selectedLeads.length} lead(s) archivé(s)`);
+      toast.success(t('admin.leadManagement.bulkArchived').replace('{count}', selectedLeads.length.toString()));
     } catch (error) {
       toast.error("Erreur lors de l'archivage");
     } finally {
@@ -99,7 +101,7 @@ export const LeadManagementAdvanced = ({
       );
       onLeadsUpdate(updatedLeads);
       setSelectedLeads([]);
-      toast.success(`${selectedLeads.length} lead(s) restauré(s)`);
+      toast.success(t('admin.leadManagement.bulkRestored').replace('{count}', selectedLeads.length.toString()));
     } catch (error) {
       toast.error("Erreur lors de la restauration");
     } finally {
@@ -115,7 +117,7 @@ export const LeadManagementAdvanced = ({
       );
       onLeadsUpdate(updatedLeads);
       setSelectedLeads([]);
-      toast.success(`Priorité mise à jour pour ${selectedLeads.length} lead(s)`);
+      toast.success(t('admin.leadManagement.bulkPriority').replace('{count}', selectedLeads.length.toString()));
     } catch (error) {
       toast.error("Erreur lors de la mise à jour");
     } finally {
@@ -125,7 +127,7 @@ export const LeadManagementAdvanced = ({
 
   const handleExportSelected = () => {
     if (selectedLeads.length === 0) {
-      toast.error("Sélectionnez au moins un lead");
+      toast.error(t('admin.leadManagement.selectOne'));
       return;
     }
 
@@ -151,7 +153,7 @@ export const LeadManagementAdvanced = ({
     a.download = `leads_export_${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
 
-    toast.success(`${selectedLeads.length} lead(s) exporté(s)`);
+    toast.success(t('admin.leadManagement.exported').replace('{count}', selectedLeads.length.toString()));
   };
 
   const priorityColors = {
@@ -162,9 +164,9 @@ export const LeadManagementAdvanced = ({
 
   const getPriorityLabel = (priority?: string) => {
     switch (priority) {
-      case 'high': return 'Haute';
-      case 'medium': return 'Moyenne';
-      case 'low': return 'Basse';
+      case 'high': return t('admin.leadManagement.highPriority');
+      case 'medium': return t('admin.leadManagement.mediumPriority');
+      case 'low': return t('admin.leadManagement.lowPriority');
       default: return 'Non défini';
     }
   };
@@ -191,7 +193,7 @@ export const LeadManagementAdvanced = ({
           <div className="flex items-center gap-3">
             <CheckCircle2 size={20} style={{ color: '#00D9FF' }} />
             <span className="font-semibold" style={{ color: currentColors.textPrimary }}>
-              {selectedLeads.length} lead(s) sélectionné(s)
+              {t('admin.leadManagement.selected').replace('{count}', selectedLeads.length.toString())}
             </span>
           </div>
 
@@ -207,7 +209,7 @@ export const LeadManagementAdvanced = ({
                 color: priorityColors.high
               }}
             >
-              Haute Priorité
+              {t('admin.leadManagement.highPriority')}
             </Button>
             <Button
               size="sm"
@@ -220,7 +222,7 @@ export const LeadManagementAdvanced = ({
                 color: priorityColors.medium
               }}
             >
-              Priorité Moyenne
+              {t('admin.leadManagement.mediumPriority')}
             </Button>
             <Button
               size="sm"
@@ -233,7 +235,7 @@ export const LeadManagementAdvanced = ({
                 color: priorityColors.low
               }}
             >
-              Basse Priorité
+              {t('admin.leadManagement.lowPriority')}
             </Button>
             <Button
               size="sm"
@@ -243,7 +245,7 @@ export const LeadManagementAdvanced = ({
               variant="outline"
             >
               <Archive size={14} className="mr-1" />
-              Archiver
+              {t('admin.leadManagement.archive')}
             </Button>
             <Button
               size="sm"
@@ -253,7 +255,7 @@ export const LeadManagementAdvanced = ({
               variant="outline"
             >
               <ArchiveRestore size={14} className="mr-1" />
-              Restaurer
+              {t('admin.leadManagement.restore')}
             </Button>
             <Button
               size="sm"
@@ -263,7 +265,7 @@ export const LeadManagementAdvanced = ({
               style={{ background: '#00D9FF', color: '#000' }}
             >
               <Download size={14} className="mr-1" />
-              Export
+              {t('admin.leadManagement.export')}
             </Button>
             <Button
               size="sm"
@@ -273,7 +275,7 @@ export const LeadManagementAdvanced = ({
               variant="outline"
             >
               <Trash2 size={14} className="mr-1" />
-              Supprimer
+              {t('admin.leadManagement.delete')}
             </Button>
           </div>
         </motion.div>
@@ -293,10 +295,10 @@ export const LeadManagementAdvanced = ({
               color: currentColors.textPrimary
             }}
           >
-            <option value="all">Toutes les priorités</option>
-            <option value="high">Haute</option>
-            <option value="medium">Moyenne</option>
-            <option value="low">Basse</option>
+            <option value="all">{t('admin.leadManagement.allPriorities')}</option>
+            <option value="high">{t('admin.leadManagement.highPriority')}</option>
+            <option value="medium">{t('admin.leadManagement.mediumPriority')}</option>
+            <option value="low">{t('admin.leadManagement.lowPriority')}</option>
           </select>
         </div>
 
@@ -311,8 +313,8 @@ export const LeadManagementAdvanced = ({
               color: currentColors.textPrimary
             }}
           >
-            <option value="active">Leads actifs</option>
-            <option value="archived">Leads archivés</option>
+            <option value="active">{t('admin.leadManagement.activeLeads')}</option>
+            <option value="archived">{t('admin.leadManagement.archivedLeads')}</option>
           </select>
         </div>
       </div>
@@ -329,22 +331,22 @@ export const LeadManagementAdvanced = ({
                 />
               </th>
               <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                Lead
+                {t('admin.leadManagement.columns.lead')}
               </th>
               <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                Entreprise
+                {t('admin.leadManagement.columns.company')}
               </th>
               <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                Score
+                {t('admin.leadManagement.columns.score')}
               </th>
               <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                Priorité
+                {t('admin.leadManagement.columns.priority')}
               </th>
               <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                Statut
+                {t('admin.leadManagement.columns.status')}
               </th>
               <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                Date
+                {t('admin.leadManagement.columns.date')}
               </th>
             </tr>
           </thead>
@@ -355,7 +357,7 @@ export const LeadManagementAdvanced = ({
                   <div className="flex flex-col items-center gap-4">
                     <AlertCircle size={48} className="opacity-20" style={{ color: currentColors.textMuted }} />
                     <p className="font-medium" style={{ color: currentColors.textMuted }}>
-                      {filterArchived ? 'Aucun lead archivé' : 'Aucun lead trouvé'}
+                      {filterArchived ? t('admin.leadManagement.archivedLeads') : t('admin.leadManagement.noLeads')}
                     </p>
                   </div>
                 </td>
@@ -426,12 +428,12 @@ export const LeadManagementAdvanced = ({
                         color: lead.status === 'new' ? '#00D9FF' : '#8B5CF6'
                       }}
                     >
-                      {lead.status === 'new' ? 'Nouveau' : lead.status}
+                      {lead.status === 'new' ? t('admin.leadManagement.new') : lead.status}
                     </span>
                   </td>
                   <td className="py-4 px-4">
                     <p className="text-sm" style={{ color: currentColors.textMuted }}>
-                      {new Date(lead.createdAt).toLocaleDateString('fr-FR')}
+                      {new Date(lead.createdAt).toLocaleDateString(language === 'en' ? 'en-US' : language === 'es' ? 'es-ES' : language === 'ar' ? 'ar-SA' : 'fr-FR')}
                     </p>
                   </td>
                 </motion.tr>

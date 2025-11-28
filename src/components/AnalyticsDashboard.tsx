@@ -9,6 +9,7 @@ import {
   Clock,
   Zap
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AnalyticsDashboardProps {
   leads: any[];
@@ -21,6 +22,7 @@ export const AnalyticsDashboard = ({
   currentColors,
   isDarkMode
 }: AnalyticsDashboardProps) => {
+  const { t } = useLanguage();
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'quarter'>('month');
 
   const stats = {
@@ -84,7 +86,7 @@ export const AnalyticsDashboard = ({
       }}
     >
       <div className="flex items-start justify-between mb-4">
-        <div 
+        <div
           className="p-3 rounded-xl"
           style={{ background: '#00D9FF20' }}
         >
@@ -121,37 +123,37 @@ export const AnalyticsDashboard = ({
               border: `1px solid ${selectedPeriod === period ? '#00D9FF' : currentColors.borderColor}`
             }}
           >
-            {period === 'week' ? 'Cette semaine' : period === 'month' ? 'Ce mois' : 'Ce trimestre'}
+            {period === 'week' ? t('admin.analytics.periods.week') : period === 'month' ? t('admin.analytics.periods.month') : t('admin.analytics.periods.quarter')}
           </button>
         ))}
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard 
+        <KPICard
           icon={Activity}
-          label="Total Conversions"
+          label={t('admin.analytics.totalConversions')}
           value={stats.converted}
           change="+12%"
           trend="up"
         />
         <KPICard
           icon={Target}
-          label="Taux de Conversion"
+          label={t('admin.analytics.conversionRate')}
           value={`${stats.conversionRate}%`}
           change="+8%"
           trend="up"
         />
         <KPICard
           icon={Clock}
-          label="Temps Qualification"
+          label={t('admin.analytics.avgQualificationTime')}
           value={`${stats.avgQualificationTime}j`}
           change="-15%"
           trend="up"
         />
         <KPICard
           icon={Zap}
-          label="Temps de Réponse"
+          label={t('admin.analytics.responseTime')}
           value={`${stats.responseTime}h`}
           change="-20%"
           trend="up"
@@ -159,7 +161,7 @@ export const AnalyticsDashboard = ({
       </div>
 
       {/* Conversion Trend Chart */}
-      <div 
+      <div
         className="rounded-2xl border p-6"
         style={{
           background: currentColors.cardBg,
@@ -167,20 +169,20 @@ export const AnalyticsDashboard = ({
         }}
       >
         <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-          Tendance de Conversion ({selectedPeriod === 'week' ? 'Semaine' : selectedPeriod === 'month' ? 'Mois' : 'Trimestre'})
+          {t('admin.analytics.conversionTrend')} ({selectedPeriod === 'week' ? t('admin.analytics.periods.week') : selectedPeriod === 'month' ? t('admin.analytics.periods.month') : t('admin.analytics.periods.quarter')})
         </h3>
         <div className="mb-4">
           {renderSimpleLineChart()}
         </div>
         <div className="grid grid-cols-2 gap-4 pt-6 border-t" style={{ borderColor: currentColors.borderColor }}>
           <div>
-            <p className="text-sm" style={{ color: currentColors.textMuted }}>Leads générés</p>
+            <p className="text-sm" style={{ color: currentColors.textMuted }}>{t('admin.analytics.leadsGenerated')}</p>
             <p className="text-2xl font-bold mt-2" style={{ color: currentColors.textPrimary }}>
               {currentTrend.total}
             </p>
           </div>
           <div>
-            <p className="text-sm" style={{ color: currentColors.textMuted }}>Convertis</p>
+            <p className="text-sm" style={{ color: currentColors.textMuted }}>{t('admin.leadManagement.converted')}</p>
             <p className="text-2xl font-bold mt-2" style={{ color: '#10B981' }}>
               {currentTrend.converted}
             </p>
@@ -199,14 +201,14 @@ export const AnalyticsDashboard = ({
           }}
         >
           <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-            Distribution par Statut
+            {t('admin.analytics.statusDistribution')}
           </h3>
           <div className="space-y-4">
             {[
-              { label: 'Nouveau', value: stats.total - stats.contacted - stats.qualified - stats.converted, color: '#00D9FF', bg: '#00D9FF20' },
-              { label: 'Contacté', value: stats.contacted, color: '#F59E0B', bg: '#F59E0B20' },
-              { label: 'Qualifié', value: stats.qualified, color: '#8B5CF6', bg: '#8B5CF620' },
-              { label: 'Converti', value: stats.converted, color: '#10B981', bg: '#10B98120' }
+              { label: t('admin.leadManagement.new'), value: stats.total - stats.contacted - stats.qualified - stats.converted, color: '#00D9FF', bg: '#00D9FF20' },
+              { label: t('admin.leadManagement.contacted'), value: stats.contacted, color: '#F59E0B', bg: '#F59E0B20' },
+              { label: t('admin.leadManagement.qualified'), value: stats.qualified, color: '#8B5CF6', bg: '#8B5CF620' },
+              { label: t('admin.leadManagement.converted'), value: stats.converted, color: '#10B981', bg: '#10B98120' }
             ].map((item, idx) => {
               const percentage = stats.total > 0 ? ((item.value / stats.total) * 100).toFixed(1) : 0;
               return (
@@ -246,13 +248,13 @@ export const AnalyticsDashboard = ({
           }}
         >
           <h3 className="text-xl font-bold mb-6" style={{ color: currentColors.textPrimary }}>
-            Distribution par Score
+            {t('admin.analytics.scoreDistribution')}
           </h3>
           <div className="space-y-4">
             {[
-              { label: 'Excellent (80-100)', value: leads.filter(l => l.fitScore >= 80).length, color: '#10B981' },
-              { label: 'Bon (60-79)', value: leads.filter(l => l.fitScore >= 60 && l.fitScore < 80).length, color: '#F59E0B' },
-              { label: 'Faible (<60)', value: leads.filter(l => l.fitScore < 60).length, color: '#EF4444' }
+              { label: `${t('admin.analytics.scoreExcellent')} (80-100)`, value: leads.filter(l => l.fitScore >= 80).length, color: '#10B981' },
+              { label: `${t('admin.analytics.scoreGood')} (60-79)`, value: leads.filter(l => l.fitScore >= 60 && l.fitScore < 80).length, color: '#F59E0B' },
+              { label: `${t('admin.analytics.scoreLow')} (<60)`, value: leads.filter(l => l.fitScore < 60).length, color: '#EF4444' }
             ].map((item, idx) => {
               const percentage = stats.total > 0 ? ((item.value / stats.total) * 100).toFixed(1) : 0;
               return (
@@ -293,14 +295,14 @@ export const AnalyticsDashboard = ({
         }}
       >
         <h3 className="text-xl font-bold mb-4" style={{ color: currentColors.textPrimary }}>
-          Insights de Performance
+          {t('admin.analytics.performanceInsights')}
         </h3>
         <div className="space-y-3">
           {[
-            { icon: AlertCircle, text: `Score moyen: ${stats.avgScore}/100` },
-            { icon: TrendingUp, text: `Taux de conversion: ${stats.conversionRate}%` },
-            { icon: Activity, text: `${stats.qualified} leads qualifiés cette période` },
-            { icon: Zap, text: `${stats.converted} conversions réalisées` }
+            { icon: AlertCircle, text: `${t('admin.analytics.avgScore')}: ${stats.avgScore}/100` },
+            { icon: TrendingUp, text: `${t('admin.analytics.conversionRate')}: ${stats.conversionRate}%` },
+            { icon: Activity, text: `${stats.qualified} ${t('admin.analytics.qualifiedLeadsPeriod')}` },
+            { icon: Zap, text: `${stats.converted} ${t('admin.analytics.conversionsMade')}` }
           ].map((item, idx) => (
             <div key={idx} className="flex items-center gap-3 p-3 rounded-lg" style={{ background: currentColors.bg }}>
               <item.icon size={20} style={{ color: '#00D9FF' }} />

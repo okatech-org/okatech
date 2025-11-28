@@ -90,14 +90,14 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
             >
               <div className="w-2 h-2 rounded-full" style={{ background: theme.colors.primary.electric }} />
-              <span style={{ color: themeStyles.text.secondary, fontSize: '0.875rem' }}>IA Transformation</span>
+              <span style={{ color: themeStyles.text.secondary, fontSize: '0.875rem' }}>{t('hero.badge')}</span>
             </motion.div>
 
             {/* Title with gradient */}
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
                 <span className="block" style={{ color: themeStyles.text.primary }}>
-                  Nous Aidons Les
+                  {t('hero.titlePart1')}
                 </span>
                 <span
                   className="block"
@@ -108,7 +108,7 @@ const Home = () => {
                     backgroundClip: 'text'
                   }}
                 >
-                  Entreprises À Se
+                  {t('hero.titlePart2')}
                 </span>
                 <span
                   className="block"
@@ -119,14 +119,14 @@ const Home = () => {
                     backgroundClip: 'text'
                   }}
                 >
-                  Transformer.
+                  {t('hero.titlePart3')}
                 </span>
               </h1>
               <p style={{ color: themeStyles.text.secondary, fontSize: '1.125rem', lineHeight: '1.6' }}>
-                Nous avons les bons experts pour chaque projet, nous vous aiderons à vous connecter avec eux facilement et efficacement.
+                {t('hero.description')}
               </p>
             </div>
-            
+
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <motion.button
@@ -142,13 +142,13 @@ const Home = () => {
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Besoin d'Aide?
+                {t('hero.needHelp')}
                 <ChevronRight size={20} />
               </motion.button>
               <motion.div className="relative">
                 <input
                   type="text"
-                  placeholder="Rechercher..."
+                  placeholder={t('hero.searchPlaceholder')}
                   className="w-full px-6 py-4 rounded-xl border text-base outline-none transition-all"
                   style={{
                     background: themeStyles.card.background,
@@ -169,12 +169,12 @@ const Home = () => {
                 <div className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ background: `${theme.colors.primary.electric}20` }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polygon points="10 8 16 12 10 16 10 8"/>
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="10 8 16 12 10 16 10 8" />
                   </svg>
                 </div>
-                Commencer
-                <span className="text-xs">Démo Vidéo</span>
+                {t('hero.start')}
+                <span className="text-xs">{t('hero.videoDemo')}</span>
               </motion.button>
             </div>
           </motion.div>
@@ -353,12 +353,12 @@ const Home = () => {
             >
               {/* Background Image with Overlay */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500">
-                <img 
-                  src={pillar.image} 
+                <img
+                  src={pillar.image}
                   alt={pillar.title}
                   className="w-full h-full object-cover"
                 />
-                <div 
+                <div
                   className="absolute inset-0"
                   style={{
                     background: `linear-gradient(180deg, transparent 0%, ${themeStyles.card.background} 100%)`
@@ -469,12 +469,12 @@ const Home = () => {
               >
                 {/* Background Image */}
                 <div className="absolute inset-0">
-                  <img 
-                    src={solution.image} 
+                  <img
+                    src={solution.image}
                     alt={solution.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div 
+                  <div
                     className="absolute inset-0 transition-opacity duration-500"
                     style={{
                       background: `linear-gradient(180deg, ${themeStyles.card.background}95 0%, ${themeStyles.card.background}E6 100%)`
@@ -661,7 +661,7 @@ const Home = () => {
                   <p style={{ color: themeStyles.text.primary }} className="font-semibold">
                     {t('footer.address')}
                   </p>
-              </div>
+                </div>
                 <div>
                   <p className="text-sm" style={{ color: themeStyles.text.muted }}>{t('contactHome.emailLabel')}</p>
                   <p style={{ color: theme.colors.primary.electric }} className="font-semibold">

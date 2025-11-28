@@ -29,9 +29,9 @@ interface AIChatbotProps {
 }
 
 const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const themeStyles = useThemeStyles();
-  
+
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -67,7 +67,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
 
     const userMessage = input.trim();
     setInput("");
-    
+
     setMessages(prev => [...prev, {
       role: "user",
       content: userMessage,
@@ -81,6 +81,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
         body: {
           conversationId,
           userMessage,
+          language, // Pass the current language
           prospectInfo: {
             leadId,
             name: prospectInfo.name,
@@ -130,7 +131,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
     }
 
     setIsLoading(true);
-    
+
     try {
       const { data, error } = await supabase.functions.invoke('generate-report', {
         body: { conversationId }
@@ -139,7 +140,7 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
       if (error) throw error;
 
       const fitScore = data.compatibilityScore || Math.floor(Math.random() * 30) + 70;
-      
+
       const lead = leadStorage.saveLead({
         name: data.prospectInfo.name,
         email: data.prospectInfo.email,
@@ -156,12 +157,12 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
 
       console.log("Lead saved:", lead);
       toast.success(t('chatbot.reportGenerated'), { duration: 3000 });
-      
+
       setTimeout(() => {
         pdfGenerator.generateReportPDF(lead);
         setReportGenerated(true);
       }, 500);
-      
+
       onReportGenerated();
     } catch (error) {
       console.error("Error generating report:", error);
@@ -193,11 +194,10 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] rounded-lg p-3 ${
-                msg.role === "user"
+              className={`max-w-[80%] rounded-lg p-3 ${msg.role === "user"
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted text-foreground"
-              }`}
+                }`}
             >
               <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
             </div>
@@ -255,15 +255,15 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && handleSend()}
             placeholder={
-              reportGenerated 
+              reportGenerated
                 ? t('chatbot.generatingReport')
                 : t('chatbot.inputPlaceholder')
             }
             disabled={isLoading || reportGenerated}
             className="flex-1"
           />
-          <Button 
-            onClick={handleSend} 
+          <Button
+            onClick={handleSend}
             disabled={isLoading || !input.trim() || reportGenerated}
             size="icon"
             variant="hero"

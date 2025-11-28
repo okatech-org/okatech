@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  Download, 
-  FileText, 
-  Trash2, 
-  Eye, 
-  Mail, 
+import {
+  Download,
+  FileText,
+  Trash2,
+  Eye,
+  Mail,
   FileJson,
   Moon,
   Sun,
@@ -35,8 +35,10 @@ import LeadManagementAdvanced from "@/components/LeadManagementAdvanced";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
 import SettingsPanel from "@/components/SettingsPanel";
 import AdminDropdown from "@/components/AdminDropdown";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Admin = () => {
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -59,39 +61,39 @@ const Admin = () => {
 
   const filteredLeads = leads.filter(lead => {
     const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lead.company.toLowerCase().includes(searchTerm.toLowerCase());
+      lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.company.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || lead.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
 
   const handleDeleteLead = (id: string) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce lead?')) {
+    if (window.confirm(t('admin.leadManagement.deleteConfirm'))) {
       leadStorage.deleteLead(id);
       loadLeads();
-      toast.success("Lead supprimé");
+      toast.success(t('admin.leadManagement.leadDeleted'));
     }
   };
 
   const handleDownloadPDF = (lead: Lead) => {
     pdfGenerator.generateReportPDF(lead);
-    toast.success("PDF généré");
+    toast.success(t('admin.leadManagement.pdfGenerated'));
   };
 
   const handleDownloadJSON = (lead: Lead) => {
     pdfGenerator.downloadAsJSON(lead);
-    toast.success("JSON téléchargé");
+    toast.success(t('admin.leadManagement.jsonDownloaded'));
   };
 
   const handleExportCSV = () => {
     pdfGenerator.downloadAsCSV(filteredLeads);
-    toast.success("CSV exporté");
+    toast.success(t('admin.leadManagement.csvExported'));
   };
 
   const handleUpdateStatus = (id: string, newStatus: string) => {
     leadStorage.updateLead(id, { status: newStatus as any });
     loadLeads();
-    toast.success("Statut mis à jour");
+    toast.success(t('admin.leadManagement.statusUpdated'));
   };
 
   const handleLogout = async () => {
@@ -99,7 +101,7 @@ const Admin = () => {
     await supabaseAuth.signOut();
     // Nettoyer la session locale éventuelle
     authService.logout();
-    toast.success("Déconnexion réussie");
+    toast.success(t('admin.settings.logoutConfirm'));
     navigate("/admin-login");
   };
 
@@ -138,44 +140,44 @@ const Admin = () => {
 
   const currentColors = isDarkMode
     ? {
-        bg: '#000000',
-        cardBg: '#0A0A0A',
-        headerBg: '#111111',
-        hoverBg: '#1A1A1A',
-        borderColor: '#2A2A2A',
-        textPrimary: '#FFFFFF',
-        textSecondary: '#B0B0B0',
-        textMuted: '#666666',
-      }
+      bg: '#000000',
+      cardBg: '#0A0A0A',
+      headerBg: '#111111',
+      hoverBg: '#1A1A1A',
+      borderColor: '#2A2A2A',
+      textPrimary: '#FFFFFF',
+      textSecondary: '#B0B0B0',
+      textMuted: '#666666',
+    }
     : {
-        bg: '#FAFAFA',
-        cardBg: '#FFFFFF',
-        headerBg: '#FFFFFF',
-        hoverBg: '#F5F5F5',
-        borderColor: '#E0E0E0',
-        textPrimary: '#1A1A1A',
-        textSecondary: '#666666',
-        textMuted: '#999999',
-      };
+      bg: '#FAFAFA',
+      cardBg: '#FFFFFF',
+      headerBg: '#FFFFFF',
+      hoverBg: '#F5F5F5',
+      borderColor: '#E0E0E0',
+      textPrimary: '#1A1A1A',
+      textSecondary: '#666666',
+      textMuted: '#999999',
+    };
 
   return (
-    <div style={{ 
-      background: currentColors.bg, 
-      minHeight: '100vh', 
+    <div style={{
+      background: currentColors.bg,
+      minHeight: '100vh',
       transition: 'all 0.3s ease',
       fontFamily: "'Inter', sans-serif"
     }}>
       {/* SIDEBAR */}
-      <div 
+      <div
         className="fixed left-0 top-0 h-full w-64 z-40 border-r"
-        style={{ 
+        style={{
           background: currentColors.headerBg,
           borderColor: currentColors.borderColor
         }}
       >
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8">
-            <div 
+            <div
               className="w-10 h-10 rounded-lg flex items-center justify-center"
               style={{ background: '#00D9FF' }}
             >
@@ -186,17 +188,17 @@ const Admin = () => {
                 OKA Tech
               </h1>
               <p className="text-xs" style={{ color: currentColors.textMuted }}>
-                Admin Dashboard
+                {t('admin.adminDashboard')}
               </p>
             </div>
           </div>
 
           <nav className="space-y-2">
             {[
-              { id: 'overview' as const, icon: Activity, label: 'Overview', count: null },
-              { id: 'leads' as const, icon: Users, label: 'Leads Management', count: stats.total },
-              { id: 'analytics' as const, icon: Target, label: 'Analytics', count: null },
-              { id: 'settings' as const, icon: Settings, label: 'Settings', count: null },
+              { id: 'overview' as const, icon: Activity, label: t('admin.menu.overview'), count: null },
+              { id: 'leads' as const, icon: Users, label: t('admin.menu.leads'), count: stats.total },
+              { id: 'analytics' as const, icon: Target, label: t('admin.menu.analytics'), count: null },
+              { id: 'settings' as const, icon: Settings, label: t('admin.menu.settings'), count: null },
             ].map((item) => (
               <div
                 key={item.id}
@@ -222,9 +224,9 @@ const Admin = () => {
                   <span className="text-sm font-medium">{item.label}</span>
                 </div>
                 {item.count !== null && (
-                  <div 
+                  <div
                     className="px-2 py-1 rounded-full text-xs font-bold"
-                    style={{ 
+                    style={{
                       background: '#00D9FF20',
                       color: '#00D9FF'
                     }}
@@ -262,9 +264,9 @@ const Admin = () => {
       {/* MAIN CONTENT */}
       <div className="ml-64">
         {/* HEADER */}
-        <div 
+        <div
           className="sticky top-0 z-30 backdrop-blur-lg border-b px-6 py-4"
-          style={{ 
+          style={{
             background: currentColors.headerBg + 'CC',
             borderColor: currentColors.borderColor
           }}
@@ -272,28 +274,28 @@ const Admin = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold" style={{ color: currentColors.textPrimary }}>
-                Overview
+                {t('admin.menu.overview')}
               </h1>
               <div className="flex items-center gap-2 mt-1">
                 <Calendar size={16} style={{ color: currentColors.textMuted }} />
-                <select 
+                <select
                   value={selectedPeriod}
                   onChange={(e) => setSelectedPeriod(e.target.value)}
                   className="text-sm bg-transparent border-0 outline-0"
                   style={{ color: currentColors.textSecondary }}
                 >
-                  <option value="week">Cette semaine</option>
-                  <option value="month">Ce mois</option>
-                  <option value="quarter">Ce trimestre</option>
+                  <option value="week">{t('admin.analytics.periods.week')}</option>
+                  <option value="month">{t('admin.analytics.periods.month')}</option>
+                  <option value="quarter">{t('admin.analytics.periods.quarter')}</option>
                 </select>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="sm">
                 <Bell size={18} />
               </Button>
-              <AdminDropdown 
+              <AdminDropdown
                 isDarkMode={isDarkMode}
                 currentColors={currentColors}
                 onSettingsClick={() => setActiveTab('settings')}
@@ -319,7 +321,7 @@ const Admin = () => {
                   },
                   {
                     icon: Target,
-                    label: "Leads Qualifiés", 
+                    label: t('admin.leadManagement.qualified'),
                     value: stats.qualified.toString(),
                     change: "+8%",
                     trend: "up",
@@ -327,7 +329,7 @@ const Admin = () => {
                   },
                   {
                     icon: TrendingUp,
-                    label: "Taux Conversion",
+                    label: t('admin.analytics.conversionRate'),
                     value: stats.total > 0 ? `${((stats.converted / stats.total) * 100).toFixed(1)}%` : "0%",
                     change: "+5%",
                     trend: "up",
@@ -335,7 +337,7 @@ const Admin = () => {
                   },
                   {
                     icon: Activity,
-                    label: "Score Moyen",
+                    label: t('admin.analytics.avgScore'),
                     value: `${stats.avgScore}/100`,
                     change: parseFloat(stats.avgScore as string) >= 70 ? "+3%" : "-2%",
                     trend: parseFloat(stats.avgScore as string) >= 70 ? "up" : "down",
@@ -354,14 +356,14 @@ const Admin = () => {
                     }}
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <div 
+                      <div
                         className="p-3 rounded-xl"
                         style={{ background: stat.color + '20' }}
                       >
                         <stat.icon size={24} style={{ color: stat.color }} />
                       </div>
-                      <div className="flex items-center gap-1 text-xs font-semibold" style={{ 
-                        color: stat.trend === 'up' ? '#10B981' : '#EF4444' 
+                      <div className="flex items-center gap-1 text-xs font-semibold" style={{
+                        color: stat.trend === 'up' ? '#10B981' : '#EF4444'
                       }}>
                         {stat.trend === 'up' ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                         {stat.change}
@@ -378,7 +380,7 @@ const Admin = () => {
               </div>
 
               {/* LEADS MANAGEMENT */}
-              <div 
+              <div
                 className="rounded-2xl border p-6"
                 style={{
                   background: currentColors.cardBg,
@@ -388,15 +390,15 @@ const Admin = () => {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-xl font-bold" style={{ color: currentColors.textPrimary }}>
-                      Gestion des Leads
+                      {t('admin.leadManagement.title')}
                     </h2>
                     <p className="text-sm" style={{ color: currentColors.textMuted }}>
-                      {filteredLeads.length} leads trouvés
+                      {filteredLeads.length} {t('admin.leadManagement.found')}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
-                    <Button 
+                    <Button
                       onClick={handleExportCSV}
                       disabled={filteredLeads.length === 0}
                       className="rounded-xl font-semibold"
@@ -406,7 +408,7 @@ const Admin = () => {
                       }}
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Export
+                      {t('admin.leadManagement.export')}
                     </Button>
                   </div>
                 </div>
@@ -415,7 +417,7 @@ const Admin = () => {
                   <div className="relative flex-1">
                     <Search size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2" style={{ color: currentColors.textMuted }} />
                     <input
-                      placeholder="Rechercher par nom, email ou entreprise..."
+                      placeholder={t('admin.leadManagement.searchPlaceholder')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="w-full pl-12 pr-4 py-3 rounded-xl border font-medium"
@@ -438,11 +440,11 @@ const Admin = () => {
                         color: currentColors.textPrimary
                       }}
                     >
-                      <option value="all">Tous les statuts</option>
-                      <option value="new">Nouveaux</option>
-                      <option value="contacted">Contactés</option>
-                      <option value="qualified">Qualifiés</option>
-                      <option value="converted">Convertis</option>
+                      <option value="all">{t('admin.leadManagement.allStatus')}</option>
+                      <option value="new">{t('admin.leadManagement.new')}</option>
+                      <option value="contacted">{t('admin.leadManagement.contacted')}</option>
+                      <option value="qualified">{t('admin.leadManagement.qualified')}</option>
+                      <option value="converted">{t('admin.leadManagement.converted')}</option>
                     </select>
                   </div>
                 </div>
@@ -453,22 +455,22 @@ const Admin = () => {
                     <thead>
                       <tr style={{ borderBottom: `1px solid ${currentColors.borderColor}` }}>
                         <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                          Lead
+                          {t('admin.leadManagement.columns.lead')}
                         </th>
                         <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                          Entreprise
+                          {t('admin.leadManagement.columns.company')}
                         </th>
                         <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                          Score
+                          {t('admin.leadManagement.columns.score')}
                         </th>
                         <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                          Statut
+                          {t('admin.leadManagement.columns.status')}
                         </th>
                         <th className="text-left py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                          Date
+                          {t('admin.leadManagement.columns.date')}
                         </th>
                         <th className="text-right py-4 px-4 text-xs font-bold uppercase tracking-wider" style={{ color: currentColors.textMuted }}>
-                          Actions
+                          {t('admin.leadManagement.columns.actions')}
                         </th>
                       </tr>
                     </thead>
@@ -480,12 +482,12 @@ const Admin = () => {
                               <Users size={48} className="opacity-20" style={{ color: currentColors.textMuted }} />
                               <div>
                                 <p className="font-medium mb-1" style={{ color: currentColors.textMuted }}>
-                                  Aucun lead trouvé
+                                  {t('admin.leadManagement.noLeads')}
                                 </p>
                                 <p className="text-xs" style={{ color: currentColors.textMuted }}>
-                                  {searchTerm || filterStatus !== 'all' 
-                                    ? 'Essayez de modifier vos filtres de recherche'
-                                    : 'Les nouveaux leads apparaîtront ici automatiquement'
+                                  {searchTerm || filterStatus !== 'all'
+                                    ? t('admin.leadManagement.tryFilters')
+                                    : t('admin.leadManagement.newLeadsAuto')
                                   }
                                 </p>
                               </div>
@@ -511,9 +513,9 @@ const Admin = () => {
                           >
                             <td className="py-4 px-4">
                               <div className="flex items-center gap-3">
-                                <div 
+                                <div
                                   className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm"
-                                  style={{ 
+                                  style={{
                                     background: `linear-gradient(135deg, #00D9FF, #8B5CF6)`,
                                     color: '#FFFFFF'
                                   }}
@@ -537,7 +539,7 @@ const Admin = () => {
                             </td>
                             <td className="py-4 px-4">
                               <div className="flex items-center gap-2">
-                                <div 
+                                <div
                                   className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm"
                                   style={{
                                     background: lead.fitScore >= 80 ? '#10B981' : lead.fitScore >= 60 ? '#F59E0B' : '#EF4444',
@@ -558,25 +560,25 @@ const Admin = () => {
                                 className="px-3 py-1 rounded-full text-xs font-bold border-0"
                                 style={{
                                   background: lead.status === 'new' ? '#00D9FF20' :
-                                             lead.status === 'contacted' ? '#F59E0B20' :
-                                             lead.status === 'qualified' ? '#10B98120' :
-                                             '#8B5CF620',
+                                    lead.status === 'contacted' ? '#F59E0B20' :
+                                      lead.status === 'qualified' ? '#10B98120' :
+                                        '#8B5CF620',
                                   color: lead.status === 'new' ? '#00D9FF' :
-                                         lead.status === 'contacted' ? '#F59E0B' :
-                                         lead.status === 'qualified' ? '#10B981' :
-                                         '#8B5CF6'
+                                    lead.status === 'contacted' ? '#F59E0B' :
+                                      lead.status === 'qualified' ? '#10B981' :
+                                        '#8B5CF6'
                                 }}
                               >
-                                <option value="new">Nouveau</option>
-                                <option value="contacted">Contacté</option>
-                                <option value="qualified">Qualifié</option>
-                                <option value="converted">Converti</option>
+                                <option value="new">{t('admin.leadManagement.new')}</option>
+                                <option value="contacted">{t('admin.leadManagement.contacted')}</option>
+                                <option value="qualified">{t('admin.leadManagement.qualified')}</option>
+                                <option value="converted">{t('admin.leadManagement.converted')}</option>
                               </select>
                             </td>
                             <td className="py-4 px-4">
                               <p className="text-sm" style={{ color: currentColors.textMuted }}>
-                                {new Date(lead.createdAt).toLocaleDateString('fr-FR', { 
-                                  day: '2-digit', 
+                                {new Date(lead.createdAt).toLocaleDateString(language === 'en' ? 'en-US' : language === 'es' ? 'es-ES' : language === 'ar' ? 'ar-SA' : 'fr-FR', {
+                                  day: '2-digit',
                                   month: 'short',
                                   year: 'numeric'
                                 })}
@@ -622,7 +624,7 @@ const Admin = () => {
 
           {/* LEAD DETAIL MODAL */}
           {selectedLead && activeTab === 'overview' && (
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6"
               onClick={() => setSelectedLead(null)}
             >
@@ -636,9 +638,9 @@ const Admin = () => {
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="sticky top-0 p-6 border-b" style={{ 
+                <div className="sticky top-0 p-6 border-b" style={{
                   background: currentColors.headerBg,
-                  borderColor: currentColors.borderColor 
+                  borderColor: currentColors.borderColor
                 }}>
                   <div className="flex justify-between items-start">
                     <div>
@@ -649,8 +651,8 @@ const Admin = () => {
                         {selectedLead.company} • Score: {selectedLead.fitScore}/100
                       </p>
                     </div>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       onClick={() => setSelectedLead(null)}
                       className="rounded-xl"
                     >
@@ -661,24 +663,24 @@ const Admin = () => {
 
                 <div className="p-6">
                   <div className="grid md:grid-cols-2 gap-6 mb-6">
-                    <div 
+                    <div
                       className="p-6 rounded-xl border"
-                      style={{ 
+                      style={{
                         background: currentColors.bg,
                         borderColor: currentColors.borderColor
                       }}
                     >
                       <h3 className="font-bold mb-4 flex items-center gap-2" style={{ color: currentColors.textPrimary }}>
                         <Users size={18} />
-                        Informations Contact
+                        {t('admin.settings.profileInfo')}
                       </h3>
                       <div className="space-y-4">
                         {[
-                          { label: "Nom", value: selectedLead.name },
-                          { label: "Email", value: selectedLead.email },
-                          { label: "Entreprise", value: selectedLead.company },
-                          { label: "Téléphone", value: selectedLead.phone || 'Non fourni' },
-                          { label: "Score de Fit", value: `${selectedLead.fitScore}/100` }
+                          { label: t('admin.settings.fullName'), value: selectedLead.name },
+                          { label: t('admin.email'), value: selectedLead.email },
+                          { label: t('admin.leadManagement.columns.company'), value: selectedLead.company },
+                          { label: t('contact.phone'), value: selectedLead.phone || 'Non fourni' },
+                          { label: t('admin.leadManagement.columns.score'), value: `${selectedLead.fitScore}/100` }
                         ].map((item, idx) => (
                           <div key={idx} className="flex justify-between items-center py-2">
                             <span className="text-sm font-medium" style={{ color: currentColors.textMuted }}>
@@ -691,21 +693,21 @@ const Admin = () => {
                         ))}
                       </div>
                     </div>
-                    
-                    <div 
+
+                    <div
                       className="p-6 rounded-xl border"
-                      style={{ 
+                      style={{
                         background: currentColors.bg,
                         borderColor: currentColors.borderColor
                       }}
                     >
                       <h3 className="font-bold mb-4 flex items-center gap-2" style={{ color: currentColors.textPrimary }}>
                         <FileText size={18} />
-                        Rapport d'Analyse
+                        {t('admin.leadManagement.pdfGenerated')}
                       </h3>
-                      <div 
+                      <div
                         className="p-4 rounded-xl text-sm max-h-48 overflow-y-auto"
-                        style={{ 
+                        style={{
                           background: isDarkMode ? '#1A1A1A' : '#F8F9FA',
                           color: currentColors.textSecondary,
                           lineHeight: '1.6'
@@ -716,31 +718,31 @@ const Admin = () => {
                     </div>
                   </div>
 
-                  <div 
+                  <div
                     className="p-6 rounded-xl border"
-                    style={{ 
+                    style={{
                       background: currentColors.bg,
                       borderColor: currentColors.borderColor
                     }}
                   >
                     <h3 className="font-bold mb-4 flex items-center gap-2" style={{ color: currentColors.textPrimary }}>
                       <Mail size={18} />
-                      Historique de Conversation
+                      {t('admin.settings.history')}
                     </h3>
                     <div className="space-y-4 max-h-96 overflow-y-auto">
                       {selectedLead.conversation.map((msg, idx) => (
-                        <div 
-                          key={idx} 
+                        <div
+                          key={idx}
                           className="p-4 rounded-xl border-l-4"
                           style={{
-                            background: msg.role === 'user' 
+                            background: msg.role === 'user'
                               ? isDarkMode ? '#00D9FF10' : '#E0F2FE'
                               : isDarkMode ? '#8B5CF610' : '#F3E8FF',
                             borderLeftColor: msg.role === 'user' ? '#00D9FF' : '#8B5CF6'
                           }}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <div 
+                            <div
                               className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
                               style={{
                                 background: msg.role === 'user' ? '#00D9FF' : '#8B5CF6',
@@ -749,7 +751,7 @@ const Admin = () => {
                             >
                               {msg.role === 'user' ? 'P' : 'AI'}
                             </div>
-                            <span className="text-xs font-bold uppercase tracking-wide" style={{ 
+                            <span className="text-xs font-bold uppercase tracking-wide" style={{
                               color: msg.role === 'user' ? '#00D9FF' : '#8B5CF6'
                             }}>
                               {msg.role === 'user' ? 'Prospect' : 'Assistant IA'}
@@ -769,35 +771,35 @@ const Admin = () => {
 
           {/* LEADS MANAGEMENT TAB */}
           {activeTab === 'leads' && (
-            <LeadManagementAdvanced 
-              leads={leads} 
-              onLeadsUpdate={(updatedLeads) => setLeads(updatedLeads)} 
-              currentColors={currentColors} 
-              isDarkMode={isDarkMode} 
+            <LeadManagementAdvanced
+              leads={leads}
+              onLeadsUpdate={(updatedLeads) => setLeads(updatedLeads)}
+              currentColors={currentColors}
+              isDarkMode={isDarkMode}
             />
           )}
 
           {/* ANALYTICS TAB */}
           {activeTab === 'analytics' && (
-            <AnalyticsDashboard 
-              leads={leads} 
-              currentColors={currentColors} 
-              isDarkMode={isDarkMode} 
+            <AnalyticsDashboard
+              leads={leads}
+              currentColors={currentColors}
+              isDarkMode={isDarkMode}
             />
           )}
 
           {/* SETTINGS TAB */}
           {activeTab === 'settings' && (
-            <SettingsPanel 
-              isDarkMode={isDarkMode} 
-              onLogout={handleLogout} 
-              currentColors={currentColors} 
+            <SettingsPanel
+              isDarkMode={isDarkMode}
+              onLogout={handleLogout}
+              currentColors={currentColors}
             />
           )}
         </div>
-       </div>
-     </div>
-    );
-  };
+      </div >
+    </div >
+  );
+};
 
 export default Admin;
