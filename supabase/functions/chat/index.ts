@@ -111,53 +111,154 @@ serve(async (req) => {
         ],
         temperature: 0.7,
         max_tokens: 500,
+        stream: true,
       }),
     });
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
       console.error('AI Gateway error:', aiResponse.status, errorText);
+      
+      if (aiResponse.status === 429) {
+        return new Response(JSON.stringify({ error: "Limite de requêtes atteinte, veuillez réessayer plus tard." }), {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      if (aiResponse.status === 402) {
+        return new Response(JSON.stringify({ error: "Crédit insuffisant, veuillez ajouter des fonds." }), {
+          status: 402,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      
       throw new Error(`AI Gateway error: ${aiResponse.status}`);
     }
 
-    const aiData = await aiResponse.json();
-    const assistantMessage = aiData.choices[0]?.message?.content || 'Désolé, je n\'ai pas pu générer une réponse.';
+    // Stream SSE vers le client
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = aiResponse.body!.getReader();
+        const decoder = new TextDecoder();
+        let assistantMessage = '';
+        let textBuffer = '';
 
-    // Ajouter la réponse à l'historique
-    messages.push({
-      role: 'assistant',
-      content: assistantMessage,
-      timestamp: new Date().toISOString()
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            textBuffer += decoder.decode(value, { stream: true });
+
+            let newlineIndex: number;
+            while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+              let line = textBuffer.slice(0, newlineIndex);
+              textBuffer = textBuffer.slice(newlineIndex + 1);
+
+              if (line.endsWith("\r")) line = line.slice(0, -1);
+              if (line.startsWith(":") || line.trim() === "") continue;
+              if (!line.startsWith("data: ")) continue;
+
+              const jsonStr = line.slice(6).trim();
+              if (jsonStr === "[DONE]") {
+                // Calculer le score du lead
+                const leadScore = calculateLeadScore(messages, assistantMessage, identifiedNeed, phase);
+
+                // Ajouter la réponse complète à l'historique
+                messages.push({
+                  role: 'assistant',
+                  content: assistantMessage,
+                  timestamp: new Date().toISOString()
+                });
+
+                // Mettre à jour la conversation avec le score
+                await supabaseClient
+                  .from('conversations')
+                  .update({
+                    messages,
+                    identified_need: identifiedNeed,
+                    phase,
+                    compatibility_score: leadScore,
+                    updated_at: new Date().toISOString()
+                  })
+                  .eq('id', conversation.id);
+
+                // Envoyer les métadonnées finales
+                const shouldCollectContact = messages.filter((m: any) => m.role === 'user').length >= 6 ||
+                  shouldCollectContactInfo(assistantMessage);
+
+                controller.enqueue(
+                  new TextEncoder().encode(
+                    `data: ${JSON.stringify({
+                      type: 'metadata',
+                      conversationId: conversation.id,
+                      leadId,
+                      shouldCollectContact,
+                      detectedLanguage,
+                      phase,
+                      leadScore
+                    })}\n\n`
+                  )
+                );
+                controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+                break;
+              }
+
+              try {
+                const parsed = JSON.parse(jsonStr);
+                const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                if (content) {
+                  assistantMessage += content;
+                  // Envoyer le token au client
+                  controller.enqueue(
+                    new TextEncoder().encode(`data: ${JSON.stringify({ content })}\n\n`)
+                  );
+                }
+              } catch {
+                textBuffer = line + "\n" + textBuffer;
+                break;
+              }
+            }
+          }
+
+          // Flush final buffer
+          if (textBuffer.trim()) {
+            for (let raw of textBuffer.split("\n")) {
+              if (!raw) continue;
+              if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+              if (raw.startsWith(":") || raw.trim() === "") continue;
+              if (!raw.startsWith("data: ")) continue;
+              const jsonStr = raw.slice(6).trim();
+              if (jsonStr === "[DONE]") continue;
+              try {
+                const parsed = JSON.parse(jsonStr);
+                const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+                if (content) {
+                  assistantMessage += content;
+                  controller.enqueue(
+                    new TextEncoder().encode(`data: ${JSON.stringify({ content })}\n\n`)
+                  );
+                }
+              } catch { /* ignore */ }
+            }
+          }
+
+          controller.close();
+        } catch (error) {
+          console.error('Streaming error:', error);
+          controller.error(error);
+        }
+      }
     });
 
-    // Mettre à jour la conversation
-    const { error: updateError } = await supabaseClient
-      .from('conversations')
-      .update({
-        messages,
-        identified_need: identifiedNeed,
-        phase,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', conversation.id);
-
-    if (updateError) throw updateError;
-
-    // Déterminer si on doit collecter les coordonnées
-    const shouldCollectContact = messages.filter((m: any) => m.role === 'user').length >= 6 ||
-      shouldCollectContactInfo(assistantMessage);
-
-    return new Response(
-      JSON.stringify({
-        conversationId: conversation.id,
-        leadId,
-        response: assistantMessage,
-        shouldCollectContact,
-        detectedLanguage,
-        phase
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return new Response(stream, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      }
+    });
 
   } catch (error) {
     console.error('Error in chat function:', error);
@@ -173,14 +274,27 @@ serve(async (req) => {
 });
 
 function detectLanguage(text: string): string {
-  const frenchWords = ['je', 'vous', 'merci', 'oui', 'non', 'français', 'bonjour', 'problème'];
-  const englishWords = ['i', 'you', 'thank', 'yes', 'no', 'english', 'hello', 'problem'];
+  const frenchWords = ['je', 'vous', 'merci', 'oui', 'non', 'français', 'bonjour', 'problème', 'besoin', 'entreprise'];
+  const englishWords = ['i', 'you', 'thank', 'yes', 'no', 'english', 'hello', 'problem', 'need', 'company'];
+  const spanishWords = ['yo', 'usted', 'gracias', 'sí', 'español', 'hola', 'problema', 'necesito', 'empresa'];
+  const arabicWords = ['أنا', 'أنت', 'شكرا', 'نعم', 'لا', 'عربي', 'مرحبا', 'مشكلة', 'احتاج', 'شركة'];
 
   const lowerText = text.toLowerCase();
   const frenchCount = frenchWords.filter(word => lowerText.includes(word)).length;
   const englishCount = englishWords.filter(word => lowerText.includes(word)).length;
+  const spanishCount = spanishWords.filter(word => lowerText.includes(word)).length;
+  const arabicCount = arabicWords.filter(word => text.includes(word)).length; // Ne pas lowercase pour l'arabe
 
-  return frenchCount > englishCount ? 'FR' : 'EN';
+  const counts = {
+    'FR': frenchCount,
+    'EN': englishCount,
+    'ES': spanishCount,
+    'AR': arabicCount
+  };
+
+  // Retourner la langue avec le plus de mots détectés
+  const maxLang = Object.entries(counts).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+  return maxLang;
 }
 
 function identifyNeed(messages: any[]): string {
@@ -204,9 +318,42 @@ function identifyNeed(messages: any[]): string {
 }
 
 function shouldCollectContactInfo(response: string): boolean {
-  const phoneKeywords = ['appel', 'téléphone', 'phone', 'contact', 'coordonnées', 'numéro'];
+  const phoneKeywords = ['appel', 'téléphone', 'phone', 'contact', 'coordonnées', 'numéro', 'llamar', 'teléfono', 'contacto', 'اتصال', 'هاتف'];
   const lowerResponse = response.toLowerCase();
-  return phoneKeywords.some(kw => lowerResponse.includes(kw));
+  return phoneKeywords.some(kw => lowerResponse.includes(kw) || response.includes(kw));
+}
+
+function calculateLeadScore(messages: any[], lastResponse: string, identifiedNeed: string, phase: number): number {
+  let score = 0;
+  
+  // Score basé sur le nombre de messages (max 30 points)
+  const userMessages = messages.filter((m: any) => m.role === 'user');
+  score += Math.min(userMessages.length * 3, 30);
+  
+  // Score basé sur la longueur moyenne des messages utilisateur (max 20 points)
+  const avgLength = userMessages.reduce((sum: number, m: any) => sum + m.content.length, 0) / userMessages.length;
+  if (avgLength > 50) score += 10;
+  if (avgLength > 100) score += 10;
+  
+  // Score basé sur l'identification du besoin (max 20 points)
+  if (identifiedNeed !== 'Not identified yet') score += 20;
+  
+  // Score basé sur la phase de conversation (max 15 points)
+  score += phase * 5;
+  
+  // Score basé sur l'engagement (max 15 points)
+  const hasQuestions = userMessages.some((m: any) => m.content.includes('?'));
+  if (hasQuestions) score += 10;
+  if (userMessages.length > 5) score += 5;
+  
+  // Bonus si la conversation mentionne des détails techniques (max 10 points)
+  const technicalKeywords = ['api', 'database', 'système', 'intégration', 'automatisation', 'ia', 'ai', 'données'];
+  const hasTechnicalTerms = messages.some((m: any) => 
+    technicalKeywords.some(kw => m.content.toLowerCase().includes(kw))
+  );
+  if (hasTechnicalTerms) score += 10;
+  
+  return Math.min(score, 100);
 }
 
 function buildSystemPrompt(prospectInfo: any, language: string, messageCount: number, need: string, phase: number): string {
