@@ -76,49 +76,135 @@ const AIChatbot = ({ prospectInfo, onClose, onReportGenerated }: AIChatbotProps)
 
     setIsLoading(true);
 
+    // Ajouter un message assistant vide qu'on va remplir progressivement
+    setMessages(prev => [...prev, {
+      role: "assistant",
+      content: "",
+      timestamp: new Date(),
+    }]);
+
     try {
-      const { data, error } = await supabase.functions.invoke('chat', {
-        body: {
-          conversationId,
-          userMessage,
-          language, // Pass the current language
-          prospectInfo: {
-            leadId,
-            name: prospectInfo.name,
-            email: prospectInfo.email,
-            company: prospectInfo.company,
-            phone: collectedPhone || prospectInfo.phone,
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({
+            conversationId,
+            userMessage,
+            language,
+            prospectInfo: {
+              leadId,
+              name: prospectInfo.name,
+              email: prospectInfo.email,
+              company: prospectInfo.company,
+              phone: collectedPhone || prospectInfo.phone,
+            }
+          })
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          toast.error("Limite de requêtes atteinte, veuillez réessayer plus tard.");
+        } else if (response.status === 402) {
+          toast.error("Crédit insuffisant.");
+        } else {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        // Supprimer le message assistant vide
+        setMessages(prev => prev.slice(0, -1));
+        return;
+      }
+
+      if (!response.body) throw new Error('No response body');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let textBuffer = '';
+      let streamDone = false;
+      let assistantContent = '';
+      let metadata: any = null;
+
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith('\r')) line = line.slice(0, -1);
+          if (line.startsWith(':') || line.trim() === '') continue;
+          if (!line.startsWith('data: ')) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === '[DONE]') {
+            streamDone = true;
+            break;
+          }
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            
+            if (parsed.type === 'metadata') {
+              // Stocker les métadonnées
+              metadata = parsed;
+            } else if (parsed.content) {
+              // Mise à jour progressive du contenu
+              assistantContent += parsed.content;
+              setMessages(prev => {
+                const newMessages = [...prev];
+                newMessages[newMessages.length - 1] = {
+                  role: 'assistant',
+                  content: assistantContent,
+                  timestamp: new Date(),
+                };
+                return newMessages;
+              });
+            }
+          } catch (e) {
+            // Gérer les erreurs de parsing JSON
+            textBuffer = line + '\n' + textBuffer;
+            break;
           }
         }
-      });
-
-      if (error) throw error;
-
-      // Mettre à jour les IDs si c'est la première fois
-      if (data.conversationId && !conversationId) {
-        setConversationId(data.conversationId);
-      }
-      if (data.leadId && !leadId) {
-        setLeadId(data.leadId);
       }
 
-      setMessages(prev => [...prev, {
-        role: "assistant",
-        content: data.response,
-        timestamp: new Date(),
-      }]);
+      // Traiter les métadonnées finales
+      if (metadata) {
+        if (metadata.conversationId && !conversationId) {
+          setConversationId(metadata.conversationId);
+        }
+        if (metadata.leadId && !leadId) {
+          setLeadId(metadata.leadId);
+        }
+        setShouldCollectContact(metadata.shouldCollectContact);
 
-      setShouldCollectContact(data.shouldCollectContact);
+        // Afficher le score du lead si présent
+        if (metadata.leadScore !== undefined) {
+          console.log('Lead Score:', metadata.leadScore);
+        }
 
-      // Si on doit collecter et qu'on a le téléphone, générer le rapport
-      if (data.shouldCollectContact && collectedPhone) {
-        setTimeout(() => {
-          generateReport();
-        }, 1000);
+        // Si on doit collecter et qu'on a le téléphone, générer le rapport
+        if (metadata.shouldCollectContact && collectedPhone) {
+          setTimeout(() => {
+            generateReport();
+          }, 1000);
+        }
       }
+
     } catch (error) {
       toast.error(t('chatbot.error'));
       console.error("Error:", error);
+      // Supprimer le message assistant vide en cas d'erreur
+      setMessages(prev => prev.slice(0, -1));
     } finally {
       setIsLoading(false);
     }
